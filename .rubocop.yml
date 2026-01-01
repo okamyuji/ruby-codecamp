@@ -1,0 +1,173 @@
+# RuboCop設定ファイル
+# Ruby 3.4対応のコーディング規約
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+
+# スタイル設定
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+# メトリクス設定
+Metrics/MethodLength:
+  Max: 30
+  Exclude:
+    - 'solutions/**/*'
+
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - 'solutions/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Exclude:
+    - 'solutions/**/*'
+
+Metrics/PerceivedComplexity:
+  Max: 10
+  Exclude:
+    - 'solutions/**/*'
+
+Metrics/ParameterLists:
+  Max: 7
+  Exclude:
+    - 'solutions/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'solutions/**/*'
+
+# レイアウト設定
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'solutions/**/*'
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+# 命名規則
+Naming/MethodParameterName:
+  MinNameLength: 1
+  AllowedNames:
+    - i
+    - j
+    - k
+    - x
+    - y
+    - z
+    - n
+    - m
+    - a
+    - b
+
+# Lint設定
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/ScriptPermission:
+  Enabled: false
+
+# 命名規則（追加）
+Naming/PredicateMethod:
+  Enabled: false
+
+Naming/PredicatePrefix:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Lint/UnmodifiedReduceAccumulator:
+  Enabled: false
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/MultipleComparison:
+  Enabled: false
+
+Lint/FloatComparison:
+  Enabled: false
+
+Style/ComparableClamp:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/BitwisePredicate:
+  Enabled: false
+
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
+Style/SafeNavigation:
+  Enabled: false
+
+Lint/NestedMethodDefinition:
+  Enabled: false
+
+# その他
+Style/NumericPredicate:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MinMax:
+  Enabled: false
+
+Style/MapIntoArray:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+Style/EvenOdd:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/CombinableLoops:
+  Enabled: false
