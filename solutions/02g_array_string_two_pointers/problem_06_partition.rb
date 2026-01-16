@@ -24,10 +24,10 @@ def partition(nums, pivot)
 
   while left <= right
     # 左から pivot 以上の要素を探す
-    left += 1 while left < right && nums[left] < pivot
+    left += 1 while left <= right && nums[left] < pivot
 
     # 右から pivot より小さい要素を探す
-    right -= 1 while left < right && nums[right] >= pivot
+    right -= 1 while left <= right && nums[right] >= pivot
 
     # 交換
     next unless left < right
