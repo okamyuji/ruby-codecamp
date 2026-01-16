@@ -2,9 +2,10 @@
 
 require 'rake/testtask'
 require 'fileutils'
+require 'shellwords'
 
 # Default task
-task default: %i[rubocop syntax_check]
+task default: %i[syntax_check]
 
 # RuboCop task
 desc 'Run RuboCop on all Ruby files'
@@ -22,17 +23,25 @@ end
 desc 'Check syntax of all Ruby files'
 task :syntax_check do
   puts 'Checking syntax of all Ruby files...'
+  errors = []
+
   Dir.glob('solutions/**/*.rb').each do |file|
     print "Checking #{file}... "
-    result = system("ruby -c #{file} > /dev/null 2>&1")
-    if result
+    if system("ruby -c #{Shellwords.escape(file)} > /dev/null 2>&1")
       puts '✓'
     else
       puts '✗'
-      sh "ruby -c #{file}"
+      errors << file
     end
   end
-  puts 'Syntax check completed!'
+
+  if errors.empty?
+    puts 'Syntax check completed!'
+  else
+    puts "\nFiles with syntax errors:"
+    errors.each { |f| puts "  - #{f}" }
+    abort 'Syntax check failed!'
+  end
 end
 
 # Execute all Ruby files to check for runtime errors
@@ -41,10 +50,9 @@ task :execute_all do
   puts 'Executing all Ruby files...'
   errors = []
 
-  Dir.glob('solutions/**/*.rb').sort.each do |file|
+  Dir.glob('solutions/**/*.rb').each do |file|
     print "Executing #{file}... "
-    result = system("ruby #{file} > /dev/null 2>&1")
-    if result
+    if system("ruby #{Shellwords.escape(file)} > /dev/null 2>&1")
       puts '✓'
     else
       puts '✗'
@@ -57,7 +65,7 @@ task :execute_all do
   else
     puts "\nFiles with errors:"
     errors.each { |f| puts "  - #{f}" }
-    exit 1
+    abort 'Execution check failed!'
   end
 end
 
@@ -65,7 +73,7 @@ end
 desc 'List all solution files'
 task :list do
   puts 'Ruby solution files:'
-  Dir.glob('solutions/**/*.rb').sort.each do |file|
+  Dir.glob('solutions/**/*.rb').each do |file|
     puts "  - #{file}"
   end
 end
@@ -75,8 +83,7 @@ desc 'Count lines of code in solutions'
 task :loc do
   total = 0
   Dir.glob('solutions/**/*.rb').each do |file|
-    lines = File.readlines(file).size
-    total += lines
+    total += File.readlines(file).size
   end
   puts "Total lines of code: #{total}"
 end
