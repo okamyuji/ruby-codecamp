@@ -22,6 +22,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin search_matrix
 # 解法1: 右上から検索
 def search_matrix(matrix, target)
   return false if matrix.empty? || matrix[0].empty?
@@ -72,6 +73,18 @@ def search_matrix_binary(matrix, target)
     row.bsearch { |x| x >= target } == target
   end
 end
+
+# テストケース
+matrix = [[1, 4, 7, 11, 15],
+          [2, 5, 8, 12, 19],
+          [3, 6, 9, 16, 22],
+          [10, 13, 14, 17, 24],
+          [18, 21, 23, 26, 30]]
+
+p search_matrix(matrix, 5)   # => true
+p search_matrix(matrix, 20)  # => false
+p search_matrix(matrix, 30)  # => true
+# docs:end
 
 # ============================================================================
 # テストケース

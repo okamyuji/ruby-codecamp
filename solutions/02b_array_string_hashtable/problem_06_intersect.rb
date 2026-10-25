@@ -18,6 +18,7 @@
 # 空間計算量: O(min(n, m))
 # ============================================================================
 
+# docs:begin intersect
 # 解法1: ハッシュで頻度管理（推奨）
 def intersect(nums1, nums2)
   freq = Hash.new(0)
@@ -28,7 +29,7 @@ def intersect(nums1, nums2)
 
   # nums2を走査して共通要素を探す
   nums2.each do |num|
-    if freq[num].positive?
+    if freq[num] > 0
       result << num
       freq[num] -= 1
     end
@@ -66,7 +67,7 @@ def intersect_tally(nums1, nums2)
   result = []
 
   nums2.each do |num|
-    if freq1[num]&.positive?
+    if freq1[num] && freq1[num] > 0
       result << num
       freq1[num] -= 1
     end
@@ -74,6 +75,12 @@ def intersect_tally(nums1, nums2)
 
   result
 end
+
+# テストケース
+p intersect([1, 2, 2, 1], [2, 2])           # => [2, 2]
+p intersect([4, 9, 5], [9, 4, 9, 8, 4])     # => [4, 9] or [9, 4]
+p intersect([1, 2, 3], [4, 5, 6])           # => []
+# docs:end
 
 # ============================================================================
 # テストケース

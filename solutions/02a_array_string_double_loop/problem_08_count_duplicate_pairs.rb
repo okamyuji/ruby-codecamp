@@ -15,6 +15,7 @@
 # 空間計算量: O(1) - 二重ループ版、O(n) - ハッシュ版
 # ============================================================================
 
+# docs:begin count_duplicate_pairs_brute_force
 # 解法1: 二重ループ（O(n²)）
 def count_duplicate_pairs_brute_force(arr)
   count = 0
@@ -50,6 +51,14 @@ def count_duplicate_pairs_functional(arr)
      .values
      .sum { |group| group.size * (group.size - 1) / 2 }
 end
+
+# テストケース
+p count_duplicate_pairs([1, 2, 1, 2, 3])      # => 2
+p count_duplicate_pairs([1, 1, 1, 1])         # => 6（C(4,2) = 6）
+p count_duplicate_pairs([1, 2, 3, 4])         # => 0
+p count_duplicate_pairs([5, 5, 5])            # => 3（C(3,2) = 3）
+p count_duplicate_pairs([])                   # => 0
+# docs:end
 
 # ============================================================================
 # テストケース

@@ -18,6 +18,7 @@
 # 空間計算量: O(k) - kは一意な文字の数
 # ============================================================================
 
+# docs:begin is_isomorphic
 # 解法1: 2つのハッシュマップ（推奨）
 def is_isomorphic(s, t)
   return false if s.length != t.length
@@ -73,6 +74,13 @@ def create_pattern(str)
 
   pattern
 end
+
+# テストケース
+p is_isomorphic('egg', 'add')      # => true
+p is_isomorphic('foo', 'bar')      # => false
+p is_isomorphic('paper', 'title')  # => true
+p is_isomorphic('ab', 'aa')        # => false
+# docs:end
 
 # ============================================================================
 # テストケース

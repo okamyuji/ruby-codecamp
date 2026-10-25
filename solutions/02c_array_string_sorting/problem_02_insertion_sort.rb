@@ -15,6 +15,7 @@
 # 空間計算量: O(1) - in-placeソート
 # ============================================================================
 
+# docs:begin insertion_sort
 # 解法1: 基本的な挿入ソート
 def insertion_sort(arr)
   n = arr.length
@@ -43,7 +44,7 @@ def insertion_sort_swap(arr)
     j = i
 
     # 左側のソート済み部分で適切な位置まで交換
-    while j.positive? && arr[j - 1] > arr[j]
+    while j > 0 && arr[j - 1] > arr[j]
       arr[j - 1], arr[j] = arr[j], arr[j - 1]
       j -= 1
     end
@@ -68,6 +69,13 @@ def insertion_sort_descending(arr)
 
   arr
 end
+
+# テストケース
+p insertion_sort([5, 2, 4, 6, 1, 3])  # => [1, 2, 3, 4, 5, 6]
+p insertion_sort([12, 11, 13, 5, 6])  # => [5, 6, 11, 12, 13]
+p insertion_sort([1, 2, 3])           # => [1, 2, 3]（既にソート済み）
+p insertion_sort_descending([5, 2, 4, 6, 1, 3]) # => [6, 5, 4, 3, 2, 1]
+# docs:end
 
 # ============================================================================
 # テストケース

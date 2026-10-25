@@ -16,6 +16,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin is_palindrome
 # 解法1: Two Pointers
 def is_palindrome(s)
   left = 0
@@ -51,6 +52,13 @@ def is_palindrome_functional(s)
   chars = s.downcase.chars.grep(/[a-z0-9]/)
   chars == chars.reverse
 end
+
+# テストケース
+p is_palindrome('A man, a plan, a canal: Panama')  # => true
+p is_palindrome('race a car')                      # => false
+p is_palindrome(' ')                               # => true
+p is_palindrome('0P')                              # => false
+# docs:end
 
 # ============================================================================
 # テストケース

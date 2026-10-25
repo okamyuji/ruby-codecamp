@@ -16,6 +16,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin num_subarray_product_less_than_k
 # 解法1: Sliding Window
 def num_subarray_product_less_than_k(nums, k)
   return 0 if k <= 1
@@ -57,6 +58,17 @@ def find_all_subarray_product_less_than_k(nums, k)
 
   result
 end
+
+# テストケース
+p num_subarray_product_less_than_k([10, 5, 2, 6], 100)
+# => 8
+
+p num_subarray_product_less_than_k([1, 2, 3], 0)
+# => 0
+
+p find_all_subarray_product_less_than_k([10, 5, 2, 6], 100)
+# => [[10], [10, 5], [5], [5, 2], [5, 2, 6], [2], [2, 6], [6]]
+# docs:end
 
 # ============================================================================
 # テストケース

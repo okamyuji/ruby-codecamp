@@ -15,6 +15,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin max_length_positive_product
 # 解法1: 負の数の偶奇を追跡
 def max_length_positive_product(nums)
   max_len = 0
@@ -68,6 +69,12 @@ def max_length_positive_product_sign(nums)
 
   max_len
 end
+
+# テストケース
+p max_length_positive_product([1, -2, -3, 4])      # => 4
+p max_length_positive_product([0, 1, -2, -3, -4])  # => 3
+p max_length_positive_product([-1, -2, -3, 0, 1])  # => 2
+# docs:end
 
 # ============================================================================
 # テストケース

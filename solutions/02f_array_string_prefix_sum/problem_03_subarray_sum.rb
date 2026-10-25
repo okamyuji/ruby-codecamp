@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin subarray_sum
 # 解法1: ハッシュマップを使用
 def subarray_sum(nums, k)
   count = 0
@@ -56,6 +57,33 @@ def find_subarray_sum_indices(nums, k)
 
   result
 end
+
+# 解法3: ブルートフォース（比較用）
+def subarray_sum_brute(nums, k)
+  count = 0
+
+  nums.length.times do |i|
+    sum = 0
+
+    (i...nums.length).each do |j|
+      sum += nums[j]
+      count += 1 if sum == k
+    end
+  end
+
+  count
+end
+
+# テストケース
+p subarray_sum([1, 1, 1], 2)        # => 2
+p subarray_sum([1, 2, 3], 3)        # => 2（[1, 2] と [3]）
+p subarray_sum([1, -1, 0], 0)       # => 3
+p subarray_sum([3, 4, 7, 2, -3, 1, 4, 2], 7) # => 4
+
+p find_subarray_sum_indices([1, 2, 3], 3)
+# => [[0, 1], [2, 2]]（[1, 2] と [3]）
+
+# docs:end
 
 # ============================================================================
 # テストケース

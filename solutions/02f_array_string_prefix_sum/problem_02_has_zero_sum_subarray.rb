@@ -15,6 +15,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin has_zero_sum_subarray
 # 解法1: ハッシュセットを使用
 def has_zero_sum_subarray(nums)
   sum = 0
@@ -71,6 +72,16 @@ def find_all_zero_sum_subarrays(nums)
 
   result
 end
+
+# テストケース
+p has_zero_sum_subarray([4, 2, -3, 1, 6])  # => true
+p has_zero_sum_subarray([4, 2, 0, 1, 6])   # => true（0単体）
+p has_zero_sum_subarray([1, 2, 3])         # => false
+
+p find_zero_sum_subarray([4, 2, -3, 1, 6]) # => [1, 3]
+p find_all_zero_sum_subarrays([1, 2, -3, 3, -1, -1])
+# => [[0, 2], [2, 3], [1, 5]]
+# docs:end
 
 # ============================================================================
 # テストケース

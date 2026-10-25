@@ -17,6 +17,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin partition
 # 解法1: Two Pointers
 def partition(nums, pivot)
   left = 0
@@ -70,6 +71,14 @@ def partition_new_array(nums, pivot)
 
   less + equal + greater
 end
+
+# テストケース
+p partition([3, 5, 2, 1, 6, 4], 3)
+# => [2, 1, 3, 5, 6, 4] または類似
+
+p three_way_partition([3, 5, 2, 1, 6, 4, 3], 3)
+# => [2, 1, 3, 3, 5, 6, 4] または類似
+# docs:end
 
 # ============================================================================
 # テストケース

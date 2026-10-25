@@ -17,6 +17,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin top_k_frequent
 # 解法1: ハッシュとソート（推奨）
 def top_k_frequent(nums, k)
   freq = nums.tally
@@ -28,7 +29,7 @@ end
 # 解法2: sort_byとtake
 def top_k_frequent_take(nums, k)
   nums.tally
-      .sort_by { |_num, count| -count }
+      .sort_by { |num, count| -count }
       .take(k)
       .map { |num, _| num }
 end
@@ -48,6 +49,17 @@ def top_k_frequent_max(nums, k)
 
   result
 end
+
+# テストケース
+p top_k_frequent([1, 1, 1, 2, 2, 3], 2)
+# => [1, 2]
+
+p top_k_frequent([1], 1)
+# => [1]
+
+p top_k_frequent([4, 1, -1, 2, -1, 2, 3], 2)
+# => [-1, 2] または [2, -1]
+# docs:end
 
 # ============================================================================
 # テストケース

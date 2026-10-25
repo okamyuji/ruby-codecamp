@@ -12,6 +12,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin MinStack
 # 解法1: 2つのスタックを使用
 class MinStack
   def initialize
@@ -22,7 +23,9 @@ class MinStack
   def push(val)
     @stack << val
 
-    @min_stack << val if @min_stack.empty? || val <= @min_stack.last
+    if @min_stack.empty? || val <= @min_stack.last
+      @min_stack << val
+    end
   end
 
   def pop
@@ -104,6 +107,17 @@ class MinStack3
     @min
   end
 end
+
+# テストケース
+min_stack = MinStack.new
+min_stack.push(-2)
+min_stack.push(0)
+min_stack.push(-3)
+p min_stack.get_min  # => -3
+min_stack.pop
+p min_stack.top      # => 0
+p min_stack.get_min  # => -2
+# docs:end
 
 # ============================================================================
 # テストケース

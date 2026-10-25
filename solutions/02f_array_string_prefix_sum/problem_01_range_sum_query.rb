@@ -18,6 +18,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin RangeSumQuery
 # 解法1: クラスとして実装
 class RangeSumQuery
   def initialize(nums)
@@ -52,6 +53,20 @@ end
 def build_prefix_sum_scan(nums)
   nums.each_with_object([0]) { |num, acc| acc << acc.last + num }
 end
+
+# テストケース
+nums = [1, 2, 3, 4, 5]
+rsq = RangeSumQuery.new(nums)
+
+p rsq.sum_range(0, 2)  # => 6（1 + 2 + 3）
+p rsq.sum_range(1, 4)  # => 14（2 + 3 + 4 + 5）
+p rsq.sum_range(2, 3)  # => 7（3 + 4）
+
+# 関数版
+prefix = build_prefix_sum(nums)
+p range_sum(prefix, 0, 2)  # => 6
+p range_sum(prefix, 1, 4)  # => 14
+# docs:end
 
 # ============================================================================
 # テストケース

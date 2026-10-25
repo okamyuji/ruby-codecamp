@@ -15,12 +15,15 @@
 # 空間計算量: O(min(n, m)) - mはアルファベットのサイズ
 # ============================================================================
 
+# docs:begin length_of_longest_substring
+# 解法1: ハッシュマップで位置を記録
 def length_of_longest_substring(s)
   char_index = {}
   max_len = 0
   left = 0
 
   s.each_char.with_index do |char, right|
+    # 文字が既にウィンドウ内にある
     if char_index.key?(char) && char_index[char] >= left
       left = char_index[char] + 1
     end
@@ -32,12 +35,14 @@ def length_of_longest_substring(s)
   max_len
 end
 
+# 解法2: セットを使用
 def length_of_longest_substring_set(s)
   char_set = Set.new
   max_len = 0
   left = 0
 
   s.each_char.with_index do |char, right|
+    # 重複文字を削除
     while char_set.include?(char)
       char_set.delete(s[left])
       left += 1
@@ -50,6 +55,7 @@ def length_of_longest_substring_set(s)
   max_len
 end
 
+# 解法3: 部分文字列も返す
 def longest_substring_no_repeat_with_string(s)
   char_index = {}
   max_len = 0
@@ -71,6 +77,15 @@ def longest_substring_no_repeat_with_string(s)
 
   s[max_start, max_len]
 end
+
+# テストケース
+p length_of_longest_substring('abcabcbb')  # => 3（"abc"）
+p length_of_longest_substring('bbbbb')     # => 1（"b"）
+p length_of_longest_substring('pwwkew')    # => 3（"wke"）
+p length_of_longest_substring('')          # => 0
+
+p longest_substring_no_repeat_with_string('abcabcbb') # => "abc"
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 繰り返しのない最長部分文字列 テスト ==='

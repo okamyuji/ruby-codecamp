@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin next_smaller_element
 # 解法1: 単調増加スタック
 def next_smaller_element(nums)
   n = nums.length
@@ -49,6 +50,14 @@ def next_smaller_element_reverse(nums)
 
   result
 end
+
+# テストケース
+p next_smaller_element([4, 5, 2, 10, 8])
+# => [2, 2, -1, 8, -1]
+
+p next_smaller_element([3, 2, 1, 4, 5])
+# => [2, 1, -1, -1, -1]
+# docs:end
 
 # ============================================================================
 # テストケース

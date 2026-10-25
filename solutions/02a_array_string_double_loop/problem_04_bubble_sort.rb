@@ -15,6 +15,7 @@
 # 空間計算量: O(1) - in-placeソート
 # ============================================================================
 
+# docs:begin bubble_sort
 # 解法1: 基本的なバブルソート
 def bubble_sort(arr)
   n = arr.length
@@ -68,6 +69,14 @@ def bubble_sort_descending(arr)
 
   arr
 end
+
+# テストケース
+p bubble_sort([5, 2, 8, 1, 9])       # => [1, 2, 5, 8, 9]
+p bubble_sort([3, 2, 1])             # => [1, 2, 3]
+p bubble_sort([1, 2, 3])             # => [1, 2, 3]
+p bubble_sort([1])                   # => [1]
+p bubble_sort_descending([5, 2, 8, 1, 9]) # => [9, 8, 5, 2, 1]
+# docs:end
 
 # ============================================================================
 # テストケース

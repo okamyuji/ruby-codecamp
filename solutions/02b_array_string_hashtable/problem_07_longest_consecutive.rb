@@ -15,6 +15,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin longest_consecutive
 # 解法1: セットを使用（O(n)、推奨）
 def longest_consecutive(nums)
   return 0 if nums.empty?
@@ -60,6 +61,13 @@ def longest_consecutive_sort(nums)
 
   longest
 end
+
+# テストケース
+p longest_consecutive([100, 4, 200, 1, 3, 2]) # => 4（[1,2,3,4]）
+p longest_consecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]) # => 9（[0-8]）
+p longest_consecutive([])                       # => 0
+p longest_consecutive([1])                      # => 1
+# docs:end
 
 # ============================================================================
 # テストケース

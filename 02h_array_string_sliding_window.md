@@ -49,62 +49,63 @@ nums = [2, 1, 5, 1, 3, 2], k = 3
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_01_max_sum_subarray.rb#max_sum_subarray -->
 ```ruby
 # 解法1: Sliding Window
 def max_sum_subarray(nums, k)
   return 0 if nums.length < k
-  
+
   # 最初のウィンドウの合計
   window_sum = nums[0...k].sum
   max_sum = window_sum
-  
+
   # ウィンドウをスライド
   (k...nums.length).each do |i|
     window_sum = window_sum - nums[i - k] + nums[i]
     max_sum = [max_sum, window_sum].max
   end
-  
+
   max_sum
 end
 
 # 解法2: インデックスも返す
 def max_sum_subarray_with_index(nums, k)
   return { sum: 0, start: 0, end: 0 } if nums.length < k
-  
+
   window_sum = nums[0...k].sum
   max_sum = window_sum
   max_start = 0
-  
+
   (k...nums.length).each do |i|
     window_sum = window_sum - nums[i - k] + nums[i]
-    
+
     if window_sum > max_sum
       max_sum = window_sum
       max_start = i - k + 1
     end
   end
-  
+
   { sum: max_sum, start: max_start, end: max_start + k - 1 }
 end
 
 # 解法3: ブルートフォース（比較用）
 def max_sum_subarray_brute(nums, k)
   return 0 if nums.length < k
-  
+
   max_sum = -Float::INFINITY
-  
+
   (nums.length - k + 1).times do |i|
     current_sum = nums[i, k].sum
     max_sum = [max_sum, current_sum].max
   end
-  
+
   max_sum
 end
 
 # テストケース
 p max_sum_subarray([2, 1, 5, 1, 3, 2], 3)  # => 9
 p max_sum_subarray([2, 3, 4, 1, 5], 2)     # => 7
-p max_sum_subarray([1, 4, 2, 10, 23, 3, 1, 0, 20], 4)  # => 39
+p max_sum_subarray([1, 4, 2, 10, 23, 3, 1, 0, 20], 4) # => 39
 
 p max_sum_subarray_with_index([2, 1, 5, 1, 3, 2], 3)
 # => {sum: 9, start: 2, end: 4}
@@ -165,65 +166,66 @@ s = "eceba", k = 2
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_02_longest_substring_k_unique.rb#longest_substring_k_unique -->
 ```ruby
 # 解法1: Sliding Window with Hash
 def longest_substring_k_unique(s, k)
   return 0 if s.empty? || k.zero?
-  
+
   char_count = Hash.new(0)
   max_len = 0
   left = 0
-  
+
   s.each_char.with_index do |char, right|
     char_count[char] += 1
-    
+
     # ユニーク文字数がkを超えたら縮小
     while char_count.size > k
       char_count[s[left]] -= 1
       char_count.delete(s[left]) if char_count[s[left]].zero?
       left += 1
     end
-    
+
     # ちょうどk個のユニーク文字
     max_len = [max_len, right - left + 1].max if char_count.size == k
   end
-  
+
   max_len
 end
 
 # 解法2: 部分文字列も返す
 def longest_substring_k_unique_with_string(s, k)
   return '' if s.empty? || k.zero?
-  
+
   char_count = Hash.new(0)
   max_len = 0
   max_start = 0
   left = 0
-  
+
   s.each_char.with_index do |char, right|
     char_count[char] += 1
-    
+
     while char_count.size > k
       char_count[s[left]] -= 1
       char_count.delete(s[left]) if char_count[s[left]].zero?
       left += 1
     end
-    
+
     if char_count.size == k && right - left + 1 > max_len
       max_len = right - left + 1
       max_start = left
     end
   end
-  
+
   s[max_start, max_len]
 end
 
 # テストケース
-p longest_substring_k_unique("eceba", 2)  # => 3 ("ece")
-p longest_substring_k_unique("aa", 1)     # => 2 ("aa")
-p longest_substring_k_unique("abcba", 2)  # => 3 ("bcb")
+p longest_substring_k_unique('eceba', 2)  # => 3（"ece"）
+p longest_substring_k_unique('aa', 1)     # => 2（"aa"）
+p longest_substring_k_unique('abcba', 2)  # => 3（"bcb"）
 
-p longest_substring_k_unique_with_string("eceba", 2)  # => "ece"
+p longest_substring_k_unique_with_string('eceba', 2) # => "ece"
 ```
 
 ---
@@ -276,23 +278,24 @@ p longest_substring_k_unique_with_string("eceba", 2)  # => "ece"
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_03_length_of_longest_substring.rb#length_of_longest_substring -->
 ```ruby
 # 解法1: ハッシュマップで位置を記録
 def length_of_longest_substring(s)
   char_index = {}
   max_len = 0
   left = 0
-  
+
   s.each_char.with_index do |char, right|
     # 文字が既にウィンドウ内にある
     if char_index.key?(char) && char_index[char] >= left
       left = char_index[char] + 1
     end
-    
+
     char_index[char] = right
     max_len = [max_len, right - left + 1].max
   end
-  
+
   max_len
 end
 
@@ -301,18 +304,18 @@ def length_of_longest_substring_set(s)
   char_set = Set.new
   max_len = 0
   left = 0
-  
+
   s.each_char.with_index do |char, right|
     # 重複文字を削除
     while char_set.include?(char)
       char_set.delete(s[left])
       left += 1
     end
-    
+
     char_set << char
     max_len = [max_len, right - left + 1].max
   end
-  
+
   max_len
 end
 
@@ -322,30 +325,30 @@ def longest_substring_no_repeat_with_string(s)
   max_len = 0
   max_start = 0
   left = 0
-  
+
   s.each_char.with_index do |char, right|
     if char_index.key?(char) && char_index[char] >= left
       left = char_index[char] + 1
     end
-    
+
     char_index[char] = right
-    
+
     if right - left + 1 > max_len
       max_len = right - left + 1
       max_start = left
     end
   end
-  
+
   s[max_start, max_len]
 end
 
 # テストケース
-p length_of_longest_substring("abcabcbb")  # => 3 ("abc")
-p length_of_longest_substring("bbbbb")     # => 1 ("b")
-p length_of_longest_substring("pwwkew")    # => 3 ("wke")
-p length_of_longest_substring("")          # => 0
+p length_of_longest_substring('abcabcbb')  # => 3（"abc"）
+p length_of_longest_substring('bbbbb')     # => 1（"b"）
+p length_of_longest_substring('pwwkew')    # => 3（"wke"）
+p length_of_longest_substring('')          # => 0
 
-p longest_substring_no_repeat_with_string("abcabcbb")  # => "abc"
+p longest_substring_no_repeat_with_string('abcabcbb') # => "abc"
 ```
 
 ---
@@ -419,29 +422,30 @@ s = "ADOBECODEBANC", t = "ABC"
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_04_min_window.rb#min_window -->
 ```ruby
 # 解法1: Sliding Window with Hash
 def min_window(s, t)
-  return "" if s.empty? || t.empty?
-  
+  return '' if s.empty? || t.empty?
+
   t_count = Hash.new(0)
   t.each_char { |char| t_count[char] += 1 }
-  
+
   window_count = Hash.new(0)
   required = t_count.size
   formed = 0
-  
+
   left = 0
   min_len = Float::INFINITY
   min_start = 0
-  
+
   s.each_char.with_index do |char, right|
     window_count[char] += 1
-    
+
     if t_count.key?(char) && window_count[char] == t_count[char]
       formed += 1
     end
-    
+
     # すべての文字を満たしたらウィンドウを縮小
     while formed == required && left <= right
       # ウィンドウを更新
@@ -449,70 +453,70 @@ def min_window(s, t)
         min_len = right - left + 1
         min_start = left
       end
-      
+
       # 左端を縮小
       left_char = s[left]
       window_count[left_char] -= 1
-      
+
       if t_count.key?(left_char) && window_count[left_char] < t_count[left_char]
         formed -= 1
       end
-      
+
       left += 1
     end
   end
-  
-  min_len == Float::INFINITY ? "" : s[min_start, min_len]
+
+  min_len == Float::INFINITY ? '' : s[min_start, min_len]
 end
 
 # 解法2: 最適化版（tに含まれる文字のみを処理）
 def min_window_optimized(s, t)
-  return "" if s.empty? || t.empty?
-  
+  return '' if s.empty? || t.empty?
+
   t_count = Hash.new(0)
   t.each_char { |char| t_count[char] += 1 }
-  
+
   # tに含まれる文字のインデックスのみを記録
   filtered = []
   s.each_char.with_index do |char, i|
     filtered << [i, char] if t_count.key?(char)
   end
-  
+
   window_count = Hash.new(0)
   required = t_count.size
   formed = 0
-  
+
   left = 0
   min_len = Float::INFINITY
   min_start = 0
-  
+
   filtered.each_with_index do |(right_idx, char), right|
     window_count[char] += 1
-    
+
     formed += 1 if window_count[char] == t_count[char]
-    
+
     while formed == required && left <= right
       left_idx, left_char = filtered[left]
-      
+
       if right_idx - left_idx + 1 < min_len
         min_len = right_idx - left_idx + 1
         min_start = left_idx
       end
-      
+
       window_count[left_char] -= 1
       formed -= 1 if window_count[left_char] < t_count[left_char]
-      
+
       left += 1
     end
   end
-  
-  min_len == Float::INFINITY ? "" : s[min_start, min_len]
+
+  min_len == Float::INFINITY ? '' : s[min_start, min_len]
 end
 
 # テストケース
-p min_window("ADOBECODEBANC", "ABC")  # => "BANC"
-p min_window("a", "a")                # => "a"
-p min_window("a", "aa")               # => ""
+p min_window('ADOBECODEBANC', 'ABC')  # => "BANC"
+p min_window('a', 'a')                # => "a"
+p min_window('a', 'aa')               # => ""
 ```
 
 ---
@@ -567,25 +571,26 @@ Sliding Windowを使用します。ウィンドウ内の0の数がkを超えた�
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_05_longest_ones.rb#longest_ones -->
 ```ruby
 # 解法1: Sliding Window
 def longest_ones(nums, k)
   left = 0
   zero_count = 0
   max_len = 0
-  
+
   nums.each_with_index do |num, right|
     zero_count += 1 if num.zero?
-    
+
     # ゼロが多すぎたら左を縮小
     while zero_count > k
       zero_count -= 1 if nums[left].zero?
       left += 1
     end
-    
+
     max_len = [max_len, right - left + 1].max
   end
-  
+
   max_len
 end
 
@@ -595,27 +600,27 @@ def longest_ones_with_indices(nums, k)
   zero_count = 0
   max_len = 0
   max_start = 0
-  
+
   nums.each_with_index do |num, right|
     zero_count += 1 if num.zero?
-    
+
     while zero_count > k
       zero_count -= 1 if nums[left].zero?
       left += 1
     end
-    
+
     if right - left + 1 > max_len
       max_len = right - left + 1
       max_start = left
     end
   end
-  
+
   { length: max_len, start: max_start, end: max_start + max_len - 1 }
 end
 
 # テストケース
-p longest_ones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)  # => 6
-p longest_ones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3)  # => 10
+p longest_ones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2) # => 6
+p longest_ones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3) # => 10
 
 p longest_ones_with_indices([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)
 # => {length: 6, start: 4, end: 9}
@@ -676,73 +681,74 @@ s = "cbaebabacd", p = "abc"
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_06_find_anagrams.rb#find_anagrams -->
 ```ruby
 # 解法1: Sliding Window with Hash
 def find_anagrams(s, p)
   return [] if s.length < p.length
-  
+
   p_count = Hash.new(0)
   p.each_char { |char| p_count[char] += 1 }
-  
+
   window_count = Hash.new(0)
   result = []
-  
+
   s.each_char.with_index do |char, right|
     window_count[char] += 1
-    
+
     # ウィンドウサイズがpより大きくなったら左端を削除
     if right >= p.length
       left_char = s[right - p.length]
       window_count[left_char] -= 1
       window_count.delete(left_char) if window_count[left_char].zero?
     end
-    
+
     # アナグラムかチェック
     result << right - p.length + 1 if window_count == p_count
   end
-  
+
   result
 end
 
 # 解法2: カウンターで効率化
 def find_anagrams_counter(s, p)
   return [] if s.length < p.length
-  
+
   p_count = Hash.new(0)
   p.each_char { |char| p_count[char] += 1 }
-  
+
   window_count = Hash.new(0)
   result = []
   matches = 0
-  
+
   s.each_char.with_index do |char, right|
     # 右端を追加
     if p_count.key?(char)
       window_count[char] += 1
       matches += 1 if window_count[char] == p_count[char]
     end
-    
+
     # ウィンドウサイズがpより大きくなったら左端を削除
     if right >= p.length
       left_char = s[right - p.length]
-      
+
       if p_count.key?(left_char)
         matches -= 1 if window_count[left_char] == p_count[left_char]
         window_count[left_char] -= 1
       end
     end
-    
+
     # すべての文字が一致
     result << right - p.length + 1 if matches == p_count.size
   end
-  
+
   result
 end
 
 # テストケース
-p find_anagrams("cbaebabacd", "abc")  # => [0, 6]
-p find_anagrams("abab", "ab")         # => [0, 1, 2]
-p find_anagrams("baa", "aa")          # => [1]
+p find_anagrams('cbaebabacd', 'abc')  # => [0, 6]
+p find_anagrams('abab', 'ab')         # => [0, 1, 2]
+p find_anagrams('baa', 'aa')          # => [1]
 ```
 
 ---
@@ -797,6 +803,7 @@ Sliding Windowを使用します。ウィンドウ内の最頻出文字以外の
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_07_character_replacement.rb#character_replacement -->
 ```ruby
 # 解法1: Sliding Window
 def character_replacement(s, k)
@@ -804,20 +811,20 @@ def character_replacement(s, k)
   left = 0
   max_count = 0
   max_len = 0
-  
+
   s.each_char.with_index do |char, right|
     char_count[char] += 1
     max_count = [max_count, char_count[char]].max
-    
+
     # ウィンドウ長 - 最頻出文字数 > k なら縮小
     while (right - left + 1) - max_count > k
       char_count[s[left]] -= 1
       left += 1
     end
-    
+
     max_len = [max_len, right - left + 1].max
   end
-  
+
   max_len
 end
 
@@ -828,31 +835,31 @@ def character_replacement_with_string(s, k)
   max_count = 0
   max_len = 0
   max_start = 0
-  
+
   s.each_char.with_index do |char, right|
     char_count[char] += 1
     max_count = [max_count, char_count[char]].max
-    
+
     while (right - left + 1) - max_count > k
       char_count[s[left]] -= 1
       left += 1
     end
-    
+
     if right - left + 1 > max_len
       max_len = right - left + 1
       max_start = left
     end
   end
-  
+
   s[max_start, max_len]
 end
 
 # テストケース
-p character_replacement("ABAB", 2)      # => 4
-p character_replacement("AABABBA", 1)   # => 4
-p character_replacement("AAAA", 2)      # => 4
+p character_replacement('ABAB', 2)      # => 4
+p character_replacement('AABABBA', 1)   # => 4
+p character_replacement('AAAA', 2)      # => 4
 
-p character_replacement_with_string("AABABBA", 1)  # => "AABA"
+p character_replacement_with_string('AABABBA', 1) # => "AABA"
 ```
 
 ---
@@ -907,26 +914,27 @@ p character_replacement_with_string("AABABBA", 1)  # => "AABA"
 
 ### 解答
 
+<!-- source: solutions/02h_array_string_sliding_window/problem_08_total_fruit.rb#total_fruit -->
 ```ruby
 # 解法1: Sliding Window
 def total_fruit(fruits)
   fruit_count = Hash.new(0)
   left = 0
   max_fruits = 0
-  
+
   fruits.each_with_index do |fruit, right|
     fruit_count[fruit] += 1
-    
+
     # 果物の種類が2を超えたら左を縮小
     while fruit_count.size > 2
       fruit_count[fruits[left]] -= 1
       fruit_count.delete(fruits[left]) if fruit_count[fruits[left]].zero?
       left += 1
     end
-    
+
     max_fruits = [max_fruits, right - left + 1].max
   end
-  
+
   max_fruits
 end
 
@@ -936,22 +944,22 @@ def total_fruit_with_range(fruits)
   left = 0
   max_fruits = 0
   max_start = 0
-  
+
   fruits.each_with_index do |fruit, right|
     fruit_count[fruit] += 1
-    
+
     while fruit_count.size > 2
       fruit_count[fruits[left]] -= 1
       fruit_count.delete(fruits[left]) if fruit_count[fruits[left]].zero?
       left += 1
     end
-    
+
     if right - left + 1 > max_fruits
       max_fruits = right - left + 1
       max_start = left
     end
   end
-  
+
   { count: max_fruits, start: max_start, end: max_start + max_fruits - 1 }
 end
 
@@ -959,7 +967,7 @@ end
 p total_fruit([1, 2, 1])            # => 3
 p total_fruit([0, 1, 2, 2])         # => 3
 p total_fruit([1, 2, 3, 2, 2])      # => 4
-p total_fruit([3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4])  # => 5
+p total_fruit([3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]) # => 5
 
 p total_fruit_with_range([1, 2, 3, 2, 2])
 # => {count: 4, start: 1, end: 4}

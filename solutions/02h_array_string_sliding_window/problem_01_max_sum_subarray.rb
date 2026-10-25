@@ -16,6 +16,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin max_sum_subarray
 # 解法1: Sliding Window
 def max_sum_subarray(nums, k)
   return 0 if nums.length < k
@@ -66,6 +67,15 @@ def max_sum_subarray_brute(nums, k)
 
   max_sum
 end
+
+# テストケース
+p max_sum_subarray([2, 1, 5, 1, 3, 2], 3)  # => 9
+p max_sum_subarray([2, 3, 4, 1, 5], 2)     # => 7
+p max_sum_subarray([1, 4, 2, 10, 23, 3, 1, 0, 20], 4) # => 39
+
+p max_sum_subarray_with_index([2, 1, 5, 1, 3, 2], 3)
+# => {sum: 9, start: 2, end: 4}
+# docs:end
 
 # ============================================================================
 # テストケース

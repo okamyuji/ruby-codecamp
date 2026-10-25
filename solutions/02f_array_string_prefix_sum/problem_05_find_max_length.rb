@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin find_max_length
 # 解法1: 累積和とハッシュマップ
 def find_max_length(nums)
   max_len = 0
@@ -85,6 +86,15 @@ def find_max_length_with_indices(nums)
 
   { length: max_len, start: start_idx, end: end_idx }
 end
+
+# テストケース
+p find_max_length([0, 1])        # => 2
+p find_max_length([0, 1, 0])     # => 2
+p find_max_length([0, 0, 1, 0, 0, 0, 1, 1]) # => 6
+
+p find_max_length_with_indices([0, 1, 0])
+# => {length: 2, start: 0, end: 1}
+# docs:end
 
 # ============================================================================
 # テストケース

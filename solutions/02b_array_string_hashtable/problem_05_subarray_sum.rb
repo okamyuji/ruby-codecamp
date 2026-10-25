@@ -18,6 +18,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin subarray_sum_exists
 # 解法1: 累積和とハッシュセット
 def subarray_sum_exists(nums, target)
   sum = 0
@@ -67,6 +68,15 @@ def subarray_sum_brute_force(nums, target)
 
   false
 end
+
+# テストケース
+p subarray_sum_exists([1, 2, 3, 7, 5], 12)   # => true（[7, 5]）
+p subarray_sum_exists([1, 2, 3, 4], 100)     # => false
+p subarray_sum_exists([1, -1, 0], 0)         # => true（多くの組み合わせ）
+
+p subarray_sum_indices([1, 2, 3, 7, 5], 12)  # => [1, 3]（[2, 3, 7]）
+p subarray_sum_indices([1, 2, 3, 4], 6)      # => [0, 2]（[1, 2, 3]）
+# docs:end
 
 # ============================================================================
 # テストケース

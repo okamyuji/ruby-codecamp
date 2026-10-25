@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin stock_span
 # 解法1: 単調減少スタック
 def stock_span(prices)
   n = prices.length
@@ -54,6 +55,20 @@ class StockSpanner
     span
   end
 end
+
+# テストケース
+p stock_span([100, 80, 60, 70, 60, 75, 85])
+# => [1, 1, 1, 2, 1, 4, 6]
+
+spanner = StockSpanner.new
+p spanner.next(100)  # => 1
+p spanner.next(80)   # => 1
+p spanner.next(60)   # => 1
+p spanner.next(70)   # => 2
+p spanner.next(60)   # => 1
+p spanner.next(75)   # => 4
+p spanner.next(85)   # => 6
+# docs:end
 
 # ============================================================================
 # テストケース

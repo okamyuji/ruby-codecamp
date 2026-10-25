@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_kth_smallest
+# 解法1: Quickselect
 def find_kth_smallest(nums, k)
   left = 0
   right = nums.length - 1
@@ -8,8 +10,10 @@ def find_kth_smallest(nums, k)
   loop do
     return nums[left] if left == right
 
+    # パーティション
     pivot_idx = partition(nums, left, right)
 
+    # k-1 はゼロインデックス
     if k - 1 == pivot_idx
       return nums[pivot_idx]
     elsif k - 1 < pivot_idx
@@ -21,6 +25,7 @@ def find_kth_smallest(nums, k)
 end
 
 def partition(nums, left, right)
+  # ランダムなピボットを選んで右端と交換（最悪ケースを回避）
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
 
@@ -38,21 +43,30 @@ def partition(nums, left, right)
   i
 end
 
+# 解法2: ソートを使用（比較用）
 def find_kth_smallest_sort(nums, k)
   nums.sort[k - 1]
 end
 
+# 解法3: MinHeapを使用
 def find_kth_smallest_heap(nums, k)
+  # Rubyには組み込みのMinHeapがないので、MaxHeapを負の値で使用
   heap = []
 
   nums.each do |num|
     heap << -num
-    heap.sort!
+    heap.sort! # 簡易実装（実際はheapifyを使用）
     heap.shift if heap.size > k
   end
 
   -heap[0]
 end
+
+# テストケース
+p find_kth_smallest([3, 2, 1, 5, 6, 4], 2) # => 2
+p find_kth_smallest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) # => 3
+p find_kth_smallest([1], 1) # => 1
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 配列のk番目に小さい要素 テスト ==='

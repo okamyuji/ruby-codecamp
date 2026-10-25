@@ -15,6 +15,7 @@
 # 空間計算量: O(n) - 新しい配列を作成（破壊的メソッドならO(1)）
 # ============================================================================
 
+# docs:begin reverse_array
 # 解法1: reverseメソッドを使用（推奨）
 def reverse_array(arr)
   # 新しい配列を返す（元の配列は変更されない）
@@ -55,6 +56,13 @@ def reverse_array_each(arr)
   arr.reverse_each { |elem| result << elem }
   result
 end
+
+# テストケース
+p reverse_array([1, 2, 3, 4, 5]) # => [5, 4, 3, 2, 1]
+p reverse_array(['a', 'b', 'c']) # => ["c", "b", "a"]
+p reverse_array([1])             # => [1]
+p reverse_array([])              # => []
+# docs:end
 
 # ============================================================================
 # テストケース

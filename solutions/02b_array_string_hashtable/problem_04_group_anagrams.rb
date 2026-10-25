@@ -15,6 +15,7 @@
 # 空間計算量: O(n × k)
 # ============================================================================
 
+# docs:begin group_anagrams
 # 解法1: ソートをキーにする（推奨）
 def group_anagrams(strs)
   groups = Hash.new { |h, k| h[k] = [] }
@@ -46,6 +47,17 @@ end
 def group_anagrams_group_by(strs)
   strs.group_by { |str| str.chars.sort }.values
 end
+
+# テストケース
+p group_anagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat'])
+# => [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+
+p group_anagrams([''])
+# => [[""]]
+
+p group_anagrams(['a'])
+# => [["a"]]
+# docs:end
 
 # ============================================================================
 # テストケース

@@ -15,6 +15,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin max_product_pair_brute_force
 # 解法1: 二重ループ
 def max_product_pair_brute_force(arr)
   return nil if arr.length < 2
@@ -79,6 +80,13 @@ def max_product_pair_one_pass(arr)
 
   [max1 * max2, min1 * min2].max
 end
+
+# テストケース
+p max_product_pair([3, 4, 5, 2])         # => 20（4 * 5）
+p max_product_pair([1, 2, 3, 4])         # => 12（3 * 4）
+p max_product_pair([-10, -3, 5, 6])     # => 30 (5 * 6 または -10 * -3)
+p max_product_pair([-10, -20, 1, 5])    # => 200（-10 * -20）
+# docs:end
 
 # ============================================================================
 # テストケース

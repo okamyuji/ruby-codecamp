@@ -1,17 +1,24 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin first_missing_positive
+# 解法1: Negative Marking
 def first_missing_positive(nums)
   n = nums.length
 
+  # 範囲外の値を n + 1 に置き換え
   nums.map! { |num| num <= 0 || num > n ? n + 1 : num }
 
+  # Negative Markingでマーク
   nums.each do |num|
     val = num.abs
 
-    nums[val - 1] = -nums[val - 1].abs if val <= n
+    if val <= n
+      nums[val - 1] = -nums[val - 1].abs
+    end
   end
 
+  # 最初の正の値を見つける
   nums.each_with_index do |num, i|
     return i + 1 if num > 0
   end
@@ -19,11 +26,13 @@ def first_missing_positive(nums)
   n + 1
 end
 
+# 解法2: インプレースでソート（値を正しい位置に配置）
 def first_missing_positive_sort(nums)
   n = nums.length
   i = 0
 
   while i < n
+    # nums[i]は位置 nums[i]-1 にあるべき
     correct_pos = nums[i] - 1
 
     if nums[i] > 0 && nums[i] <= n && nums[i] != nums[correct_pos]
@@ -33,6 +42,7 @@ def first_missing_positive_sort(nums)
     end
   end
 
+  # 最初の不一致を見つける
   nums.each_with_index do |num, i|
     return i + 1 if num != i + 1
   end
@@ -40,6 +50,7 @@ def first_missing_positive_sort(nums)
   n + 1
 end
 
+# 解法3: セットを使用（O(n)空間）
 def first_missing_positive_set(nums)
   present = Set.new(nums)
 
@@ -48,6 +59,13 @@ def first_missing_positive_set(nums)
 
   i
 end
+
+# テストケース
+p first_missing_positive([1, 2, 0])       # => 3
+p first_missing_positive([3, 4, -1, 1])   # => 2
+p first_missing_positive([7, 8, 9, 11, 12]) # => 1
+p first_missing_positive([1]) # => 2
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最初の消えた正の整数 テスト ==='

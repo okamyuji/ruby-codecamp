@@ -16,6 +16,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin remove_duplicates
 # 解法1: Two Pointers
 def remove_duplicates(nums)
   return 0 if nums.empty?
@@ -52,6 +53,20 @@ end
 def remove_duplicates_new_array(nums)
   nums.uniq
 end
+
+# テストケース
+nums1 = [1, 1, 2]
+k1 = remove_duplicates(nums1)
+p [k1, nums1[0...k1]]  # => [2, [1, 2]]
+
+nums2 = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+k2 = remove_duplicates(nums2)
+p [k2, nums2[0...k2]]  # => [5, [0, 1, 2, 3, 4]]
+
+nums3 = [1, 1, 1, 2, 2, 3]
+k3 = remove_duplicates_allow_twice(nums3)
+p [k3, nums3[0...k3]]  # => [5, [1, 1, 2, 2, 3]]
+# docs:end
 
 # ============================================================================
 # テストケース

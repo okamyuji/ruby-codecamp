@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin sort_by_length
 # 解法1: sort_byを使用（推奨）
 def sort_by_length(strs)
   strs.sort_by { |s| [s.length, s] }
@@ -36,6 +37,17 @@ end
 def sort_by_length_descending(strs)
   strs.sort_by { |s| [-s.length, s] }
 end
+
+# テストケース
+p sort_by_length(['apple', 'pie', 'a', 'zoo', 'elephant'])
+# => ["a", "pie", "zoo", "apple", "elephant"]
+
+p sort_by_length(['aa', 'a', 'aaa', 'aaaa'])
+# => ["a", "aa", "aaa", "aaaa"]
+
+p sort_by_length_descending(['apple', 'pie', 'a', 'zoo'])
+# => ["apple", "pie", "zoo", "a"]
+# docs:end
 
 # ============================================================================
 # テストケース

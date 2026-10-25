@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin character_replacement
+# 解法1: Sliding Window
 def character_replacement(s, k)
   char_count = Hash.new(0)
   left = 0
@@ -11,6 +13,7 @@ def character_replacement(s, k)
     char_count[char] += 1
     max_count = [max_count, char_count[char]].max
 
+    # ウィンドウ長 - 最頻出文字数 > k なら縮小
     while (right - left + 1) - max_count > k
       char_count[s[left]] -= 1
       left += 1
@@ -22,6 +25,7 @@ def character_replacement(s, k)
   max_len
 end
 
+# 解法2: 部分文字列も返す
 def character_replacement_with_string(s, k)
   char_count = Hash.new(0)
   left = 0
@@ -46,6 +50,14 @@ def character_replacement_with_string(s, k)
 
   s[max_start, max_len]
 end
+
+# テストケース
+p character_replacement('ABAB', 2)      # => 4
+p character_replacement('AABABBA', 1)   # => 4
+p character_replacement('AAAA', 2)      # => 4
+
+p character_replacement_with_string('AABABBA', 1) # => "AABA"
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最長の繰り返し文字置換 テスト ==='

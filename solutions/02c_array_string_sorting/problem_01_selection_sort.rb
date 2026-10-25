@@ -15,6 +15,7 @@
 # 空間計算量: O(1) - in-placeソート
 # ============================================================================
 
+# docs:begin selection_sort
 # 解法1: 基本的な選択ソート
 def selection_sort(arr)
   n = arr.length
@@ -67,6 +68,13 @@ def kth_smallest_selection(arr, k)
 
   arr[k - 1]
 end
+
+# テストケース
+p selection_sort([64, 25, 12, 22, 11])        # => [11, 12, 22, 25, 64]
+p selection_sort([5, 2, 8, 1, 9])             # => [1, 2, 5, 8, 9]
+p selection_sort_descending([64, 25, 12, 22, 11]) # => [64, 25, 22, 12, 11]
+p kth_smallest_selection([7, 10, 4, 3, 20, 15], 3) # => 7
+# docs:end
 
 # ============================================================================
 # テストケース

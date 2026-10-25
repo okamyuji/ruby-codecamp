@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_kth_largest
+# 解法1: Quickselect（k番目に小さいを利用）
 def find_kth_largest(nums, k)
   n = nums.length
   quickselect(nums, n - k)
@@ -41,6 +43,7 @@ def partition_asc(nums, left, right)
   i
 end
 
+# 解法2: 降順パーティション
 def find_kth_largest_desc(nums, k)
   left = 0
   right = nums.length - 1
@@ -66,7 +69,7 @@ def partition_desc(nums, left, right)
   i = left
 
   (left...right).each do |j|
-    if nums[j] > pivot
+    if nums[j] > pivot # 降順
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
@@ -76,7 +79,9 @@ def partition_desc(nums, left, right)
   i
 end
 
+# 解法3: MinHeapを使用（サイズkを維持）
 def find_kth_largest_heap(nums, k)
+  # k個の最大要素を保持するMinHeap
   heap = []
 
   nums.each do |num|
@@ -91,6 +96,12 @@ def find_kth_largest_heap(nums, k)
 
   heap[0]
 end
+
+# テストケース
+p find_kth_largest([3, 2, 1, 5, 6, 4], 2) # => 5
+p find_kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) # => 4
+p find_kth_largest([1], 1) # => 1
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 配列のk番目に大きい要素 テスト ==='
