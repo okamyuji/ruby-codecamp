@@ -2,27 +2,20 @@
 # frozen_string_literal: true
 
 def find_corrupt_value(nums)
+  # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
+  nums.map! { |num| num + 1 }
+
   nums.each do |num|
-    idx = num.abs
+    idx = num.abs - 1
 
     nums[idx] = -nums[idx].abs if idx < nums.length
   end
 
   nums.each_with_index do |num, i|
-    return i if num > 0
+    return i if num.positive?
   end
 
   nums.length
-end
-
-def find_corrupt_value_xor(nums)
-  result = nums.length
-
-  nums.each_with_index do |num, i|
-    result ^= i ^ num
-  end
-
-  result
 end
 
 def find_corrupt_value_swap(nums)
@@ -70,8 +63,10 @@ if __FILE__ == $PROGRAM_NAME
   puts "判定: #{result3 == 1 ? '✓ PASS' : '✗ FAIL'}"
   puts
 
-  result4 = find_corrupt_value_xor([0, 1, 3, 3])
-  puts "find_corrupt_value_xor([0, 1, 3, 3]) = #{result4}"
+  result4 = find_corrupt_value([0, 1, 0, 3].dup)
+  puts 'Test 4: find_corrupt_value([0, 1, 0, 3])'
+  puts "結果: #{result4}"
+  puts '期待値: 2'
   puts "判定: #{result4 == 2 ? '✓ PASS' : '✗ FAIL'}"
   puts
 

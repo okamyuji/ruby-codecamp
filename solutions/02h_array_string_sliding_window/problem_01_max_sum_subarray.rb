@@ -103,7 +103,7 @@ if __FILE__ == $PROGRAM_NAME
   puts '--- 解法2（インデックス付き）のテスト ---'
   result4 = max_sum_subarray_with_index([2, 1, 5, 1, 3, 2], 3)
   puts "max_sum_subarray_with_index([2, 1, 5, 1, 3, 2], 3) = #{result4}"
-  puts '期待値: { sum: 9, start: 2, end: 4 }'
+  puts '期待値: {sum: 9, start: 2, end: 4}'
   puts "判定: #{result4 == { sum: 9, start: 2, end: 4 } ? '✓ PASS' : '✗ FAIL'}"
   puts
 

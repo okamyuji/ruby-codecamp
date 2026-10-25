@@ -66,8 +66,8 @@ if __FILE__ == $PROGRAM_NAME
   result3 = max_cutter_height([1, 2, 3, 4, 5], 5)
   puts 'Test 3: max_cutter_height([1, 2, 3, 4, 5], 5)'
   puts "結果: #{result3}"
-  puts '期待値: 3'
-  puts "判定: #{result3 == 3 ? '✓ PASS' : '✗ FAIL'}"
+  puts '期待値: 2'
+  puts "判定: #{result3 == 2 ? '✓ PASS' : '✗ FAIL'}"
   puts
 
   puts '=== 完了 ==='

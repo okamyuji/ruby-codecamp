@@ -122,7 +122,7 @@ def find_kth_smallest_heap(nums, k)
   nums.each do |num|
     heap << -num
     heap.sort!  # 簡易実装（実際はheapifyを使用）
-    heap.pop if heap.size > k
+    heap.shift if heap.size > k
   end
   
   -heap[0]

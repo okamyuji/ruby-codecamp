@@ -1,8 +1,8 @@
 # RuboCop設定ファイル
-# Ruby 3.4対応のコーディング規約
+# Ruby 4.0対応のコーディング規約
 
 AllCops:
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 4.0
   NewCops: enable
   Exclude:
     - 'vendor/**/*'
@@ -171,3 +171,12 @@ Style/EachWithObject:
 
 Style/CombinableLoops:
   Enabled: false
+
+# 解答は tally 以外の数え方や別クラスによる別解を、1ファイルに並べて示す
+Style/TallyMethod:
+  Exclude:
+    - 'solutions/**/*'
+
+Style/OneClassPerFile:
+  Exclude:
+    - 'solutions/**/*'

@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  cooldown:
+    default-days: 7
+  # 同時に開いた bundler PR は Gemfile.lock の隣接する CHECKSUMS 行で衝突するため、週1本にまとめる
+  groups:
+    bundler:
+      patterns:
+        - "*"
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  groups:
+    github-actions:
+      patterns:
+        - "*"

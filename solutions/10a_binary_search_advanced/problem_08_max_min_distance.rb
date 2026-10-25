@@ -97,8 +97,8 @@ if __FILE__ == $PROGRAM_NAME
   result3 = max_min_distance([5, 4, 3, 2, 1, 1_000_000_000], 2)
   puts 'Test 3: max_min_distance([5, 4, 3, 2, 1, 1000000000], 2)'
   puts "結果: #{result3}"
-  puts '期待値: 999999995'
-  puts "判定: #{result3 == 999_999_995 ? '✓ PASS' : '✗ FAIL'}"
+  puts '期待値: 999999999'
+  puts "判定: #{result3 == 999_999_999 ? '✓ PASS' : '✗ FAIL'}"
   puts
 
   puts '=== 完了 ==='

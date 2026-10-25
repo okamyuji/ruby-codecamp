@@ -21,16 +21,16 @@ end
 
 def missing_number_marking(nums)
   n = nums.length
+  # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
+  nums.map! { |num| num + 1 }
 
   nums.each do |num|
-    next if num == n
-
-    idx = num.abs
+    idx = num.abs - 1
     nums[idx] = -nums[idx].abs if idx < n
   end
 
   nums.each_with_index do |num, i|
-    return i if num >= 0
+    return i if num.positive?
   end
 
   n

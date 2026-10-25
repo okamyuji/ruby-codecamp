@@ -211,7 +211,7 @@ p has_zero_sum_subarray([1, 2, 3])         # => false
 
 p find_zero_sum_subarray([4, 2, -3, 1, 6])  # => [1, 3]
 p find_all_zero_sum_subarrays([1, 2, -3, 3, -1, -1])
-# => [[0, 2], [1, 3], [3, 5]]
+# => [[0, 2], [2, 3], [1, 5]]
 ```
 
 ---
@@ -327,7 +327,7 @@ p subarray_sum([1, -1, 0], 0)       # => 3
 p subarray_sum([3, 4, 7, 2, -3, 1, 4, 2], 7)  # => 4
 
 p find_subarray_sum_indices([1, 2, 3], 3)
-# => [[0, 0], [0, 1]]  # [3] と [1, 2]
+# => [[0, 1], [2, 2]]  # [1, 2] と [3]
 ```
 
 ---
@@ -588,7 +588,7 @@ p find_max_length([0, 1, 0])     # => 2
 p find_max_length([0, 0, 1, 0, 0, 0, 1, 1])  # => 6
 
 p find_max_length_with_indices([0, 1, 0])
-# => { length: 2, start: 0, end: 1 }
+# => {length: 2, start: 0, end: 1}
 ```
 
 ---
@@ -802,7 +802,7 @@ p check_subarray_sum([23, 2, 6, 4, 7], 6)  # => true
 p check_subarray_sum([23, 2, 6, 4, 7], 13) # => false
 
 p find_all_subarray_sum_multiple([23, 2, 4, 6, 7], 6)
-# => [[1, 2], [0, 4]]
+# => [[1, 2], [1, 3], [0, 4]]
 ```
 
 ---

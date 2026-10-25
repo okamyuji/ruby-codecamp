@@ -1,4 +1,4 @@
-# Ruby 3.4 初級者向け問題集 - Part 2: 文字列操作
+# Ruby 4.0 初級者向け問題集 - Part 2: 文字列操作
 
 ## 概要
 
@@ -195,7 +195,7 @@ puts palindrome?("Was it a car or a cat I saw".gsub(' ', ''))  # => true
 **出力例:**
 
 ```text
-{"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+{"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 ```
 
 ### アルゴリズム概説
@@ -266,11 +266,11 @@ def count_chars_default_hash(str)
 end
 
 # テストケース
-p count_chars("hello")      # => {"h"=>1, "e"=>1, "l"=>2, "o"=>1}
-p count_chars("aaa")        # => {"a"=>3}
-p count_chars("abc")        # => {"a"=>1, "b"=>1, "c"=>1}
+p count_chars("hello")      # => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
+p count_chars("aaa")        # => {"a" => 3}
+p count_chars("abc")        # => {"a" => 1, "b" => 1, "c" => 1}
 p count_chars("")           # => {}
-p count_chars("AaBb")       # => {"A"=>1, "a"=>1, "B"=>1, "b"=>1}
+p count_chars("AaBb")       # => {"A" => 1, "a" => 1, "B" => 1, "b" => 1}
 ```
 
 ---

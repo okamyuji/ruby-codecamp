@@ -49,21 +49,21 @@ if __FILE__ == $PROGRAM_NAME
   result1 = gcd_lcm(12, 18)
   puts 'Test 1: gcd_lcm(12, 18)'
   puts "結果: #{result1}"
-  puts '期待値: {:gcd=>6, :lcm=>36}'
+  puts '期待値: {gcd: 6, lcm: 36}'
   puts "判定: #{result1 == { gcd: 6, lcm: 36 } ? '✓ PASS' : '✗ FAIL'}"
   puts
 
   result2 = gcd_lcm(7, 13)
   puts 'Test 2: gcd_lcm(7, 13)'
   puts "結果: #{result2}"
-  puts '期待値: {:gcd=>1, :lcm=>91}'
+  puts '期待値: {gcd: 1, lcm: 91}'
   puts "判定: #{result2 == { gcd: 1, lcm: 91 } ? '✓ PASS' : '✗ FAIL'}"
   puts
 
   result3 = gcd_lcm(100, 25)
   puts 'Test 3: gcd_lcm(100, 25)'
   puts "結果: #{result3}"
-  puts '期待値: {:gcd=>25, :lcm=>100}'
+  puts '期待値: {gcd: 25, lcm: 100}'
   puts "判定: #{result3 == { gcd: 25, lcm: 100 } ? '✓ PASS' : '✗ FAIL'}"
   puts
 

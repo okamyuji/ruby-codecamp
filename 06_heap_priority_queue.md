@@ -81,7 +81,7 @@ class MinHeap
     
     parent_index = (index - 1) / 2
     
-    if @heap[index] < @heap[parent_index]
+    if (@heap[index] <=> @heap[parent_index]).negative?
       @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
       heapify_up(parent_index)
     end
@@ -93,11 +93,11 @@ class MinHeap
     right_child = 2 * index + 2
     smallest = index
     
-    if left_child < @heap.length && @heap[left_child] < @heap[smallest]
+    if left_child < @heap.length && (@heap[left_child] <=> @heap[smallest]).negative?
       smallest = left_child
     end
     
-    if right_child < @heap.length && @heap[right_child] < @heap[smallest]
+    if right_child < @heap.length && (@heap[right_child] <=> @heap[smallest]).negative?
       smallest = right_child
     end
     
@@ -163,7 +163,7 @@ class MaxHeap
     
     parent_index = (index - 1) / 2
     
-    if @heap[index] > @heap[parent_index]
+    if (@heap[index] <=> @heap[parent_index]).positive?
       @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
       heapify_up(parent_index)
     end
@@ -174,11 +174,11 @@ class MaxHeap
     right_child = 2 * index + 2
     largest = index
     
-    if left_child < @heap.length && @heap[left_child] > @heap[largest]
+    if left_child < @heap.length && (@heap[left_child] <=> @heap[largest]).positive?
       largest = left_child
     end
     
-    if right_child < @heap.length && @heap[right_child] > @heap[largest]
+    if right_child < @heap.length && (@heap[right_child] <=> @heap[largest]).positive?
       largest = right_child
     end
     

@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  ci:
+    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    # 中央の lockfile-recreate ジョブが Dependabot PR にコメントするため
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      # Rails アプリではないため brakeman を使わない
+      security-scan: false
+      dependabot-recreate: true
+      lint-command: bundle exec rubocop -f github
+      test-command: bundle exec rake syntax_check execute_all
+  security:
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1

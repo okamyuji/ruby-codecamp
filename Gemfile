@@ -2,7 +2,10 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 3.4'
+ruby '~> 4.0'
+
+# solutions/05_math_numbers で使う bundled gem
+gem 'prime'
 
 group :development do
   gem 'rubocop', '~> 1.60', require: false

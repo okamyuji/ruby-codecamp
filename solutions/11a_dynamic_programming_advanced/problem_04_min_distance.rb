@@ -61,12 +61,12 @@ def min_distance_with_operations(word1, word2)
 
   (0..m).each do |i|
     dp[i][0] = i
-    operations[i][0] = 'delete' * i
+    operations[i][0] = 'D' * i
   end
 
   (0..n).each do |j|
     dp[0][j] = j
-    operations[0][j] = 'insert' * j
+    operations[0][j] = 'I' * j
   end
 
   (1..m).each do |i|

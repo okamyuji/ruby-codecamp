@@ -21,7 +21,7 @@
 **出力例:**
 
 ```text
-{"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+{"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 ```
 
 ### アルゴリズム概説
@@ -77,16 +77,16 @@ end
 
 # テストケース
 p character_frequency("hello")
-# => {"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+# => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 
 p character_frequency("mississippi")
-# => {"m"=>1, "i"=>4, "s"=>4, "p"=>2}
+# => {"m" => 1, "i" => 4, "s" => 4, "p" => 2}
 
 p character_frequency("")
 # => {}
 
 p character_frequency("aaa")
-# => {"a"=>3}
+# => {"a" => 3}
 ```
 
 ---
@@ -446,8 +446,8 @@ p subarray_sum_exists([1, 2, 3, 7, 5], 12)   # => true ([7, 5])
 p subarray_sum_exists([1, 2, 3, 4], 100)     # => false
 p subarray_sum_exists([1, -1, 0], 0)         # => true (多くの組み合わせ)
 
-p subarray_sum_indices([1, 2, 3, 7, 5], 12)  # => [3, 4] ([7, 5])
-p subarray_sum_indices([1, 2, 3, 4], 6)      # => [1, 2] ([2, 3])
+p subarray_sum_indices([1, 2, 3, 7, 5], 12)  # => [1, 3] ([2, 3, 7])
+p subarray_sum_indices([1, 2, 3, 4], 6)      # => [0, 2] ([1, 2, 3])
 ```
 
 ---

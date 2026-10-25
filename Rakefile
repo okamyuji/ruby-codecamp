@@ -2,6 +2,7 @@
 
 require 'rake/testtask'
 require 'fileutils'
+require 'open3'
 require 'shellwords'
 
 # Default task
@@ -52,7 +53,9 @@ task :execute_all do
 
   Dir.glob('solutions/**/*.rb').each do |file|
     print "Executing #{file}... "
-    if system("ruby #{Shellwords.escape(file)} > /dev/null 2>&1")
+    # 各解答は自己テストの不一致を終了コードでなく出力の「✗ FAIL」で示す
+    output, status = Open3.capture2e('ruby', file)
+    if status.success? && !output.include?('✗ FAIL')
       puts '✓'
     else
       puts '✗'

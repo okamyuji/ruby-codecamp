@@ -98,6 +98,9 @@ str.chars           # => ["H", "e", "l", "l", "o", ...]
 ### 制御構造
 
 ```ruby
+x = 5
+value = 2
+
 # 条件分岐
 if x > 0
   puts "正の数"
@@ -123,8 +126,9 @@ end
 # ループ
 (1..5).each { |i| puts i }
 5.times { |i| puts i }
-while condition
-  # 処理
+count = 0
+while count < 3
+  count += 1
 end
 ```
 

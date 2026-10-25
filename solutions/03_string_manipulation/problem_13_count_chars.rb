@@ -52,7 +52,7 @@ if __FILE__ == $PROGRAM_NAME
   result2 = count_chars('aaa')
   puts "Test 2: count_chars('aaa')"
   puts "結果: #{result2}"
-  puts "期待値: {'a'=>3}"
+  puts '期待値: {"a" => 3}'
   puts "判定: #{result2 == { 'a' => 3 } ? '✓ PASS' : '✗ FAIL'}"
   puts
 

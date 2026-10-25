@@ -1,4 +1,4 @@
-# Ruby 3.4 初級者向け問題集 - Part 4: 数学・数値処理
+# Ruby 4.0 初級者向け問題集 - Part 4: 数学・数値処理
 
 ## 概要
 
@@ -438,9 +438,9 @@ def lcm_multiple(*nums)
 end
 
 # テストケース
-p gcd_lcm(12, 18)  # => {:gcd=>6, :lcm=>36}
-p gcd_lcm(7, 13)   # => {:gcd=>1, :lcm=>91}
-p gcd_lcm(100, 25) # => {:gcd=>25, :lcm=>100}
+p gcd_lcm(12, 18)  # => {gcd: 6, lcm: 36}
+p gcd_lcm(7, 13)   # => {gcd: 1, lcm: 91}
+p gcd_lcm(100, 25) # => {gcd: 25, lcm: 100}
 
 puts gcd_iterative(12, 18)      # => 6
 puts lcm_from_gcd(12, 18)       # => 36
@@ -751,7 +751,7 @@ end
 
 # テストケース
 puts power(2.0, 10)    # => 1024.0
-puts power(2.1, 3)     # => 9.261
+puts power(2.1, 3)     # => 9.261000000000001（浮動小数点の丸め誤差）
 puts power(2.0, -2)    # => 0.25
 puts power(0.0, 1)     # => 0.0
 puts power(1.0, 1000)  # => 1.0

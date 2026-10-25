@@ -91,8 +91,8 @@ end
 
 # 解法3: 選択ソートでk番目に小さい要素を見つける
 def kth_smallest_selection(arr, k)
-  # k-1回だけ選択ソートを実行
-  (k - 1).times do |i|
+  # k回だけ選択ソートを実行
+  k.times do |i|
     min_index = i
     
     (i + 1...arr.length).each do |j|

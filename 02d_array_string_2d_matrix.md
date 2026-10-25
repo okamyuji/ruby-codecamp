@@ -665,8 +665,8 @@ def find_diagonal_order(matrix)
       col += 1
     end
     
-    # 偶数番目の対角線は逆順
-    diagonal.reverse! if d.even?
+    # 奇数番目の対角線は逆順
+    diagonal.reverse! if d.odd?
     
     result.concat(diagonal)
   end

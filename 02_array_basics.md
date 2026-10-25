@@ -1,4 +1,4 @@
-# Ruby 3.4 初級者向け問題集 - Part 1: 配列・基本操作
+# Ruby 4.0 初級者向け問題集 - Part 1: 配列・基本操作
 
 ## 概要
 
@@ -408,7 +408,7 @@ end
 
 # テストケース
 p reverse_array([1, 2, 3, 4, 5])  # => [5, 4, 3, 2, 1]
-p reverse_array(['a', 'b', 'c']) # => ['c', 'b', 'a']
+p reverse_array(['a', 'b', 'c']) # => ["c", "b", "a"]
 p reverse_array([1])             # => [1]
 p reverse_array([])              # => []
 ```
@@ -546,8 +546,6 @@ end
 
 # 解法2: 手動でセットを使用
 def remove_duplicates_manual(arr)
-  require 'set'
-  
   seen = Set.new  # 見た要素を追跡するセット
   result = []
   
@@ -586,7 +584,7 @@ end
 # テストケース
 p remove_duplicates([1, 2, 2, 3, 4, 4, 5])       # => [1, 2, 3, 4, 5]
 p remove_duplicates([1, 1, 1, 1])                # => [1]
-p remove_duplicates(['a', 'b', 'a', 'c', 'b'])   # => ['a', 'b', 'c']
+p remove_duplicates(['a', 'b', 'a', 'c', 'b'])   # => ["a", "b", "c"]
 p remove_duplicates([])                          # => []
 p remove_duplicates([1, 2, 3])                   # => [1, 2, 3]
 ```
