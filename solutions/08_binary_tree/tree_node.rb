@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin TreeNode
 class TreeNode
   attr_accessor :val, :left, :right
 
@@ -10,7 +11,9 @@ class TreeNode
     @right = right
   end
 end
+# docs:end
 
+# docs:begin level_order
 def level_order(root)
   return [] if root.nil?
 
@@ -35,6 +38,17 @@ def level_order(root)
   result
 end
 
+# 使用例
+root = TreeNode.new(3)
+root.left = TreeNode.new(9)
+root.right = TreeNode.new(20)
+root.right.left = TreeNode.new(15)
+root.right.right = TreeNode.new(7)
+
+p level_order(root) # => [[3], [9, 20], [15, 7]]
+# docs:end
+
+# docs:begin max_depth_bfs
 def max_depth_bfs(root)
   return 0 if root.nil?
 
@@ -55,52 +69,60 @@ def max_depth_bfs(root)
 
   depth
 end
+# docs:end
 
+# docs:begin preorder_traversal
 def preorder_traversal(root)
   result = []
 
   def dfs(node, result)
     return if node.nil?
 
-    result << node.val
-    dfs(node.left, result)
-    dfs(node.right, result)
+    result << node.val       # ルート
+    dfs(node.left, result)   # 左
+    dfs(node.right, result)  # 右
   end
 
   dfs(root, result)
   result
 end
+# docs:end
 
+# docs:begin inorder_traversal
 def inorder_traversal(root)
   result = []
 
   def dfs(node, result)
     return if node.nil?
 
-    dfs(node.left, result)
-    result << node.val
-    dfs(node.right, result)
+    dfs(node.left, result)   # 左
+    result << node.val       # ルート
+    dfs(node.right, result)  # 右
   end
 
   dfs(root, result)
   result
 end
+# docs:end
 
+# docs:begin postorder_traversal
 def postorder_traversal(root)
   result = []
 
   def dfs(node, result)
     return if node.nil?
 
-    dfs(node.left, result)
-    dfs(node.right, result)
-    result << node.val
+    dfs(node.left, result)   # 左
+    dfs(node.right, result)  # 右
+    result << node.val       # ルート
   end
 
   dfs(root, result)
   result
 end
+# docs:end
 
+# docs:begin max_depth
 def max_depth(root)
   return 0 if root.nil?
 
@@ -109,7 +131,9 @@ def max_depth(root)
 
   [left_depth, right_depth].max + 1
 end
+# docs:end
 
+# docs:begin min_depth
 def min_depth(root)
   return 0 if root.nil?
   return 1 if root.left.nil? && root.right.nil?
@@ -119,7 +143,9 @@ def min_depth(root)
 
   [left_depth, right_depth].min + 1
 end
+# docs:end
 
+# docs:begin search_bst
 def search_bst(root, val)
   return nil if root.nil?
   return root if root.val == val
@@ -130,7 +156,9 @@ def search_bst(root, val)
     search_bst(root.right, val)
   end
 end
+# docs:end
 
+# docs:begin insert_into_bst
 def insert_into_bst(root, val)
   return TreeNode.new(val) if root.nil?
 
@@ -142,24 +170,33 @@ def insert_into_bst(root, val)
 
   root
 end
+# docs:end
 
+# docs:begin is_valid_bst
 def is_valid_bst(root, min_val = -Float::INFINITY, max_val = Float::INFINITY)
   return true if root.nil?
 
+  # 現在のノードの値が範囲内かチェック
   return false if root.val <= min_val || root.val >= max_val
 
+  # 左部分木と右部分木を再帰的にチェック
   is_valid_bst(root.left, min_val, root.val) &&
     is_valid_bst(root.right, root.val, max_val)
 end
+# docs:end
 
+# docs:begin build_tree
 def build_tree(preorder, inorder)
   return nil if preorder.empty?
 
+  # 前順の最初の要素がルート
   root_val = preorder[0]
   root = TreeNode.new(root_val)
 
+  # 中順でルートの位置を見つける
   root_idx = inorder.index(root_val)
 
+  # 左部分木と右部分木を再帰的に構築
   root.left = build_tree(
     preorder[1..root_idx],
     inorder[0...root_idx]
@@ -171,6 +208,7 @@ def build_tree(preorder, inorder)
 
   root
 end
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 二分木 テスト ==='

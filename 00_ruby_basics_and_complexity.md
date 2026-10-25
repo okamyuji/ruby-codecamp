@@ -47,7 +47,7 @@ hash = { "name" => "Alice", "age" => 25 }
 hash2 = { name: "Bob", age: 30 }  # シンボルをキーとして使用
 
 # 要素へのアクセス
-puts hash["name"]   # => "Alice"
+p hash["name"]        # => "Alice"
 puts hash2[:age]    # => 30
 
 # 要素の追加・更新
@@ -60,8 +60,8 @@ hash.has_key?("email")  # => false
 
 # ハッシュのイテレーション
 hash.each { |key, value| puts "#{key}: #{value}" }
-hash.keys           # => すべてのキーの配列
-hash.values         # => すべての値の配列
+hash.keys           # => ["name", "age", "city"]（すべてのキーの配列）
+hash.values         # => ["Alice", 25, "Tokyo"]（すべての値の配列）
 ```
 
 ### 文字列（String）
@@ -92,7 +92,7 @@ str.split(", ")     # => ["Hello", "World!"]
 ["a", "b", "c"].join("-")  # => "a-b-c"
 
 # 文字の配列への変換
-str.chars           # => ["H", "e", "l", "l", "o", ...]
+str.chars           # => ["H", "e", "l", "l", "o", ",", " ", "W", "o", "r", "l", "d", "!"]
 ```
 
 ### 制御構造
@@ -136,8 +136,8 @@ end
 
 ```ruby
 # 範囲の作成
-(1..5)              # => 1, 2, 3, 4, 5（5を含む）
-(1...5)             # => 1, 2, 3, 4（5を含まない）
+(1..5)              # => 1..5（1から5まで。5を含む）
+(1...5)             # => 1...5（1から4まで。5を含まない）
 
 # 範囲を配列に変換
 (1..5).to_a         # => [1, 2, 3, 4, 5]
@@ -414,14 +414,15 @@ end
 
 以下のコードの時間計算量と空間計算量を答えてください。
 
+<!-- source: solutions/00_ruby_basics_and_complexity/problem_01_complexity_analysis.rb#process_data -->
 ```ruby
 def process_data(arr)
   result = []
-  
+
   arr.each do |x|
     result << x * 2 if x.even?
   end
-  
+
   result.sort
 end
 ```
@@ -432,15 +433,17 @@ end
 
 配列内に重複する要素があるかどうかを判定する関数を、O(n)の時間計算量で実装してください。
 
+<!-- source: solutions/00_ruby_basics_and_complexity/problem_01_contains_duplicate.rb#contains_duplicate -->
 ```ruby
 def contains_duplicate(nums)
   seen = {}
-  
+
   nums.each do |num|
     return true if seen.key?(num)
+
     seen[num] = true
   end
-  
+
   false
 end
 
@@ -453,12 +456,13 @@ puts contains_duplicate([1, 2, 3, 4])  # => false
 
 配列内で最も頻繁に出現する要素を返す関数を実装してください。
 
+<!-- source: solutions/00_ruby_basics_and_complexity/problem_02_most_frequent.rb#most_frequent -->
 ```ruby
 def most_frequent(nums)
   freq = Hash.new(0)
-  
+
   nums.each { |num| freq[num] += 1 }
-  
+
   freq.max_by { |k, v| v }[0]
 end
 

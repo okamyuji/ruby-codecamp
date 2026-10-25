@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin bfs
 def bfs(graph, start)
   visited = Set.new
   queue = [start]
@@ -22,11 +23,24 @@ def bfs(graph, start)
   result
 end
 
+# テストケース
+graph = {
+  0 => [1, 2],
+  1 => [0, 3, 4],
+  2 => [0],
+  3 => [1],
+  4 => [1]
+}
+
+p bfs(graph, 0) # => [0, 1, 2, 3, 4]
+# docs:end
+
+# docs:begin shortest_path_length
 def shortest_path_length(graph, start, end_node)
   return 0 if start == end_node
 
   visited = Set.new([start])
-  queue = [[start, 0]]
+  queue = [[start, 0]] # [ノード, 距離]
 
   until queue.empty?
     node, dist = queue.shift
@@ -41,20 +55,26 @@ def shortest_path_length(graph, start, end_node)
     end
   end
 
-  -1
+  -1 # 到達不可能
 end
+# docs:end
 
+# docs:begin dfs_recursive
 def dfs_recursive(graph, start, visited = Set.new, result = [])
   visited.add(start)
   result << start
 
   graph[start].each do |neighbor|
-    dfs_recursive(graph, neighbor, visited, result) unless visited.include?(neighbor)
+    unless visited.include?(neighbor)
+      dfs_recursive(graph, neighbor, visited, result)
+    end
   end
 
   result
 end
+# docs:end
 
+# docs:begin dfs_iterative
 def dfs_iterative(graph, start)
   visited = Set.new
   stack = [start]
@@ -75,7 +95,9 @@ def dfs_iterative(graph, start)
 
   result
 end
+# docs:end
 
+# docs:begin has_path
 def has_path(graph, start, end_node)
   return true if start == end_node
 
@@ -96,7 +118,9 @@ def has_path(graph, start, end_node)
 
   dfs(graph, start, end_node, visited)
 end
+# docs:end
 
+# docs:begin num_islands
 def num_islands(grid)
   return 0 if grid.empty?
 
@@ -109,8 +133,10 @@ def num_islands(grid)
               j < 0 || j >= grid[0].length ||
               grid[i][j] == '0'
 
+    # 訪問済みとしてマーク
     grid[i][j] = '0'
 
+    # 上下左右を探索
     dfs(grid, i + 1, j)
     dfs(grid, i - 1, j)
     dfs(grid, i, j + 1)
@@ -129,6 +155,18 @@ def num_islands(grid)
   count
 end
 
+# テストケース
+grid = [
+  ['1', '1', '0', '0', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '1', '0', '0'],
+  ['0', '0', '0', '1', '1']
+]
+
+puts num_islands(grid) # => 3
+# docs:end
+
+# docs:begin UnionFind
 class UnionFind
   def initialize(n)
     @parent = (0...n).to_a
@@ -136,7 +174,9 @@ class UnionFind
   end
 
   def find(x)
-    @parent[x] = find(@parent[x]) if @parent[x] != x
+    if @parent[x] != x
+      @parent[x] = find(@parent[x]) # 経路圧縮
+    end
     @parent[x]
   end
 
@@ -146,6 +186,7 @@ class UnionFind
 
     return if root_x == root_y
 
+    # ランクによる結合
     if @rank[root_x] < @rank[root_y]
       @parent[root_x] = root_y
     elsif @rank[root_x] > @rank[root_y]
@@ -160,6 +201,14 @@ class UnionFind
     find(x) == find(y)
   end
 end
+
+# 使用例
+uf = UnionFind.new(5)
+uf.union(0, 1)
+uf.union(1, 2)
+puts uf.connected?(0, 2)  # => true
+puts uf.connected?(0, 3)  # => false
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== グラフ テスト ==='

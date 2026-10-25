@@ -17,6 +17,6 @@ jobs:
       security-scan: false
       dependabot-recreate: true
       lint-command: bundle exec rubocop -f github
-      test-command: bundle exec rake syntax_check execute_all
+      test-command: bundle exec rake test syntax_check execute_all docs:verify docs:check
   security:
     uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1

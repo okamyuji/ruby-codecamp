@@ -12,10 +12,11 @@
 
 ### ノードの定義
 
+<!-- source: solutions/07_linked_list/list_node.rb#ListNode -->
 ```ruby
 class ListNode
   attr_accessor :val, :next
-  
+
   def initialize(val = 0, _next = nil)
     @val = val
     @next = _next
@@ -25,6 +26,7 @@ end
 
 ### 基本的な操作
 
+<!-- source: solutions/07_linked_list/list_node.rb#print_list -->
 ```ruby
 # リストの作成
 node1 = ListNode.new(1)
@@ -41,65 +43,69 @@ def print_list(head)
     print "#{current.val} -> "
     current = current.next
   end
-  puts "nil"
+  puts 'nil'
 end
 
-print_list(node1)  # => 1 -> 2 -> 3 -> nil
+print_list(node1) # 出力: 1 -> 2 -> 3 -> nil
 ```
 
 ## リスト走査
 
 ### 問題1: リストの長さを求める
 
+<!-- source: solutions/07_linked_list/list_node.rb#list_length -->
 ```ruby
 def list_length(head)
   length = 0
   current = head
-  
+
   while current
     length += 1
     current = current.next
   end
-  
+
   length
 end
 
 # テストケース
 head = ListNode.new(1, ListNode.new(2, ListNode.new(3)))
-puts list_length(head)  # => 3
+puts list_length(head) # => 3
 ```
 
 ### 問題2: N番目のノードの値を取得
 
+<!-- source: solutions/07_linked_list/list_node.rb#get_nth_value -->
 ```ruby
 def get_nth_value(head, n)
   current = head
   index = 0
-  
+
   while current
     return current.val if index == n
+
     current = current.next
     index += 1
   end
-  
-  nil  # nが範囲外の場合
+
+  nil # nが範囲外の場合
 end
 
 # テストケース
 head = ListNode.new(1, ListNode.new(2, ListNode.new(3)))
-puts get_nth_value(head, 1)  # => 2
+puts get_nth_value(head, 1) # => 2
 ```
 
 ## ノード削除
 
 ### 問題3: 値を指定してノードを削除
 
+<!-- source: solutions/07_linked_list/list_node.rb#delete_value -->
 ```ruby
 def delete_value(head, val)
   # ダミーノードを使用して、先頭ノード削除を簡単に処理
   dummy = ListNode.new(0, head)
   current = dummy
-  
+
   while current.next
     if current.next.val == val
       # ノードをスキップして削除
@@ -108,19 +114,20 @@ def delete_value(head, val)
       current = current.next
     end
   end
-  
+
   dummy.next
 end
 ```
 
 ### 問題4: N番目のノードを削除
 
+<!-- source: solutions/07_linked_list/list_node.rb#delete_nth_node -->
 ```ruby
 def delete_nth_node(head, n)
   dummy = ListNode.new(0, head)
   current = dummy
   index = 0
-  
+
   while current.next
     if index == n
       current.next = current.next.next
@@ -129,7 +136,7 @@ def delete_nth_node(head, n)
     current = current.next
     index += 1
   end
-  
+
   dummy.next
 end
 ```
@@ -138,11 +145,12 @@ end
 
 ### 問題5: リストを反転する
 
+<!-- source: solutions/07_linked_list/list_node.rb#reverse_list -->
 ```ruby
 def reverse_list(head)
   prev = nil
   current = head
-  
+
   while current
     # 次のノードを一時保存
     next_node = current.next
@@ -152,14 +160,14 @@ def reverse_list(head)
     prev = current
     current = next_node
   end
-  
-  prev  # 新しい先頭
+
+  prev # 新しい先頭
 end
 
 # 再帰版
 def reverse_list_recursive(head, prev = nil)
   return prev if head.nil?
-  
+
   next_node = head.next
   head.next = prev
   reverse_list_recursive(next_node, head)
@@ -170,11 +178,12 @@ end
 
 ### 問題6: 2つのソート済みリストをマージ
 
+<!-- source: solutions/07_linked_list/list_node.rb#merge_two_lists -->
 ```ruby
 def merge_two_lists(list1, list2)
   dummy = ListNode.new(0)
   current = dummy
-  
+
   while list1 && list2
     if list1.val <= list2.val
       current.next = list1
@@ -185,10 +194,10 @@ def merge_two_lists(list1, list2)
     end
     current = current.next
   end
-  
+
   # 残りを追加
   current.next = list1 || list2
-  
+
   dummy.next
 end
 ```
@@ -197,60 +206,63 @@ end
 
 ### 問題7: サイクル検出
 
+<!-- source: solutions/07_linked_list/list_node.rb#has_cycle -->
 ```ruby
 def has_cycle(head)
   return false if head.nil?
-  
+
   slow = head
   fast = head
-  
+
   while fast && fast.next
     slow = slow.next
     fast = fast.next.next
-    
+
     return true if slow == fast
   end
-  
+
   false
 end
 ```
 
 ### 問題8: 中間ノードを見つける
 
+<!-- source: solutions/07_linked_list/list_node.rb#middle_node -->
 ```ruby
 def middle_node(head)
   slow = head
   fast = head
-  
+
   while fast && fast.next
     slow = slow.next
     fast = fast.next.next
   end
-  
+
   slow
 end
 ```
 
 ### 問題9: 末尾からN番目のノードを削除
 
+<!-- source: solutions/07_linked_list/list_node.rb#remove_nth_from_end -->
 ```ruby
 def remove_nth_from_end(head, n)
   dummy = ListNode.new(0, head)
   first = dummy
   second = dummy
-  
+
   # first を n+1 歩進める
   (n + 1).times { first = first.next }
-  
+
   # 両方のポインタを進める
   while first
     first = first.next
     second = second.next
   end
-  
+
   # second の次のノードを削除
   second.next = second.next.next
-  
+
   dummy.next
 end
 ```

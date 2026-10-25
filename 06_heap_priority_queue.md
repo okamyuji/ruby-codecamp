@@ -32,75 +32,76 @@ Rubyには標準でヒープのデータ構造が用意されていないため�
 
 ### 最小ヒープの実装
 
+<!-- source: solutions/06_heap_priority_queue/min_heap.rb#MinHeap -->
 ```ruby
 class MinHeap
   def initialize
     @heap = []
   end
-  
+
   # 要素の追加
   def push(value)
     @heap << value
     heapify_up(@heap.length - 1)
   end
-  
+
   # 最小要素の取り出し
   def pop
     return nil if @heap.empty?
-    
+
     # ルートと最後の要素を交換
     @heap[0], @heap[-1] = @heap[-1], @heap[0]
     min = @heap.pop
-    
+
     # ルートから下方向にヒープを再構築
     heapify_down(0) unless @heap.empty?
-    
+
     min
   end
-  
+
   # 最小要素の参照（削除しない）
   def peek
     @heap[0]
   end
-  
+
   # ヒープが空かどうか
   def empty?
     @heap.empty?
   end
-  
+
   # ヒープのサイズ
   def size
     @heap.length
   end
-  
+
   private
-  
+
   # 上方向へのヒープ化
   def heapify_up(index)
     return if index == 0
-    
+
     parent_index = (index - 1) / 2
-    
+
     if (@heap[index] <=> @heap[parent_index]).negative?
       @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
       heapify_up(parent_index)
     end
   end
-  
+
   # 下方向へのヒープ化
   def heapify_down(index)
     left_child = 2 * index + 1
     right_child = 2 * index + 2
     smallest = index
-    
+
     if left_child < @heap.length && (@heap[left_child] <=> @heap[smallest]).negative?
       smallest = left_child
     end
-    
+
     if right_child < @heap.length && (@heap[right_child] <=> @heap[smallest]).negative?
       smallest = right_child
     end
-    
+
     if smallest != index
       @heap[index], @heap[smallest] = @heap[smallest], @heap[index]
       heapify_down(smallest)
@@ -122,66 +123,67 @@ puts heap.peek # => 5
 
 ### 最大ヒープの実装
 
+<!-- source: solutions/06_heap_priority_queue/max_heap.rb#MaxHeap -->
 ```ruby
 class MaxHeap
   def initialize
     @heap = []
   end
-  
+
   def push(value)
     @heap << value
     heapify_up(@heap.length - 1)
   end
-  
+
   def pop
     return nil if @heap.empty?
-    
+
     @heap[0], @heap[-1] = @heap[-1], @heap[0]
     max = @heap.pop
-    
+
     heapify_down(0) unless @heap.empty?
-    
+
     max
   end
-  
+
   def peek
     @heap[0]
   end
-  
+
   def empty?
     @heap.empty?
   end
-  
+
   def size
     @heap.length
   end
-  
+
   private
-  
+
   def heapify_up(index)
     return if index == 0
-    
+
     parent_index = (index - 1) / 2
-    
+
     if (@heap[index] <=> @heap[parent_index]).positive?
       @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
       heapify_up(parent_index)
     end
   end
-  
+
   def heapify_down(index)
     left_child = 2 * index + 1
     right_child = 2 * index + 2
     largest = index
-    
+
     if left_child < @heap.length && (@heap[left_child] <=> @heap[largest]).positive?
       largest = left_child
     end
-    
+
     if right_child < @heap.length && (@heap[right_child] <=> @heap[largest]).positive?
       largest = right_child
     end
-    
+
     if largest != index
       @heap[index], @heap[largest] = @heap[largest], @heap[index]
       heapify_down(largest)
