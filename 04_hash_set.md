@@ -837,7 +837,7 @@ def find_difference_array(nums1, nums2)
 end
 
 # 解法3: rejectを使用
-def find_difference_select(nums1, nums2)
+def find_difference_reject(nums1, nums2)
   set1 = nums1.to_set
   set2 = nums2.to_set
 
