@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin lower_bound
+# 解法1: 標準的な Lower Bound
 def lower_bound(nums, target)
   left = 0
   right = nums.length
@@ -18,10 +20,12 @@ def lower_bound(nums, target)
   left
 end
 
+# 解法2: Rubyの bsearch_index を使用
 def lower_bound_builtin(nums, target)
   nums.bsearch_index { |x| x >= target } || nums.length
 end
 
+# 解法3: より明示的な実装
 def lower_bound_explicit(nums, target)
   left = 0
   right = nums.length - 1
@@ -40,6 +44,13 @@ def lower_bound_explicit(nums, target)
 
   result
 end
+
+# テストケース
+p lower_bound([1, 2, 4, 4, 5, 6], 4)  # => 2
+p lower_bound([1, 2, 4, 4, 5, 6], 3)  # => 2
+p lower_bound([1, 2, 4, 4, 5, 6], 7)  # => 6
+p lower_bound([1, 2, 4, 4, 5, 6], 0)  # => 0
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 下界（Lower Bound）の実装 テスト ==='

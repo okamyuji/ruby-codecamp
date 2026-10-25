@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin factorial
+# 解法1: 反復法（推奨）
 def factorial(n)
   return 1 if n <= 1
 
@@ -9,28 +11,33 @@ def factorial(n)
   result
 end
 
+# 解法2: reduceを使用
 def factorial_reduce(n)
   return 1 if n <= 1
 
   (1..n).reduce(:*)
 end
 
+# 解法3: 再帰
 def factorial_recursive(n)
   return 1 if n <= 1
 
   n * factorial_recursive(n - 1)
 end
 
+# 解法4: 末尾再帰（最適化されやすい）
 def factorial_tail_recursive(n, acc = 1)
   return acc if n <= 1
 
   factorial_tail_recursive(n - 1, acc * n)
 end
 
+# 解法5: inject
 def factorial_inject(n)
   (1..n).inject(1, :*)
 end
 
+# 発展: 大きな数の階乗（メモ化）
 class Factorial
   def initialize
     @cache = { 0 => 1, 1 => 1 }
@@ -42,6 +49,16 @@ class Factorial
     @cache[n] = n * calculate(n - 1)
   end
 end
+
+# テストケース
+puts factorial(5)    # => 120
+puts factorial(0)    # => 1
+puts factorial(1)    # => 1
+puts factorial(10)   # => 3628800
+
+fact = Factorial.new
+puts fact.calculate(20) # => 2432902008176640000
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 階乗の計算 テスト ==='

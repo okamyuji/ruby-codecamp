@@ -1,20 +1,26 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin merge_sort
+# 解法1: 再帰的なマージソート（推奨）
 def merge_sort(arr)
+  # ベースケース: 要素が1つ以下なら既にソート済み
   return arr if arr.length <= 1
 
+  # 配列を半分に分割
   mid = arr.length / 2
   left = merge_sort(arr[0...mid])
   right = merge_sort(arr[mid..])
 
+  # ソートされた2つの配列をマージ
   merge(left, right)
 end
 
 def merge(left, right)
   result = []
 
-  until left.empty? || right.empty?
+  # 両方の配列に要素がある間、比較しながらマージ
+  while !left.empty? && !right.empty?
     if left.first <= right.first
       result << left.shift
     else
@@ -22,9 +28,11 @@ def merge(left, right)
     end
   end
 
+  # 残りの要素を追加
   result + left + right
 end
 
+# 解法2: インデックスベースのマージ
 def merge_sort_index(arr)
   return arr if arr.length <= 1
 
@@ -37,8 +45,7 @@ end
 
 def merge_index(left, right)
   result = []
-  i = 0
-  j = 0
+  i = j = 0
 
   while i < left.length && j < right.length
     if left[i] <= right[j]
@@ -53,6 +60,7 @@ def merge_index(left, right)
   result.concat(left[i..]).concat(right[j..])
 end
 
+# 解法3: 反復的なマージソート
 def merge_sort_iterative(arr)
   return arr if arr.length <= 1
 
@@ -72,6 +80,14 @@ def merge_sort_iterative(arr)
 
   arr
 end
+
+# テストケース
+p merge_sort([38, 27, 43, 3, 9, 82, 10])  # => [3, 9, 10, 27, 38, 43, 82]
+p merge_sort([5, 2, 4, 6, 1, 3])          # => [1, 2, 3, 4, 5, 6]
+p merge_sort([1])                         # => [1]
+p merge_sort([])                          # => []
+p merge_sort([2, 1])                      # => [1, 2]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== マージソート テスト ==='

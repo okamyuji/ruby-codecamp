@@ -1,13 +1,17 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin reverse_string
+# 解法1: reverseメソッドを使用（推奨）
 def reverse_string(str)
   str.reverse
 end
 
+# 解法2: 手動で逆順に構築
 def reverse_string_manual(str)
   result = ''
 
+  # 最後の文字から最初の文字まで逆順にイテレート
   (str.length - 1).downto(0) do |i|
     result += str[i]
   end
@@ -15,13 +19,25 @@ def reverse_string_manual(str)
   result
 end
 
+# 解法3: 配列に変換して反転
 def reverse_string_array(str)
+  # 文字列を文字の配列に変換し、反転して結合
   str.chars.reverse.join
 end
 
+# 解法4: reduceを使用
 def reverse_string_reduce(str)
+  # 各文字を逆順に結合
   str.chars.reduce('') { |acc, char| char + acc }
 end
+
+# テストケース
+p reverse_string('hello')      # => "olleh"
+p reverse_string('Ruby')       # => "ybuR"
+p reverse_string('a')          # => "a"
+p reverse_string('')           # => ""
+p reverse_string('12345')      # => "54321"
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 文字列の反転 テスト ==='

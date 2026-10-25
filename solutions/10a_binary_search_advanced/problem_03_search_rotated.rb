@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin search_rotated
+# 解法1: 標準的な二分探索
 def search_rotated(nums, target)
   left = 0
   right = nums.length - 1
@@ -10,12 +12,14 @@ def search_rotated(nums, target)
 
     return mid if nums[mid] == target
 
+    # 左半分がソート済み
     if nums[left] <= nums[mid]
       if nums[left] <= target && target < nums[mid]
         right = mid - 1
       else
         left = mid + 1
       end
+    # 右半分がソート済み
     elsif nums[mid] < target && target <= nums[right]
       left = mid + 1
     else
@@ -26,12 +30,17 @@ def search_rotated(nums, target)
   -1
 end
 
+# 解法2: ピボットを先に見つける
 def search_rotated_pivot(nums, target)
+  # ピボット（最小値）を見つける
   pivot = find_pivot(nums)
 
+  # どちらの半分を探索するか決定
   if target >= nums[0]
+    # 左半分を探索
     binary_search(nums, 0, pivot - 1, target)
   else
+    # 右半分を探索
     binary_search(nums, pivot, nums.length - 1, target)
   end
 end
@@ -68,6 +77,12 @@ def binary_search(nums, left, right, target)
 
   -1
 end
+
+# テストケース
+p search_rotated([4, 5, 6, 7, 0, 1, 2], 0)  # => 4
+p search_rotated([4, 5, 6, 7, 0, 1, 2], 3)  # => -1
+p search_rotated([1], 0) # => -1
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 回転ソート配列の検索 テスト ==='

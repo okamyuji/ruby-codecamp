@@ -57,16 +57,17 @@ n = 15
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_27_fizz_buzz.rb#fizz_buzz -->
 ```ruby
 # 解法1: 条件分岐を使用（推奨）
 def fizz_buzz(n)
   (1..n).map do |num|
     if num % 15 == 0
-      "FizzBuzz"
+      'FizzBuzz'
     elsif num % 3 == 0
-      "Fizz"
+      'Fizz'
     elsif num % 5 == 0
-      "Buzz"
+      'Buzz'
     else
       num.to_s
     end
@@ -76,9 +77,9 @@ end
 # 解法2: 文字列連結を使用
 def fizz_buzz_concat(n)
   (1..n).map do |num|
-    result = ""
-    result += "Fizz" if num % 3 == 0
-    result += "Buzz" if num % 5 == 0
+    result = ''
+    result += 'Fizz' if num % 3 == 0
+    result += 'Buzz' if num % 5 == 0
     result.empty? ? num.to_s : result
   end
 end
@@ -87,16 +88,16 @@ end
 def fizz_buzz_case(n)
   (1..n).map do |num|
     case
-    when num % 15 == 0 then "FizzBuzz"
-    when num % 3 == 0 then "Fizz"
-    when num % 5 == 0 then "Buzz"
+    when num % 15 == 0 then 'FizzBuzz'
+    when num % 3 == 0 then 'Fizz'
+    when num % 5 == 0 then 'Buzz'
     else num.to_s
     end
   end
 end
 
 # 解法4: 拡張可能なバージョン
-def fizz_buzz_extensible(n, rules = { 3 => "Fizz", 5 => "Buzz" })
+def fizz_buzz_extensible(n, rules = { 3 => 'Fizz', 5 => 'Buzz' })
   (1..n).map do |num|
     result = rules.select { |divisor, _| num % divisor == 0 }
                   .values
@@ -163,6 +164,7 @@ true
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_28_prime.rb#prime? -->
 ```ruby
 # 解法1: 効率的な実装（推奨）
 def prime?(n)
@@ -172,14 +174,13 @@ def prime?(n)
   return true if n == 2
   # 2より大きい偶数は素数ではない
   return false if n.even?
-  
+
   # 3からsqrt(n)までの奇数でチェック
   limit = Math.sqrt(n).to_i
   (3..limit).step(2).none? { |i| n % i == 0 }
 end
 
 # 解法2: Rubyの組み込みを使用
-require 'prime'
 
 def prime_builtin?(n)
   Prime.prime?(n)
@@ -188,7 +189,7 @@ end
 # 解法3: シンプルな実装
 def prime_simple?(n)
   return false if n < 2
-  
+
   (2...n).none? { |i| n % i == 0 }
 end
 
@@ -197,14 +198,15 @@ def prime_optimized?(n)
   return false if n < 2
   return true if n == 2 || n == 3
   return false if n % 2 == 0 || n % 3 == 0
-  
+
   # すべての素数は6k ± 1の形（2と3を除く）
   i = 5
   while i * i <= n
     return false if n % i == 0 || n % (i + 2) == 0
+
     i += 6
   end
-  
+
   true
 end
 
@@ -266,28 +268,29 @@ n = 10
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_29_fibonacci.rb#fibonacci -->
 ```ruby
 # 解法1: 反復法（推奨）
 def fibonacci(n)
   return n if n <= 1
-  
+
   # 前の2つの値を保持
   prev_prev = 0
   prev = 1
-  
+
   (2..n).each do
     current = prev + prev_prev
     prev_prev = prev
     prev = current
   end
-  
+
   prev
 end
 
 # 解法2: 配列を使用
 def fibonacci_array(n)
   return n if n <= 1
-  
+
   fib = [0, 1]
   (2..n).each { |i| fib[i] = fib[i - 1] + fib[i - 2] }
   fib[n]
@@ -297,14 +300,14 @@ end
 def fibonacci_memo(n, memo = {})
   return n if n <= 1
   return memo[n] if memo.key?(n)
-  
+
   memo[n] = fibonacci_memo(n - 1, memo) + fibonacci_memo(n - 2, memo)
 end
 
 # 解法4: 行列累乗（高速）
 def fibonacci_matrix(n)
   return n if n <= 1
-  
+
   matrix_power([[1, 1], [1, 0]], n)[0][1]
 end
 
@@ -316,27 +319,28 @@ def matrix_multiply(a, b)
 end
 
 def matrix_power(matrix, n)
-  result = [[1, 0], [0, 1]]  # 単位行列
-  
+  result = [[1, 0], [0, 1]] # 単位行列
+
   while n > 0
     result = matrix_multiply(result, matrix) if n.odd?
     matrix = matrix_multiply(matrix, matrix)
     n /= 2
   end
-  
+
   result
 end
 
 # 解法5: Enumeratorを使用
 def fibonacci_enumerator(n)
   fib = Enumerator.new do |y|
-    a, b = 0, 1
+    a = 0
+    b = 1
     loop do
       y << a
       a, b = b, a + b
     end
   end
-  
+
   fib.take(n + 1).last
 end
 
@@ -388,6 +392,7 @@ GCD: 6, LCM: 36
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_30_gcd_lcm.rb#gcd_lcm -->
 ```ruby
 # 解法1: 組み込みメソッドを使用（推奨）
 def gcd_lcm(a, b)
@@ -399,9 +404,7 @@ end
 
 # 解法2: ユークリッドの互除法（反復）
 def gcd_iterative(a, b)
-  while b != 0
-    a, b = b, a % b
-  end
+  a, b = b, a % b while b != 0
   a
 end
 
@@ -413,6 +416,7 @@ end
 # 解法3: ユークリッドの互除法（再帰）
 def gcd_recursive(a, b)
   return a if b == 0
+
   gcd_recursive(b, a % b)
 end
 
@@ -490,16 +494,17 @@ n = 12345
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_31_digit_sum.rb#digit_sum -->
 ```ruby
 # 解法1: 数学的アプローチ（推奨）
 def digit_sum(n)
   sum = 0
-  
+
   while n > 0
     sum += n % 10  # 最下位の桁を取得
     n /= 10        # 次の桁へ移動
   end
-  
+
   sum
 end
 
@@ -522,24 +527,25 @@ end
 # 解法5: 再帰
 def digit_sum_recursive(n)
   return n if n < 10
+
   n % 10 + digit_sum_recursive(n / 10)
 end
 
 # 発展: 桁の合計を繰り返して1桁にする
 def digital_root(n)
   return 0 if n == 0
-  
+
   # 数学的な公式: 1 + (n - 1) % 9
   1 + (n - 1) % 9
 end
 
 # テストケース
-puts digit_sum(12345)   # => 15
+puts digit_sum(12_345) # => 15
 puts digit_sum(0)       # => 0
 puts digit_sum(9999)    # => 36
 puts digit_sum(100)     # => 1
 
-puts digital_root(38)   # => 2 (3 + 8 = 11, 1 + 1 = 2)
+puts digital_root(38)   # => 2（3 + 8 = 11, 1 + 1 = 2）
 ```
 
 ---
@@ -585,11 +591,12 @@ n = 5
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_32_factorial.rb#factorial -->
 ```ruby
 # 解法1: 反復法（推奨）
 def factorial(n)
   return 1 if n <= 1
-  
+
   result = 1
   (2..n).each { |i| result *= i }
   result
@@ -598,19 +605,21 @@ end
 # 解法2: reduceを使用
 def factorial_reduce(n)
   return 1 if n <= 1
-  
+
   (1..n).reduce(:*)
 end
 
 # 解法3: 再帰
 def factorial_recursive(n)
   return 1 if n <= 1
+
   n * factorial_recursive(n - 1)
 end
 
 # 解法4: 末尾再帰（最適化されやすい）
 def factorial_tail_recursive(n, acc = 1)
   return acc if n <= 1
+
   factorial_tail_recursive(n - 1, acc * n)
 end
 
@@ -624,9 +633,10 @@ class Factorial
   def initialize
     @cache = { 0 => 1, 1 => 1 }
   end
-  
+
   def calculate(n)
     return @cache[n] if @cache.key?(n)
+
     @cache[n] = n * calculate(n - 1)
   end
 end
@@ -638,7 +648,7 @@ puts factorial(1)    # => 1
 puts factorial(10)   # => 3628800
 
 fact = Factorial.new
-puts fact.calculate(20)  # => 2432902008176640000
+puts fact.calculate(20) # => 2432902008176640000
 ```
 
 ---
@@ -689,10 +699,11 @@ x = 2.0, n = 10
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_33_power.rb#power -->
 ```ruby
 # 解法1: 組み込み演算子を使用（推奨）
 def power(x, n)
-  x ** n
+  x**n
 end
 
 # 解法2: 二分累乗法（効率的）
@@ -702,9 +713,9 @@ def power_fast(x, n)
     x = 1.0 / x
     n = -n
   end
-  
+
   result = 1.0
-  
+
   while n > 0
     # nが奇数なら、結果にxを掛ける
     result *= x if n.odd?
@@ -713,21 +724,21 @@ def power_fast(x, n)
     # nを半分にする
     n /= 2
   end
-  
+
   result
 end
 
 # 解法3: 再帰的な二分累乗法
 def power_recursive(x, n)
   return 1.0 if n == 0
-  
+
   if n < 0
     x = 1.0 / x
     n = -n
   end
-  
+
   half = power_recursive(x, n / 2)
-  
+
   if n.even?
     half * half
   else
@@ -738,12 +749,12 @@ end
 # 解法4: 反復での単純な実装（遅い）
 def power_simple(x, n)
   return 1.0 if n == 0
-  
+
   if n < 0
     x = 1.0 / x
     n = -n
   end
-  
+
   result = 1.0
   n.times { result *= x }
   result
@@ -803,26 +814,28 @@ true
 
 ### 解答
 
+<!-- source: solutions/05_math_numbers/problem_34_palindrome_number.rb#palindrome_number? -->
 ```ruby
 # 解法1: 数値を反転して比較（推奨）
 def palindrome_number?(x)
   # 負の数は回文ではない
   return false if x < 0
-  
+
   original = x
   reversed = 0
-  
+
   while x > 0
     reversed = reversed * 10 + x % 10
     x /= 10
   end
-  
+
   original == reversed
 end
 
 # 解法2: 文字列に変換
 def palindrome_number_string?(x)
   return false if x < 0
+
   x.to_s == x.to_s.reverse
 end
 
@@ -830,15 +843,15 @@ end
 def palindrome_number_half?(x)
   # 負の数、または10の倍数（0を除く）は回文ではない
   return false if x < 0 || (x != 0 && x % 10 == 0)
-  
+
   reversed_half = 0
-  
+
   # 半分だけ反転
   while x > reversed_half
     reversed_half = reversed_half * 10 + x % 10
     x /= 10
   end
-  
+
   # 桁数が偶数または奇数の場合を考慮
   x == reversed_half || x == reversed_half / 10
 end
@@ -846,15 +859,15 @@ end
 # 解法4: 配列を使用
 def palindrome_number_array?(x)
   return false if x < 0
-  
+
   digits = []
   temp = x
-  
+
   while temp > 0
     digits << temp % 10
     temp /= 10
   end
-  
+
   digits == digits.reverse
 end
 
@@ -862,8 +875,8 @@ end
 puts palindrome_number?(121)    # => true
 puts palindrome_number?(-121)   # => false
 puts palindrome_number?(10)     # => false
-puts palindrome_number?(12321)  # => true
-puts palindrome_number?(0)      # => true
+puts palindrome_number?(12_321) # => true
+puts palindrome_number?(0) # => true
 ```
 
 ---

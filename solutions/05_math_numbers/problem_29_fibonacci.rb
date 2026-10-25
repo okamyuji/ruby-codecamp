@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin fibonacci
+# 解法1: 反復法（推奨）
 def fibonacci(n)
   return n if n <= 1
 
+  # 前の2つの値を保持
   prev_prev = 0
   prev = 1
 
@@ -16,6 +19,7 @@ def fibonacci(n)
   prev
 end
 
+# 解法2: 配列を使用
 def fibonacci_array(n)
   return n if n <= 1
 
@@ -24,6 +28,7 @@ def fibonacci_array(n)
   fib[n]
 end
 
+# 解法3: 再帰（メモ化あり）
 def fibonacci_memo(n, memo = {})
   return n if n <= 1
   return memo[n] if memo.key?(n)
@@ -31,6 +36,7 @@ def fibonacci_memo(n, memo = {})
   memo[n] = fibonacci_memo(n - 1, memo) + fibonacci_memo(n - 2, memo)
 end
 
+# 解法4: 行列累乗（高速）
 def fibonacci_matrix(n)
   return n if n <= 1
 
@@ -45,7 +51,7 @@ def matrix_multiply(a, b)
 end
 
 def matrix_power(matrix, n)
-  result = [[1, 0], [0, 1]]
+  result = [[1, 0], [0, 1]] # 単位行列
 
   while n > 0
     result = matrix_multiply(result, matrix) if n.odd?
@@ -56,6 +62,7 @@ def matrix_power(matrix, n)
   result
 end
 
+# 解法5: Enumeratorを使用
 def fibonacci_enumerator(n)
   fib = Enumerator.new do |y|
     a = 0
@@ -68,6 +75,13 @@ def fibonacci_enumerator(n)
 
   fib.take(n + 1).last
 end
+
+# テストケース
+puts fibonacci(10)  # => 55
+puts fibonacci(0)   # => 0
+puts fibonacci(1)   # => 1
+puts fibonacci(20)  # => 6765
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== フィボナッチ数列 テスト ==='

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin generate_parenthesis
+# 解法1: バックトラック
 def generate_parenthesis(n)
   result = []
   backtrack_paren('', 0, 0, n, result)
@@ -8,16 +10,24 @@ def generate_parenthesis(n)
 end
 
 def backtrack_paren(current, open_count, close_count, n, result)
+  # ベースケース
   if current.length == 2 * n
     result << current
     return
   end
 
-  backtrack_paren("#{current}(", open_count + 1, close_count, n, result) if open_count < n
+  # 開き括弧を追加
+  if open_count < n
+    backtrack_paren("#{current}(", open_count + 1, close_count, n, result)
+  end
 
-  backtrack_paren("#{current})", open_count, close_count + 1, n, result) if close_count < open_count
+  # 閉じ括弧を追加（開き括弧より少ない場合のみ）
+  if close_count < open_count
+    backtrack_paren("#{current})", open_count, close_count + 1, n, result)
+  end
 end
 
+# 解法2: クロージャーナンバー
 def generate_parenthesis_closure(n)
   return [''] if n == 0
 
@@ -41,6 +51,7 @@ def generate_parenthesis_closure(n)
   result
 end
 
+# 解法3: 動的計画法
 def generate_parenthesis_dp(n)
   dp = Array.new(n + 1) { [] }
   dp[0] = ['']
@@ -57,6 +68,15 @@ def generate_parenthesis_dp(n)
 
   dp[n]
 end
+
+# テストケース
+p generate_parenthesis(3)
+# => ["((()))", "(()())", "(())()", "()(())", "()()()"]
+p generate_parenthesis(1)
+# => ["()"]
+p generate_parenthesis(2)
+# => ["(())", "()()"]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 括弧の生成 テスト ==='

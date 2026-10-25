@@ -1,14 +1,19 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin contains_duplicate
+# 解法1: uniqで長さを比較（推奨）
 def contains_duplicate(nums)
+  # 重複がなければuniq後の長さは同じ
   nums.length != nums.uniq.length
 end
 
+# 解法2: セットを使用
 def contains_duplicate_set(nums)
   seen = Set.new
 
   nums.each do |num|
+    # 既に見た要素なら重複あり
     return true if seen.include?(num)
 
     seen.add(num)
@@ -17,6 +22,7 @@ def contains_duplicate_set(nums)
   false
 end
 
+# 解法3: ハッシュを使用
 def contains_duplicate_hash(nums)
   seen = {}
 
@@ -29,15 +35,25 @@ def contains_duplicate_hash(nums)
   false
 end
 
+# 解法4: any?を使用
 def contains_duplicate_any(nums)
   seen = Set.new
 
   nums.any? { |num| !seen.add?(num) }
 end
 
+# 解法5: tallyを使用
 def contains_duplicate_tally(nums)
   nums.tally.values.any? { |count| count > 1 }
 end
+
+# テストケース
+puts contains_duplicate([1, 2, 3, 1])    # => true
+puts contains_duplicate([1, 2, 3, 4])    # => false
+puts contains_duplicate([1, 1, 1, 3, 3]) # => true
+puts contains_duplicate([])              # => false
+puts contains_duplicate([1])             # => false
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 重複する要素の検出 テスト ==='

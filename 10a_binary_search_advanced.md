@@ -51,22 +51,23 @@ nums = [1, 2, 4, 4, 5, 6], target = 4
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_01_lower_bound.rb#lower_bound -->
 ```ruby
 # 解法1: 標準的な Lower Bound
 def lower_bound(nums, target)
   left = 0
   right = nums.length
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     if nums[mid] < target
       left = mid + 1
     else
       right = mid
     end
   end
-  
+
   left
 end
 
@@ -80,10 +81,10 @@ def lower_bound_explicit(nums, target)
   left = 0
   right = nums.length - 1
   result = nums.length
-  
+
   while left <= right
     mid = (left + right) / 2
-    
+
     if nums[mid] >= target
       result = mid
       right = mid - 1
@@ -91,7 +92,7 @@ def lower_bound_explicit(nums, target)
       left = mid + 1
     end
   end
-  
+
   result
 end
 
@@ -149,22 +150,23 @@ nums = [1, 2, 4, 4, 5, 6], target = 4
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_02_upper_bound.rb#upper_bound -->
 ```ruby
 # 解法1: 標準的な Upper Bound
 def upper_bound(nums, target)
   left = 0
   right = nums.length
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     if nums[mid] <= target
       left = mid + 1
     else
       right = mid
     end
   end
-  
+
   left
 end
 
@@ -178,10 +180,10 @@ def upper_bound_explicit(nums, target)
   left = 0
   right = nums.length - 1
   result = nums.length
-  
+
   while left <= right
     mid = (left + right) / 2
-    
+
     if nums[mid] > target
       result = mid
       right = mid - 1
@@ -189,7 +191,7 @@ def upper_bound_explicit(nums, target)
       left = mid + 1
     end
   end
-  
+
   result
 end
 
@@ -263,17 +265,18 @@ nums = [4, 5, 6, 7, 0, 1, 2], target = 0
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_03_search_rotated.rb#search_rotated -->
 ```ruby
 # 解法1: 標準的な二分探索
 def search_rotated(nums, target)
   left = 0
   right = nums.length - 1
-  
+
   while left <= right
     mid = (left + right) / 2
-    
+
     return mid if nums[mid] == target
-    
+
     # 左半分がソート済み
     if nums[left] <= nums[mid]
       if nums[left] <= target && target < nums[mid]
@@ -282,15 +285,13 @@ def search_rotated(nums, target)
         left = mid + 1
       end
     # 右半分がソート済み
+    elsif nums[mid] < target && target <= nums[right]
+      left = mid + 1
     else
-      if nums[mid] < target && target <= nums[right]
-        left = mid + 1
-      else
-        right = mid - 1
-      end
+      right = mid - 1
     end
   end
-  
+
   -1
 end
 
@@ -298,7 +299,7 @@ end
 def search_rotated_pivot(nums, target)
   # ピボット（最小値）を見つける
   pivot = find_pivot(nums)
-  
+
   # どちらの半分を探索するか決定
   if target >= nums[0]
     # 左半分を探索
@@ -312,40 +313,40 @@ end
 def find_pivot(nums)
   left = 0
   right = nums.length - 1
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     if nums[mid] > nums[right]
       left = mid + 1
     else
       right = mid
     end
   end
-  
+
   left
 end
 
 def binary_search(nums, left, right, target)
   while left <= right
     mid = (left + right) / 2
-    
+
     return mid if nums[mid] == target
-    
+
     if nums[mid] < target
       left = mid + 1
     else
       right = mid - 1
     end
   end
-  
+
   -1
 end
 
 # テストケース
 p search_rotated([4, 5, 6, 7, 0, 1, 2], 0)  # => 4
 p search_rotated([4, 5, 6, 7, 0, 1, 2], 3)  # => -1
-p search_rotated([1], 0)  # => -1
+p search_rotated([1], 0) # => -1
 ```
 
 ---
@@ -397,15 +398,16 @@ nums = [1, 2, 3, 1]
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_04_find_peak_element.rb#find_peak_element -->
 ```ruby
 # 解法1: 二分探索
 def find_peak_element(nums)
   left = 0
   right = nums.length - 1
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     if nums[mid] < nums[mid + 1]
       # 上り坂、ピークは右側
       left = mid + 1
@@ -414,16 +416,16 @@ def find_peak_element(nums)
       right = mid
     end
   end
-  
+
   left
 end
 
 # 解法2: 線形探索（比較用）
 def find_peak_element_linear(nums)
-  (0...nums.length - 1).each do |i|
+  (0...(nums.length - 1)).each do |i|
     return i if nums[i] > nums[i + 1]
   end
-  
+
   nums.length - 1
 end
 
@@ -434,9 +436,9 @@ end
 
 def search_peak(nums, left, right)
   return left if left == right
-  
+
   mid = (left + right) / 2
-  
+
   if nums[mid] < nums[mid + 1]
     search_peak(nums, mid + 1, right)
   else
@@ -445,9 +447,9 @@ def search_peak(nums, left, right)
 end
 
 # テストケース
-p find_peak_element([1, 2, 3, 1])  # => 2
-p find_peak_element([1, 2, 1, 3, 5, 6, 4])  # => 1 または 5
-p find_peak_element([1])  # => 0
+p find_peak_element([1, 2, 3, 1]) # => 2
+p find_peak_element([1, 2, 1, 3, 5, 6, 4]) # => 1 または 5
+p find_peak_element([1]) # => 0
 ```
 
 ---
@@ -502,63 +504,62 @@ x = 8
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_05_my_sqrt.rb#my_sqrt -->
 ```ruby
 # 解法1: 二分探索
 def my_sqrt(x)
   return x if x < 2
-  
+
   left = 0
   right = x
-  
+
   while left <= right
     mid = (left + right) / 2
     square = mid * mid
-    
+
     return mid if square == x
-    
+
     if square < x
       left = mid + 1
     else
       right = mid - 1
     end
   end
-  
+
   right
 end
 
 # 解法2: より効率的な範囲設定
 def my_sqrt_optimized(x)
   return x if x < 2
-  
+
   left = 1
-  right = x / 2  # √x <= x/2 for x >= 2
-  
+  right = x / 2 # √x <= x/2 for x >= 2
+
   while left <= right
     mid = (left + right) / 2
     square = mid * mid
-    
+
     return mid if square == x
-    
+
     if square < x
       left = mid + 1
     else
       right = mid - 1
     end
   end
-  
+
   right
 end
 
 # 解法3: ニュートン法
 def my_sqrt_newton(x)
   return x if x < 2
-  
+
   guess = x.to_f
-  
-  while (guess * guess - x).abs >= 0.5
-    guess = (guess + x / guess) / 2
-  end
-  
+
+  guess = (guess + x / guess) / 2 while (guess * guess - x).abs >= 0.5
+
   guess.to_i
 end
 
@@ -635,66 +636,67 @@ nums = [7, 2, 5, 10, 8], m = 2
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_06_split_array.rb#split_array -->
 ```ruby
 # 解法1: 答えの二分探索
 def split_array(nums, m)
   left = nums.max
   right = nums.sum
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     if can_split(nums, m, mid)
       right = mid
     else
       left = mid + 1
     end
   end
-  
+
   left
 end
 
 def can_split(nums, m, max_sum)
   subarrays = 1
   current_sum = 0
-  
+
   nums.each do |num|
     if current_sum + num > max_sum
       subarrays += 1
       current_sum = num
-      
+
       return false if subarrays > m
     else
       current_sum += num
     end
   end
-  
+
   true
 end
 
 # 解法2: 動的計画法（比較用、O(n²m)）
 def split_array_dp(nums, m)
   n = nums.length
-  
+
   # dp[i][j] = nums[0...i]をj個に分割した場合の最小の最大和
   dp = Array.new(n + 1) { Array.new(m + 1, Float::INFINITY) }
-  
+
   # 累積和
   prefix_sum = [0]
   nums.each { |num| prefix_sum << prefix_sum.last + num }
-  
+
   dp[0][0] = 0
-  
+
   (1..n).each do |i|
     (1..[i, m].min).each do |j|
-      (j - 1...i).each do |k|
+      ((j - 1)...i).each do |k|
         # nums[k...i] を j番目の部分配列とする
         subarray_sum = prefix_sum[i] - prefix_sum[k]
         dp[i][j] = [dp[i][j], [dp[k][j - 1], subarray_sum].max].min
       end
     end
   end
-  
+
   dp[n][m]
 end
 
@@ -755,19 +757,20 @@ trees = [20, 15, 10, 17], m = 7
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_07_max_cutter_height.rb#max_cutter_height -->
 ```ruby
 # 解法1: 答えの二分探索
 def max_cutter_height(trees, m)
   left = 0
   right = trees.max
   result = 0
-  
+
   while left <= right
     mid = (left + right) / 2
-    
+
     # mid の高さで切った場合の木材の量
     wood = trees.sum { |height| [0, height - mid].max }
-    
+
     if wood >= m
       # 十分な木材が得られる、さらに高く設定できるか試す
       result = mid
@@ -777,7 +780,7 @@ def max_cutter_height(trees, m)
       right = mid - 1
     end
   end
-  
+
   result
 end
 
@@ -785,20 +788,20 @@ end
 def max_cutter_height_explicit(trees, m)
   left = 0
   right = trees.max
-  
+
   while left < right
     # 上界を探索（最大値を求めるため mid を切り上げ）
     mid = (left + right + 1) / 2
-    
+
     wood = calculate_wood(trees, mid)
-    
+
     if wood >= m
       left = mid
     else
       right = mid - 1
     end
   end
-  
+
   left
 end
 
@@ -807,9 +810,9 @@ def calculate_wood(trees, height)
 end
 
 # テストケース
-p max_cutter_height([20, 15, 10, 17], 7)  # => 15
-p max_cutter_height([4, 42, 40, 26, 46], 20)  # => 36
-p max_cutter_height([1, 2, 3, 4, 5], 5)  # => 2
+p max_cutter_height([20, 15, 10, 17], 7) # => 15
+p max_cutter_height([4, 42, 40, 26, 46], 20) # => 36
+p max_cutter_height([1, 2, 3, 4, 5], 5) # => 2
 ```
 
 ---
@@ -877,18 +880,19 @@ positions = [1, 2, 8, 4, 9], m = 3
 
 ### 解答
 
+<!-- source: solutions/10a_binary_search_advanced/problem_08_max_min_distance.rb#max_min_distance -->
 ```ruby
 # 解法1: 答えの二分探索
 def max_min_distance(positions, m)
   positions.sort!
-  
+
   left = 1
   right = positions[-1] - positions[0]
   result = 0
-  
+
   while left <= right
     mid = (left + right) / 2
-    
+
     if can_place_balls(positions, m, mid)
       # mid の距離で配置可能、さらに大きい距離を試す
       result = mid
@@ -898,42 +902,42 @@ def max_min_distance(positions, m)
       right = mid - 1
     end
   end
-  
+
   result
 end
 
 def can_place_balls(positions, m, min_distance)
-  count = 1  # 最初のボールを最初の位置に配置
+  count = 1 # 最初のボールを最初の位置に配置
   last_pos = positions[0]
-  
+
   positions.each do |pos|
-    if pos - last_pos >= min_distance
-      count += 1
-      last_pos = pos
-      
-      return true if count == m
-    end
+    next unless pos - last_pos >= min_distance
+
+    count += 1
+    last_pos = pos
+
+    return true if count == m
   end
-  
+
   false
 end
 
 # 解法2: より明示的な実装
 def max_min_distance_explicit(positions, m)
   positions.sort!
-  
+
   # 二分探索の範囲
   min_possible = 1
   max_possible = (positions[-1] - positions[0]) / (m - 1)
-  
+
   result = 0
-  
+
   while min_possible <= max_possible
     mid = (min_possible + max_possible) / 2
-    
+
     # mid の距離でボールを配置
     placed = place_balls(positions, m, mid)
-    
+
     if placed >= m
       result = mid
       min_possible = mid + 1
@@ -941,28 +945,28 @@ def max_min_distance_explicit(positions, m)
       max_possible = mid - 1
     end
   end
-  
+
   result
 end
 
 def place_balls(positions, m, min_distance)
   count = 1
   last_pos = positions[0]
-  
+
   (1...positions.length).each do |i|
     if positions[i] - last_pos >= min_distance
       count += 1
       last_pos = positions[i]
     end
   end
-  
+
   count
 end
 
 # テストケース
 p max_min_distance([1, 2, 8, 4, 9], 3)  # => 3
 p max_min_distance([1, 2, 3, 4, 7], 3)  # => 3
-p max_min_distance([5, 4, 3, 2, 1, 1000000000], 2)  # => 999999999
+p max_min_distance([5, 4, 3, 2, 1, 1_000_000_000], 2) # => 999999999
 ```
 
 ---

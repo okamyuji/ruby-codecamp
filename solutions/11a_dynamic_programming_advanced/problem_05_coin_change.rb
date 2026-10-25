@@ -1,19 +1,24 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin coin_change
+# 解法1: 貰うDP
 def coin_change(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   dp[0] = 0
 
   (1..amount).each do |i|
     coins.each do |coin|
-      dp[i] = [dp[i], dp[i - coin] + 1].min if i >= coin
+      if i >= coin
+        dp[i] = [dp[i], dp[i - coin] + 1].min
+      end
     end
   end
 
   dp[amount] == Float::INFINITY ? -1 : dp[amount]
 end
 
+# 解法2: 配るDP
 def coin_change_push(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   dp[0] = 0
@@ -22,13 +27,16 @@ def coin_change_push(coins, amount)
     next if dp[i] == Float::INFINITY
 
     coins.each do |coin|
-      dp[i + coin] = [dp[i + coin], dp[i] + 1].min if i + coin <= amount
+      if i + coin <= amount
+        dp[i + coin] = [dp[i + coin], dp[i] + 1].min
+      end
     end
   end
 
   dp[amount] == Float::INFINITY ? -1 : dp[amount]
 end
 
+# 解法3: コインの組み合わせを復元
 def coin_change_with_coins(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   parent = Array.new(amount + 1, -1)
@@ -45,6 +53,7 @@ def coin_change_with_coins(coins, amount)
 
   return [-1, []] if dp[amount] == Float::INFINITY
 
+  # バックトラック
   result = []
   curr = amount
 
@@ -56,6 +65,13 @@ def coin_change_with_coins(coins, amount)
 
   [dp[amount], result.sort]
 end
+
+# テストケース
+p coin_change([1, 2, 5], 11) # => 3
+p coin_change([2], 3)  # => -1
+p coin_change([1], 0)  # => 0
+p coin_change_with_coins([1, 2, 5], 11) # => [3, [1, 5, 5]]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== コイン両替（Coin Change） テスト ==='

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin split_array
+# 解法1: 答えの二分探索
 def split_array(nums, m)
   left = nums.max
   right = nums.sum
@@ -36,11 +38,14 @@ def can_split(nums, m, max_sum)
   true
 end
 
+# 解法2: 動的計画法（比較用、O(n²m)）
 def split_array_dp(nums, m)
   n = nums.length
 
+  # dp[i][j] = nums[0...i]をj個に分割した場合の最小の最大和
   dp = Array.new(n + 1) { Array.new(m + 1, Float::INFINITY) }
 
+  # 累積和
   prefix_sum = [0]
   nums.each { |num| prefix_sum << prefix_sum.last + num }
 
@@ -49,6 +54,7 @@ def split_array_dp(nums, m)
   (1..n).each do |i|
     (1..[i, m].min).each do |j|
       ((j - 1)...i).each do |k|
+        # nums[k...i] を j番目の部分配列とする
         subarray_sum = prefix_sum[i] - prefix_sum[k]
         dp[i][j] = [dp[i][j], [dp[k][j - 1], subarray_sum].max].min
       end
@@ -57,6 +63,12 @@ def split_array_dp(nums, m)
 
   dp[n][m]
 end
+
+# テストケース
+p split_array([7, 2, 5, 10, 8], 2)  # => 18
+p split_array([1, 2, 3, 4, 5], 2)   # => 9
+p split_array([1, 4, 4], 3)         # => 4
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最小の分割数（答えの二分探索） テスト ==='

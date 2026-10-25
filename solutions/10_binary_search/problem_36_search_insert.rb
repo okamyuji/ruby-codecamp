@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin search_insert
+# 解法1: 二分探索で下限を求める（推奨）
 def search_insert(nums, target)
   left = 0
   right = nums.length
@@ -18,10 +20,13 @@ def search_insert(nums, target)
   left
 end
 
+# 解法2: bsearch_indexを使用
 def search_insert_builtin(nums, target)
+  # bsearch_indexは条件を満たす最小のインデックスを返す
   nums.bsearch_index { |x| x >= target } || nums.length
 end
 
+# 解法3: 線形探索（シンプルだがO(n)）
 def search_insert_linear(nums, target)
   nums.each_with_index do |num, i|
     return i if num >= target
@@ -29,6 +34,7 @@ def search_insert_linear(nums, target)
   nums.length
 end
 
+# 解法4: 要素が見つかるかどうかも判定
 def search_insert_with_found(nums, target)
   left = 0
   right = nums.length - 1
@@ -47,6 +53,14 @@ def search_insert_with_found(nums, target)
 
   { index: left, found: false }
 end
+
+# テストケース
+puts search_insert([1, 3, 5, 6], 5)  # => 2
+puts search_insert([1, 3, 5, 6], 2)  # => 1
+puts search_insert([1, 3, 5, 6], 7)  # => 4
+puts search_insert([1, 3, 5, 6], 0)  # => 0
+puts search_insert([], 1)            # => 0
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 挿入位置の検索 テスト ==='

@@ -1,15 +1,21 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_kth_largest
+# 解法1: ソートを使用（シンプル）
 def find_kth_largest(nums, k)
+  # 降順にソートしてk番目を取得
   nums.sort.reverse[k - 1]
 end
 
+# 解法2: sort_byを使用
 def find_kth_largest_sort_by(nums, k)
   nums.sort_by { |x| -x }[k - 1]
 end
 
+# 解法3: 最大ヒープを使用（概念的な実装）
 def find_kth_largest_heap(nums, k)
+  # Rubyには標準のヒープがないが、maxを使用して模倣
   heap = nums.dup
 
   (k - 1).times do
@@ -20,7 +26,9 @@ def find_kth_largest_heap(nums, k)
   heap.max
 end
 
+# 解法4: クイックセレクト
 def find_kth_largest_quickselect(nums, k)
+  # k番目に大きい = (n - k + 1)番目に小さい
   quickselect(nums.dup, nums.length - k)
 end
 
@@ -40,9 +48,17 @@ def quickselect(arr, k)
   end
 end
 
+# 解法5: 部分ソートを使用
 def find_kth_largest_partial(nums, k)
   nums.max(k).last
 end
+
+# テストケース
+puts find_kth_largest([3, 2, 1, 5, 6, 4], 2)          # => 5
+puts find_kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) # => 4
+puts find_kth_largest([1], 1)                         # => 1
+puts find_kth_largest([7, 6, 5, 4, 3, 2, 1], 5)       # => 3
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== K番目に大きい要素 テスト ==='

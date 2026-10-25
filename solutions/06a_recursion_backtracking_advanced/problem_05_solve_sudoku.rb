@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin solve_sudoku
+# 解法1: バックトラック
 def solve_sudoku(board)
   backtrack_sudoku(board)
 end
@@ -17,6 +19,7 @@ def backtrack_sudoku(board)
 
         return true if backtrack_sudoku(board)
 
+        # バックトラック
         board[row][col] = '.'
       end
 
@@ -28,10 +31,13 @@ def backtrack_sudoku(board)
 end
 
 def is_valid_sudoku(board, row, col, num)
+  # 行チェック
   return false if board[row].include?(num)
 
+  # 列チェック
   return false if board.any? { |r| r[col] == num }
 
+  # 3x3ブロックチェック
   box_row = (row / 3) * 3
   box_col = (col / 3) * 3
 
@@ -44,11 +50,14 @@ def is_valid_sudoku(board, row, col, num)
   true
 end
 
+# 解法2: より効率的な検証（Set使用）
 def solve_sudoku_optimized(board)
+  # 各行、列、ブロックの使用済み数字を追跡
   rows = Array.new(9) { Set.new }
   cols = Array.new(9) { Set.new }
   boxes = Array.new(9) { Set.new }
 
+  # 初期状態を記録
   9.times do |r|
     9.times do |c|
       next unless board[r][c] != '.'
@@ -76,6 +85,7 @@ def backtrack_sudoku_optimized(board, rows, cols, boxes)
                     !cols[col].include?(num) &&
                     !boxes[box_idx].include?(num)
 
+        # 数字を配置
         board[row][col] = num
         rows[row].add(num)
         cols[col].add(num)
@@ -83,6 +93,7 @@ def backtrack_sudoku_optimized(board, rows, cols, boxes)
 
         return true if backtrack_sudoku_optimized(board, rows, cols, boxes)
 
+        # バックトラック
         board[row][col] = '.'
         rows[row].delete(num)
         cols[col].delete(num)
@@ -95,6 +106,23 @@ def backtrack_sudoku_optimized(board, rows, cols, boxes)
 
   true
 end
+
+# テストケース
+board = [
+  ['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+  ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+  ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+  ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+  ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+  ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+  ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+  ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+  ['.', '.', '.', '.', '8', '.', '.', '7', '9']
+]
+
+solve_sudoku(board)
+p board
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 数独ソルバー テスト ==='

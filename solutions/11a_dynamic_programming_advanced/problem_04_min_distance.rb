@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin min_distance
+# 解法1: 二次元DP
 def min_distance(word1, word2)
   m = word1.length
   n = word2.length
 
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
 
+  # 初期化
   (0..m).each { |i| dp[i][0] = i }
   (0..n).each { |j| dp[0][j] = j }
 
@@ -16,9 +19,9 @@ def min_distance(word1, word2)
         dp[i][j] = dp[i - 1][j - 1]
       else
         dp[i][j] = 1 + [
-          dp[i - 1][j],
-          dp[i][j - 1],
-          dp[i - 1][j - 1]
+          dp[i - 1][j],      # 削除
+          dp[i][j - 1],      # 挿入
+          dp[i - 1][j - 1]   # 置換
         ].min
       end
     end
@@ -27,7 +30,9 @@ def min_distance(word1, word2)
   dp[m][n]
 end
 
+# 解法2: 一次元DP（空間最適化）
 def min_distance_1d(word1, word2)
+  # 短い方を列にする
   word1, word2 = word2, word1 if word1.length > word2.length
 
   m = word1.length
@@ -52,6 +57,7 @@ def min_distance_1d(word1, word2)
   prev[n]
 end
 
+# 解法3: 操作履歴を復元
 def min_distance_with_operations(word1, word2)
   m = word1.length
   n = word2.length
@@ -59,6 +65,7 @@ def min_distance_with_operations(word1, word2)
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
   operations = Array.new(m + 1) { Array.new(n + 1, '') }
 
+  # 初期化
   (0..m).each do |i|
     dp[i][0] = i
     operations[i][0] = 'D' * i
@@ -95,6 +102,13 @@ def min_distance_with_operations(word1, word2)
 
   [dp[m][n], operations[m][n]]
 end
+
+# テストケース
+p min_distance('horse', 'ros') # => 3
+p min_distance('intention', 'execution') # => 5
+p min_distance('', 'a') # => 1
+p min_distance_with_operations('horse', 'ros') # => [3, "RDD"]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 編集距離（Edit Distance） テスト ==='

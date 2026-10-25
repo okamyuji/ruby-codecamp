@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin fizz_buzz
+# 解法1: 条件分岐を使用（推奨）
 def fizz_buzz(n)
   (1..n).map do |num|
     if num % 15 == 0
@@ -15,6 +17,7 @@ def fizz_buzz(n)
   end
 end
 
+# 解法2: 文字列連結を使用
 def fizz_buzz_concat(n)
   (1..n).map do |num|
     result = ''
@@ -24,6 +27,7 @@ def fizz_buzz_concat(n)
   end
 end
 
+# 解法3: caseを使用
 def fizz_buzz_case(n)
   (1..n).map do |num|
     case
@@ -35,6 +39,7 @@ def fizz_buzz_case(n)
   end
 end
 
+# 解法4: 拡張可能なバージョン
 def fizz_buzz_extensible(n, rules = { 3 => 'Fizz', 5 => 'Buzz' })
   (1..n).map do |num|
     result = rules.select { |divisor, _| num % divisor == 0 }
@@ -43,6 +48,17 @@ def fizz_buzz_extensible(n, rules = { 3 => 'Fizz', 5 => 'Buzz' })
     result.empty? ? num.to_s : result
   end
 end
+
+# テストケース
+p fizz_buzz(15)
+# => ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]
+
+p fizz_buzz(3)
+# => ["1", "2", "Fizz"]
+
+p fizz_buzz(1)
+# => ["1"]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== フィズバズ（FizzBuzz） テスト ==='

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin my_sqrt
+# 解法1: 二分探索
 def my_sqrt(x)
   return x if x < 2
 
@@ -23,11 +25,12 @@ def my_sqrt(x)
   right
 end
 
+# 解法2: より効率的な範囲設定
 def my_sqrt_optimized(x)
   return x if x < 2
 
   left = 1
-  right = x / 2
+  right = x / 2 # √x <= x/2 for x >= 2
 
   while left <= right
     mid = (left + right) / 2
@@ -45,6 +48,7 @@ def my_sqrt_optimized(x)
   right
 end
 
+# 解法3: ニュートン法
 def my_sqrt_newton(x)
   return x if x < 2
 
@@ -55,9 +59,18 @@ def my_sqrt_newton(x)
   guess.to_i
 end
 
+# 解法4: 組み込み関数（比較用）
 def my_sqrt_builtin(x)
   Math.sqrt(x).to_i
 end
+
+# テストケース
+p my_sqrt(4)   # => 2
+p my_sqrt(8)   # => 2
+p my_sqrt(16)  # => 4
+p my_sqrt(0)   # => 0
+p my_sqrt(1)   # => 1
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 平方根の計算（整数部分） テスト ==='
