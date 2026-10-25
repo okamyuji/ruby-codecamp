@@ -137,7 +137,7 @@ if __FILE__ == $PROGRAM_NAME
   puts '--- 解法3（インデックス付き）のテスト ---'
   result6 = find_max_length_with_indices([0, 1, 0])
   puts "find_max_length_with_indices([0, 1, 0]) = #{result6}"
-  puts '期待値: { length: 2, start: 0, end: 1 }'
+  puts '期待値: {length: 2, start: 0, end: 1}'
   puts "判定: #{result6[:length] == 2 ? '✓ PASS' : '✗ FAIL'}"
   puts
 

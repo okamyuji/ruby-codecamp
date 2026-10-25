@@ -107,7 +107,7 @@ p max_sum_subarray([2, 3, 4, 1, 5], 2)     # => 7
 p max_sum_subarray([1, 4, 2, 10, 23, 3, 1, 0, 20], 4)  # => 39
 
 p max_sum_subarray_with_index([2, 1, 5, 1, 3, 2], 3)
-# => { sum: 9, start: 2, end: 4 }
+# => {sum: 9, start: 2, end: 4}
 ```
 
 ---
@@ -618,7 +618,7 @@ p longest_ones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)  # => 6
 p longest_ones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3)  # => 10
 
 p longest_ones_with_indices([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)
-# => { length: 6, start: 3, end: 8 }
+# => {length: 6, start: 3, end: 8}
 ```
 
 ---
@@ -962,7 +962,7 @@ p total_fruit([1, 2, 3, 2, 2])      # => 4
 p total_fruit([3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4])  # => 5
 
 p total_fruit_with_range([1, 2, 3, 2, 2])
-# => { count: 4, start: 1, end: 4 }
+# => {count: 4, start: 1, end: 4}
 ```
 
 ---

@@ -60,7 +60,7 @@ def count_characters(str)
 end
 
 puts count_characters("hello")
-# => {"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+# => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 ```
 
 #### アナグラムの判定

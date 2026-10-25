@@ -1,4 +1,4 @@
-# Ruby 3.4 初級者向け問題集 - Part 6: 再帰・動的計画法
+# Ruby 4.0 初級者向け問題集 - Part 6: 再帰・動的計画法
 
 ## 概要
 
@@ -288,7 +288,7 @@ puts max_subarray([-1])                              # => -1
 puts max_subarray([-2, -1])                          # => -1
 
 p max_subarray_with_indices([-2, 1, -3, 4, -1, 2, 1, -5, 4])
-# => {:sum=>6, :subarray=>[4, -1, 2, 1]}
+# => {sum: 6, subarray: [4, -1, 2, 1]}
 ```
 
 ---
@@ -440,7 +440,7 @@ puts coin_change([1], 0)          # => 0
 puts coin_change([1, 2, 5], 100)  # => 20
 
 p coin_change_with_coins([1, 2, 5], 11)
-# => {:count=>3, :coins_used=>[1, 5, 5]}
+# => {count: 3, coins_used: [1, 5, 5]}
 ```
 
 ---
@@ -587,7 +587,7 @@ puts rob([])                # => 0
 puts rob([2, 1, 1, 2])      # => 4
 
 p rob_with_houses([2, 7, 9, 3, 1])
-# => {:amount=>12, :houses=>[0, 2, 4]}
+# => {amount: 12, houses: [0, 2, 4]}
 ```
 
 ---

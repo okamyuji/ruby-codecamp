@@ -346,7 +346,7 @@ p max_area([1, 1])                       # => 1
 p max_area([4, 3, 2, 1, 4])              # => 16
 
 p max_area_with_indices([1, 8, 6, 2, 5, 4, 8, 3, 7])
-# => { area: 49, left: 1, right: 8 }
+# => {area: 49, left: 1, right: 8}
 ```
 
 ---

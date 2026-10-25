@@ -21,7 +21,7 @@
 **出力例:**
 
 ```text
-{"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+{"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 ```
 
 ### アルゴリズム概説
@@ -77,16 +77,16 @@ end
 
 # テストケース
 p character_frequency("hello")
-# => {"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+# => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 
 p character_frequency("mississippi")
-# => {"m"=>1, "i"=>4, "s"=>4, "p"=>2}
+# => {"m" => 1, "i" => 4, "s" => 4, "p" => 2}
 
 p character_frequency("")
 # => {}
 
 p character_frequency("aaa")
-# => {"a"=>3}
+# => {"a" => 3}
 ```
 
 ---

@@ -470,8 +470,6 @@ n = 4
 ### 解答
 
 ```ruby
-require 'set'
-
 # 解法1: バックトラック（Set使用）
 def solve_n_queens(n)
   result = []

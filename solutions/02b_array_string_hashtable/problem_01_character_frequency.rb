@@ -9,7 +9,7 @@
 # 文字列が与えられます。各文字が何回出現するかをカウントして、ハッシュとして返してください。
 #
 # 入力例: "hello"
-# 出力例: {"h"=>1, "e"=>1, "l"=>2, "o"=>1}
+# 出力例: {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 #
 # 時間計算量: O(n) - 文字列の長さに比例
 # 空間計算量: O(k) - kは一意な文字の数
@@ -56,7 +56,7 @@ if __FILE__ == $PROGRAM_NAME
   result1 = character_frequency('hello')
   puts "Test 1: character_frequency('hello')"
   puts "結果: #{result1}"
-  puts '期待値: {"h"=>1, "e"=>1, "l"=>2, "o"=>1}'
+  puts '期待値: {"h" => 1, "e" => 1, "l" => 2, "o" => 1}'
   expected1 = { 'h' => 1, 'e' => 1, 'l' => 2, 'o' => 1 }
   puts "判定: #{result1 == expected1 ? '✓ PASS' : '✗ FAIL'}"
   puts
@@ -65,7 +65,7 @@ if __FILE__ == $PROGRAM_NAME
   result2 = character_frequency('mississippi')
   puts "Test 2: character_frequency('mississippi')"
   puts "結果: #{result2}"
-  puts '期待値: {"m"=>1, "i"=>4, "s"=>4, "p"=>2}'
+  puts '期待値: {"m" => 1, "i" => 4, "s" => 4, "p" => 2}'
   expected2 = { 'm' => 1, 'i' => 4, 's' => 4, 'p' => 2 }
   puts "判定: #{result2 == expected2 ? '✓ PASS' : '✗ FAIL'}"
   puts
@@ -82,7 +82,7 @@ if __FILE__ == $PROGRAM_NAME
   result4 = character_frequency('aaa')
   puts "Test 4: character_frequency('aaa')"
   puts "結果: #{result4}"
-  puts '期待値: {"a"=>3}'
+  puts '期待値: {"a" => 3}'
   expected4 = { 'a' => 3 }
   puts "判定: #{result4 == expected4 ? '✓ PASS' : '✗ FAIL'}"
   puts

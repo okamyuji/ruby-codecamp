@@ -1,4 +1,4 @@
-# Ruby 3.4 初級者向け問題集 - Part 1: 配列・基本操作
+# Ruby 4.0 初級者向け問題集 - Part 1: 配列・基本操作
 
 ## 概要
 
@@ -546,8 +546,6 @@ end
 
 # 解法2: 手動でセットを使用
 def remove_duplicates_manual(arr)
-  require 'set'
-  
   seen = Set.new  # 見た要素を追跡するセット
   result = []
   

@@ -588,7 +588,7 @@ p find_max_length([0, 1, 0])     # => 2
 p find_max_length([0, 0, 1, 0, 0, 0, 1, 1])  # => 6
 
 p find_max_length_with_indices([0, 1, 0])
-# => { length: 2, start: 0, end: 1 }
+# => {length: 2, start: 0, end: 1}
 ```
 
 ---

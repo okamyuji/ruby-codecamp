@@ -120,7 +120,7 @@ if __FILE__ == $PROGRAM_NAME
   puts '--- 解法2（インデックス付き）のテスト ---'
   result4 = max_area_with_indices([1, 8, 6, 2, 5, 4, 8, 3, 7])
   puts "max_area_with_indices([1, 8, 6, 2, 5, 4, 8, 3, 7]) = #{result4}"
-  puts '期待値: { area: 49, left: 1, right: 8 }'
+  puts '期待値: {area: 49, left: 1, right: 8}'
   puts "判定: #{result4[:area] == 49 ? '✓ PASS' : '✗ FAIL'}"
   puts
 
