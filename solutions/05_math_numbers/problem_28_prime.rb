@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'prime'
-
 # docs:begin prime?
 # 解法1: 効率的な実装（推奨）
 def prime?(n)
@@ -19,6 +17,7 @@ def prime?(n)
 end
 
 # 解法2: Rubyの組み込みを使用
+require 'prime'
 
 def prime_builtin?(n)
   Prime.prime?(n)

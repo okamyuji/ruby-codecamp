@@ -181,6 +181,7 @@ def prime?(n)
 end
 
 # 解法2: Rubyの組み込みを使用
+require 'prime'
 
 def prime_builtin?(n)
   Prime.prime?(n)

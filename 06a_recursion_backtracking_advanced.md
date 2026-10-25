@@ -693,7 +693,7 @@ def solve_sudoku_optimized(board)
   # 初期状態を記録
   9.times do |r|
     9.times do |c|
-      next unless board[r][c] != '.'
+      next if board[r][c] == '.'
 
       num = board[r][c]
       rows[r].add(num)
@@ -714,9 +714,9 @@ def backtrack_sudoku_optimized(board, rows, cols, boxes)
       box_idx = (row / 3) * 3 + col / 3
 
       ('1'..'9').each do |num|
-        next unless !rows[row].include?(num) &&
-                    !cols[col].include?(num) &&
-                    !boxes[box_idx].include?(num)
+        next if rows[row].include?(num) ||
+                cols[col].include?(num) ||
+                boxes[box_idx].include?(num)
 
         # 数字を配置
         board[row][col] = num
