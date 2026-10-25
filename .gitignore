@@ -15,7 +15,6 @@
 /.bundle/
 /vendor/bundle
 /lib/bundler/man/
-Gemfile.lock
 
 # RSpec
 .rspec_status
