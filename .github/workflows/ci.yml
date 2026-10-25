@@ -3,9 +3,15 @@ on:
   push:
     branches: [main]
   pull_request:
+permissions:
+  contents: read
 jobs:
   ci:
     uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    # 中央の lockfile-recreate ジョブが、実行されないときでも pull-requests: write を要求するため
+    permissions:
+      contents: read
+      pull-requests: write
     with:
       # Rails アプリではないため brakeman を使わず、Gemfile.lock も追跡しない
       security-scan: false
