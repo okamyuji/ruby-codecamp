@@ -7,6 +7,7 @@ require 'shellwords'
 
 $LOAD_PATH.unshift File.join(__dir__, 'lib')
 require 'codecamp_docs/markdown_sync'
+require 'codecamp_docs/arrow_check'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib' << 'test'
@@ -122,4 +123,13 @@ namespace :docs do
     abort "解答ファイルとずれている md:\n#{stale.map { |p| "  - #{p}" }.join("\n")}\n`rake docs:sync` で直す" unless stale.empty?
     puts 'docs:verify OK'
   end
+end
+
+desc 'Check # => comments in markdown code blocks and solution regions against actual values'
+task 'docs:check' do
+  result = CodecampDocs::ArrowCheck.check_repo(__dir__)
+  summary = "照合 #{result.checked} 件、除外 #{result.skipped} 件"
+  puts result.failures
+  abort "docs:check 失敗 #{result.failures.size} 件（#{summary}）" unless result.failures.empty?
+  puts "docs:check OK（#{summary}）"
 end
