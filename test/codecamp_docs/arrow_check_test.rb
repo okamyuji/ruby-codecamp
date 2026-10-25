@@ -113,4 +113,25 @@ class ArrowCheckTest < Minitest::Test
   def test_own_line_arrow_after_inline_arrow_line_is_ignored
     assert_empty run_check("p 1  # => 1\n# => 2\n").failures
   end
+
+  def test_own_line_arrow_ignores_trailing_comment_on_target
+    assert_empty run_check("p 1 # note\n# => 1\n").failures
+    assert_equal ['b.md:2 expected=2 actual=1'], run_check("p 1 # note\n# => 2\n").failures
+  end
+
+  def test_hash_inside_string_on_target_line_is_kept
+    assert_empty run_check("p '# x'\n# => \"# x\"\n").failures
+  end
+
+  def test_parenthesized_puts_and_print_compare_output
+    assert_empty run_check("puts('ab')  # => ab\n").failures
+    assert_equal 1, run_check("puts('ab')  # => \"ab\"\n").failures.size
+    assert_empty run_check("print('ab')  # => ab\n").failures
+    assert_empty run_check("print 'ab'  # => ab\n").failures
+  end
+
+  def test_puts_with_call_argument_keeps_closing_paren
+    assert_empty run_check("puts [1, 2].first(1).inspect  # => [1]\n").failures
+    assert_empty run_check("puts [1, 2].first(1).inspect.length  # => 3\n").failures
+  end
 end

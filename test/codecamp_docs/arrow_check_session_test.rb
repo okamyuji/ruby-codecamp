@@ -26,11 +26,19 @@ class ArrowCheckSessionTest < Minitest::Test
     assert_match(/expected=2 actual=1/, failures.last)
   end
 
-  def test_reports_syntax_error_in_block
-    failures = run_check("def (\n").failures
+  def test_reports_syntax_error_in_block_once
+    failures = run_check("def (\np 1  # => 1\n").failures
 
-    refute_empty failures
-    assert(failures.any? { |f| f.include?('SyntaxError') })
+    assert_equal 1, failures.size
+    assert_includes failures.first, 'SyntaxError'
+  end
+
+  def test_continues_after_exit
+    failures = AC.check([block("exit 1\n"), block("p 1  # => 2\n", line: 2)]).failures
+
+    assert_equal 2, failures.size
+    assert_match(/b\.md:1 SystemExit/, failures.first)
+    assert_match(/expected=2 actual=1/, failures.last)
   end
 
   def test_isolates_files

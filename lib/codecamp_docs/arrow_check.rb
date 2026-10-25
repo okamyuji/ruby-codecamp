@@ -128,27 +128,36 @@ module CodecampDocs
         original = $stdout
         $stdout = StringIO.new
         @env.instance_eval(code, block.label, block.line)
-      rescue StandardError, ScriptError => e
+      rescue StandardError, ScriptError, SystemExit => e
         @failures << "#{block.label}:#{block.line} #{e.class}: #{e.message[0, 150]}"
       ensure
         $stdout = original
       end
 
+      # 元のコードが構文エラーなら書き換えず、評価側の SyntaxError 1 件だけを報告させる
       def instrument(block)
-        lines = block.code.lines
-        arrows = find_arrows(block.code, lines)
-        out = lines.dup
-        arrows.each_value { |arrow| rewrite(out, lines, arrows, arrow, block.line) }
-        code = out.join
+        parsed = Prism.parse(block.code)
+        return block.code unless parsed.success?
+
+        code = rewrite_arrows(block, parsed.comments)
         return code if Prism.parse(code).success?
 
         @failures << "#{block.label}:#{block.line} instrument に失敗した（# => の対象を式として書き換えられない）"
         block.code
       end
 
+      def rewrite_arrows(block, comments)
+        lines = block.code.lines
+        @comment_columns = comments.to_h { |c| [c.location.start_line - 1, c.location.start_column] }
+        arrows = find_arrows(comments, lines)
+        out = lines.dup
+        arrows.each_value { |arrow| rewrite(out, lines, arrows, arrow, block.line) }
+        out.join
+      end
+
       # 文字列の中の `# =>` を拾わないよう、Prism のコメント位置で探す。列はバイト単位
-      def find_arrows(code, lines)
-        found = Prism.parse(code).comments.filter_map do |comment|
+      def find_arrows(comments, lines)
+        found = comments.filter_map do |comment|
           match = ARROW.match(comment.slice) or next
           index = comment.location.start_line - 1
           column = comment.location.start_column
@@ -179,7 +188,7 @@ module CodecampDocs
         index -= 1 while index >= 0 && (lines[index].strip.empty? || lines[index].strip.start_with?('#'))
         return if index.negative? || arrows.key?(index)
 
-        [index, lines[index].rstrip]
+        [index, lines[index].byteslice(0, @comment_columns.fetch(index, lines[index].bytesize)).rstrip]
       end
 
       def checkable?(body)
@@ -189,7 +198,7 @@ module CodecampDocs
       def mode_and_expr(body)
         case body
         when /\Ap\s+(.+)\z/ then [:inspect, ::Regexp.last_match(1)]
-        when /\A(?:puts|print)\s+(.+)\z/ then [:puts, ::Regexp.last_match(1)]
+        when /\A(?:puts|print)\((.+)\)\z/, /\A(?:puts|print)\s+(.+)\z/ then [:puts, ::Regexp.last_match(1)]
         else [:inspect, body]
         end
       end
