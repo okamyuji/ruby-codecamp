@@ -67,3 +67,6 @@ Thumbs.db
 
 # Claude Code
 /.claude/
+
+# Serena
+/.serena/

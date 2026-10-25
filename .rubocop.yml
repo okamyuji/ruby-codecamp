@@ -1,8 +1,8 @@
 # RuboCop設定ファイル
-# Ruby 3.4対応のコーディング規約
+# Ruby 4.0対応のコーディング規約
 
 AllCops:
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 4.0
   NewCops: enable
   Exclude:
     - 'vendor/**/*'

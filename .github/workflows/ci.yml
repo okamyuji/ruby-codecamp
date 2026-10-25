@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  ci:
+    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    with:
+      # Rails アプリではないため brakeman を使わず、Gemfile.lock も追跡しない
+      security-scan: false
+      lockfile-check: false
+      lint-command: bundle exec rubocop -f github
+      test-command: bundle exec rake syntax_check execute_all
+  security:
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
