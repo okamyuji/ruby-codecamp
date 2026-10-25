@@ -91,12 +91,14 @@ module CodecampDocs
 
     # `check` を呼ぶたびに新しい評価環境を作る。ブロック間の定義はこの環境の中でだけ引き継ぐ
     class Session
-      attr_reader :failures, :skipped, :checked
+      attr_reader :failures, :skipped
+
+      def checked = @compared_total
 
       def initialize
         @failures = []
         @skipped = 0
-        @checked = 0
+        @compared_total = 0
         @label = nil
         @env = Object.new
         session = self
@@ -108,11 +110,15 @@ module CodecampDocs
 
       def run(block)
         @label = block.label
+        @rewritten = []
+        @compared = Set.new
         code = block.verify ? instrument(block) : block.code
-        evaluate(code, block)
+        report_unevaluated if evaluate(code, block)
+        @compared_total += @compared.size
       end
 
       def compare(line, mode, expected, value)
+        @compared << line
         actual = mode == :puts ? puts_text(value) : value.inspect
         @failures << "#{@label}:#{line} expected=#{expected} actual=#{actual}" unless actual == expected
       end
@@ -124,14 +130,21 @@ module CodecampDocs
         value.is_a?(Array) ? value.flatten.join("\n") : value.to_s
       end
 
+      # 例外なく終わったときだけ true を返す。例外の後は未到達の矢印を重ねて報告しない
       def evaluate(code, block)
         original = $stdout
         $stdout = StringIO.new
         @env.instance_eval(code, block.label, block.line)
-      rescue StandardError, ScriptError, SystemExit => e
+        true
+      rescue StandardError, ScriptError, SystemExit, SystemStackError => e
         @failures << "#{block.label}:#{block.line} #{e.class}: #{e.message[0, 150]}"
+        false
       ensure
         $stdout = original
+      end
+
+      def report_unevaluated
+        (@rewritten - @compared.to_a).each { |line| @failures << "#{@label}:#{line} # => が評価されなかった" }
       end
 
       # 元のコードが構文エラーなら書き換えず、評価側の SyntaxError 1 件だけを報告させる
@@ -143,6 +156,7 @@ module CodecampDocs
         return code if Prism.parse(code).success?
 
         @failures << "#{block.label}:#{block.line} instrument に失敗した（# => の対象を式として書き換えられない）"
+        @rewritten = []
         block.code
       end
 
@@ -173,7 +187,7 @@ module CodecampDocs
         target, code = target_of(lines, arrows, arrow)
         return unless target && checkable?(code.strip)
 
-        @checked += 1
+        @rewritten << (start + arrow.index)
         mode, expr = mode_and_expr(code.strip)
         tail = arrow.own_line ? "\n" : " #{lines[arrow.index].byteslice(arrow.column..)}"
         call = "__chk(#{start + arrow.index}, :#{mode}, #{arrow.expected.inspect}, (#{expr}))"

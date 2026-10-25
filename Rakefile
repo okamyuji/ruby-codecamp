@@ -103,8 +103,8 @@ end
 namespace :docs do
   # 各 md を [パス, 現在の内容, 埋め込み後の内容] で渡す。目印の誤りは abort で止める
   sync_each = lambda do |&block|
-    Dir.glob('[0-9]*.md').each do |path|
-      text = File.read(path)
+    Dir.glob('[0-9]*.md', base: __dir__).each do |path|
+      text = File.read(File.join(__dir__, path))
       block.call(path, text, CodecampDocs::MarkdownSync.sync(text, md_path: path, root: __dir__))
     end
   rescue CodecampDocs::Error => e
@@ -113,7 +113,7 @@ namespace :docs do
 
   desc 'Embed solution regions into markdown code blocks'
   task :sync do
-    sync_each.call { |path, text, synced| File.write(path, synced) unless text == synced }
+    sync_each.call { |path, text, synced| File.write(File.join(__dir__, path), synced) unless text == synced }
   end
 
   desc 'Fail when a markdown code block differs from its solution region'
@@ -127,7 +127,11 @@ end
 
 desc 'Check # => comments in markdown code blocks and solution regions against actual values'
 task 'docs:check' do
-  result = CodecampDocs::ArrowCheck.check_repo(__dir__)
+  result = begin
+    CodecampDocs::ArrowCheck.check_repo(__dir__)
+  rescue CodecampDocs::Error => e
+    abort e.message
+  end
   summary = "照合 #{result.checked} 件、除外 #{result.skipped} 件"
   puts result.failures
   abort "docs:check 失敗 #{result.failures.size} 件（#{summary}）" unless result.failures.empty?
