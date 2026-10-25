@@ -171,3 +171,12 @@ Style/EachWithObject:
 
 Style/CombinableLoops:
   Enabled: false
+
+# 解答は tally 以外の数え方や別クラスによる別解を、1ファイルに並べて示す
+Style/TallyMethod:
+  Exclude:
+    - 'solutions/**/*'
+
+Style/OneClassPerFile:
+  Exclude:
+    - 'solutions/**/*'
