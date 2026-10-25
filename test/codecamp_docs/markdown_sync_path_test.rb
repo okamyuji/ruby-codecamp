@@ -47,6 +47,11 @@ class MarkdownSyncPathTest < Minitest::Test
     assert_includes sync_marker('solutions/../solutions/s.rb'), "secret\n"
   end
 
+  def test_tilde_user_path_is_resolved_inside_root
+    error = assert_raises(CodecampDocs::Error) { sync_marker('~codecamp-no-such-user/x.rb') }
+    assert_includes error.message, '解答ファイル'
+  end
+
   def test_accepts_relative_root
     File.write(File.join(@root, 's.rb'), REGION)
     synced = Dir.chdir(@root) do

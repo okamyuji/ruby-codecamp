@@ -40,7 +40,8 @@ module CodecampDocs
 
     def self.region_body(root, path, name, where)
       base = File.expand_path(root)
-      file = File.expand_path(path, base)
+      # 先に連結して ~ や絶対パスを root の下の名前として扱い、.. だけを解決する
+      file = File.expand_path(File.join(base, path))
       raise Error, "#{where}: リポジトリの外を指している（#{path}##{name}）" unless file.start_with?("#{base}/")
       raise Error, "#{where}: 解答ファイル #{path} がない（#{path}##{name}）" unless File.file?(file)
 
