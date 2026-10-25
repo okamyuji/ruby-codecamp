@@ -66,6 +66,11 @@ class MarkdownSyncTest < Minitest::Test
     end
   end
 
+  def test_raises_when_fence_has_characters_after_ruby
+    error = assert_raises(CodecampDocs::Error) { sync(block('a', fence: '```rubyx')) }
+    assert_includes error.message, "#{MD}:1"
+  end
+
   def test_raises_when_marker_is_on_last_line_without_newline
     assert_raises(CodecampDocs::Error) { sync('<!-- source: solutions/s.rb#a -->') }
   end
