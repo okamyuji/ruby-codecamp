@@ -66,11 +66,9 @@ def subsets_with_dup(nums)
   start = 0
 
   nums.each_with_index do |num, i|
-    start = result.length - (i > 0 && nums[i] == nums[i - 1] ? start : 0)
-
-    new_subsets = result[start..].map { |subset| subset + [num] }
+    from = i > 0 && num == nums[i - 1] ? start : 0
     start = result.length
-    result.concat(new_subsets)
+    result.concat(result[from...start].map { |subset| subset + [num] })
   end
 
   result

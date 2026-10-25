@@ -24,7 +24,7 @@ hash["banana"] = 200
 
 # 要素の取得
 puts hash["apple"]  # => 100
-puts hash["orange"]  # => nil（存在しない場合）
+puts hash["orange"]  # => 0（存在しないキーはデフォルト値を返す）
 
 # デフォルト値を持つハッシュ
 count = Hash.new(0)
@@ -97,7 +97,7 @@ def two_sum(nums, target)
   nil
 end
 
-puts two_sum([2, 7, 11, 15], 9)  # => [0, 1]
+p two_sum([2, 7, 11, 15], 9)  # => [0, 1]
 ```
 
 ### ハッシュテーブルの計算量
@@ -240,7 +240,7 @@ end
 ```ruby
 arr = [-5, -2, 3, -1, 4]
 sorted = arr.sort_by { |x| x.abs }
-# => [-1, -2, 3, -5, 4]
+# => [-1, -2, 3, 4, -5]
 ```
 
 #### 文字列を長さでソート
@@ -271,7 +271,7 @@ def bucket_sort(arr, max_val)
   result
 end
 
-puts bucket_sort([3, 1, 4, 1, 5, 9, 2, 6], 9)
+p bucket_sort([3, 1, 4, 1, 5, 9, 2, 6], 9)
 # => [1, 1, 2, 3, 4, 5, 6, 9]
 ```
 
@@ -294,15 +294,15 @@ stack.push(3)
 # または
 stack << 4
 
-puts stack  # => [1, 2, 3, 4]
+p stack  # => [1, 2, 3, 4]
 
 # pop - 要素を取り出す
 top = stack.pop  # => 4
-puts stack  # => [1, 2, 3]
+p stack  # => [1, 2, 3]
 
 # peek - 先頭要素を見る（取り出さない）
 top = stack.last  # => 3
-puts stack  # => [1, 2, 3]
+p stack  # => [1, 2, 3]
 
 # 空かどうかを確認
 stack.empty?  # => false
@@ -432,11 +432,11 @@ queue.push(1)
 queue.push(2)
 queue.push(3)
 
-puts queue  # => [1, 2, 3]
+p queue  # => [1, 2, 3]
 
 # dequeue - 要素を取り出す
 first = queue.shift  # => 1
-puts queue  # => [2, 3]
+p queue  # => [2, 3]
 
 # peek - 先頭要素を見る
 first = queue.first  # => 2

@@ -65,22 +65,21 @@ def missing_number_xor(nums)
   result
 end
 
-# 解法3: Negative Markingを使用（範囲が0からn-1の場合）
+# 解法3: Negative Markingを使用
 def missing_number_marking(nums)
   n = nums.length
+  # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
+  nums.map! { |num| num + 1 }
   
-  # 各数字に対応する位置をマーク
+  # 各数字に対応する位置を負にしてマーク（n は配列外なので飛ばす）
   nums.each do |num|
-    next if num == n  # n は配列外
-    
-    # 負にする
-    idx = num.abs
+    idx = num.abs - 1
     nums[idx] = -nums[idx].abs if idx < n
   end
   
   # 正の値のインデックスが消えた数字
   nums.each_with_index do |num, i|
-    return i if num >= 0
+    return i if num.positive?
   end
   
   n
@@ -92,6 +91,8 @@ p missing_number([0, 1])           # => 2
 p missing_number([9, 6, 4, 2, 3, 5, 7, 0, 1])  # => 8
 
 p missing_number_xor([3, 0, 1])    # => 2
+p missing_number_marking([3, 0, 1])  # => 2
+p missing_number_marking([0, 1])     # => 2
 ```
 
 ---
@@ -783,7 +784,7 @@ p find_error_nums([2, 2])        # => [2, 1]
 
 ### アルゴリズム概説
 
-XOR演算またはNegative Markingを使用します。正しい位置にない数字と、その位置にあるべき数字の組み合わせを見つけます。
+Negative Markingまたはin-place交換を使用します。正しい位置にない数字と、その位置にあるべき数字の組み合わせを見つけます。
 
 **時間計算量:** O(n)  
 **空間計算量:** O(1)
@@ -810,8 +811,11 @@ XOR演算またはNegative Markingを使用します。正しい位置にない�
 ```ruby
 # 解法1: Negative Marking
 def find_corrupt_value(nums)
+  # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
+  nums.map! { |num| num + 1 }
+  
   nums.each do |num|
-    idx = num.abs
+    idx = num.abs - 1
     
     if idx < nums.length
       nums[idx] = -nums[idx].abs
@@ -819,24 +823,13 @@ def find_corrupt_value(nums)
   end
   
   nums.each_with_index do |num, i|
-    return i if num > 0
+    return i if num.positive?
   end
   
   nums.length
 end
 
-# 解法2: XOR演算
-def find_corrupt_value_xor(nums)
-  result = nums.length
-  
-  nums.each_with_index do |num, i|
-    result ^= i ^ num
-  end
-  
-  result
-end
-
-# 解法3: In-place交換
+# 解法2: In-place交換
 def find_corrupt_value_swap(nums)
   i = 0
   
@@ -862,6 +855,8 @@ end
 p find_corrupt_value([0, 1, 3, 3])  # => 2
 p find_corrupt_value([1, 0, 2, 3])  # => 4
 p find_corrupt_value([0, 2, 2, 3])  # => 1
+p find_corrupt_value([0, 1, 0, 3])  # => 2
+p find_corrupt_value_swap([0, 1, 3, 3])  # => 2
 ```
 
 ---

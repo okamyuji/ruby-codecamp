@@ -1086,11 +1086,9 @@ def subsets_with_dup(nums)
   
   nums.each_with_index do |num, i|
     # 重複の場合は前回追加した部分集合のみを拡張
-    start = result.length - (i > 0 && nums[i] == nums[i - 1] ? start : 0)
-    
-    new_subsets = result[start..].map { |subset| subset + [num] }
+    from = i > 0 && num == nums[i - 1] ? start : 0
     start = result.length
-    result.concat(new_subsets)
+    result.concat(result[from...start].map { |subset| subset + [num] })
   end
   
   result
@@ -1098,7 +1096,7 @@ end
 
 # テストケース
 p subsets([1, 2, 3])
-# => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+# => [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
 
 p subsets_iterative([1, 2])
 # => [[], [1], [2], [1, 2]]

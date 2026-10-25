@@ -430,12 +430,12 @@ def three_sum(nums)
       if sum.zero?
         result << [nums[i], nums[left], nums[right]]
         
+        left += 1
+        right -= 1
+        
         # 重複をスキップ
         left += 1 while left < right && nums[left] == nums[left - 1]
         right -= 1 while left < right && nums[right] == nums[right + 1]
-        
-        left += 1
-        right -= 1
       elsif sum < 0
         left += 1
       else
@@ -799,7 +799,7 @@ p num_subarray_product_less_than_k([1, 2, 3], 0)
 # => 0
 
 p find_all_subarray_product_less_than_k([10, 5, 2, 6], 100)
-# => [[10], [5], [10, 5], [2], [5, 2], [6], [2, 6], [5, 2, 6]]
+# => [[10], [10, 5], [5], [5, 2], [5, 2, 6], [2], [2, 6], [6]]
 ```
 
 ---

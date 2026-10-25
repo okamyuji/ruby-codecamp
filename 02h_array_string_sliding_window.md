@@ -618,7 +618,7 @@ p longest_ones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)  # => 6
 p longest_ones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3)  # => 10
 
 p longest_ones_with_indices([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)
-# => {length: 6, start: 3, end: 8}
+# => {length: 6, start: 4, end: 9}
 ```
 
 ---

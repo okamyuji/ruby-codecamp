@@ -417,7 +417,7 @@ end
 # テストケース
 p length_of_lis([10, 9, 2, 5, 3, 7, 101, 18])  # => 4
 p length_of_lis_binary([10, 9, 2, 5, 3, 7, 101, 18])  # => 4
-p length_of_lis_with_sequence([10, 9, 2, 5, 3, 7, 101, 18])  # => [4, [2, 3, 7, 101]]
+p length_of_lis_with_sequence([10, 9, 2, 5, 3, 7, 101, 18])  # => [4, [2, 5, 7, 101]]
 p length_of_lis([0, 1, 0, 3, 2, 3])  # => 4
 p length_of_lis([7, 7, 7, 7, 7, 7, 7])  # => 1
 ```
@@ -545,12 +545,12 @@ def min_distance_with_operations(word1, word2)
   # 初期化
   (0..m).each do |i|
     dp[i][0] = i
-    operations[i][0] = 'delete' * i
+    operations[i][0] = 'D' * i
   end
   
   (0..n).each do |j|
     dp[0][j] = j
-    operations[0][j] = 'insert' * j
+    operations[0][j] = 'I' * j
   end
   
   (1..m).each do |i|
@@ -584,7 +584,7 @@ end
 p min_distance("horse", "ros")  # => 3
 p min_distance("intention", "execution")  # => 5
 p min_distance("", "a")  # => 1
-p min_distance_with_operations("horse", "ros")  # => [3, "RDR"]
+p min_distance_with_operations("horse", "ros")  # => [3, "RDD"]
 ```
 
 ---

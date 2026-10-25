@@ -408,7 +408,7 @@ end
 
 # テストケース
 p reverse_array([1, 2, 3, 4, 5])  # => [5, 4, 3, 2, 1]
-p reverse_array(['a', 'b', 'c']) # => ['c', 'b', 'a']
+p reverse_array(['a', 'b', 'c']) # => ["c", "b", "a"]
 p reverse_array([1])             # => [1]
 p reverse_array([])              # => []
 ```
@@ -584,7 +584,7 @@ end
 # テストケース
 p remove_duplicates([1, 2, 2, 3, 4, 4, 5])       # => [1, 2, 3, 4, 5]
 p remove_duplicates([1, 1, 1, 1])                # => [1]
-p remove_duplicates(['a', 'b', 'a', 'c', 'b'])   # => ['a', 'b', 'c']
+p remove_duplicates(['a', 'b', 'a', 'c', 'b'])   # => ["a", "b", "c"]
 p remove_duplicates([])                          # => []
 p remove_duplicates([1, 2, 3])                   # => [1, 2, 3]
 ```

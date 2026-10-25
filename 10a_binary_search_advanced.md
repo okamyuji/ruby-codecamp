@@ -809,7 +809,7 @@ end
 # テストケース
 p max_cutter_height([20, 15, 10, 17], 7)  # => 15
 p max_cutter_height([4, 42, 40, 26, 46], 20)  # => 36
-p max_cutter_height([1, 2, 3, 4, 5], 5)  # => 3
+p max_cutter_height([1, 2, 3, 4, 5], 5)  # => 2
 ```
 
 ---
@@ -962,7 +962,7 @@ end
 # テストケース
 p max_min_distance([1, 2, 8, 4, 9], 3)  # => 3
 p max_min_distance([1, 2, 3, 4, 7], 3)  # => 3
-p max_min_distance([5, 4, 3, 2, 1, 1000000000], 2)  # => 999999995
+p max_min_distance([5, 4, 3, 2, 1, 1000000000], 2)  # => 999999999
 ```
 
 ---
