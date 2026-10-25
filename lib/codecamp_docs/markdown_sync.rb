@@ -39,7 +39,9 @@ module CodecampDocs
     end
 
     def self.region_body(root, path, name, where)
-      file = File.join(root, path)
+      base = File.expand_path(root)
+      file = File.expand_path(path, base)
+      raise Error, "#{where}: リポジトリの外を指している（#{path}##{name}）" unless file.start_with?("#{base}/")
       raise Error, "#{where}: 解答ファイル #{path} がない（#{path}##{name}）" unless File.file?(file)
 
       regions = Regions.parse(File.read(file), path:)
