@@ -1,40 +1,58 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin digit_sum
+# 解法1: 数学的アプローチ（推奨）
 def digit_sum(n)
   sum = 0
 
   while n > 0
-    sum += n % 10
-    n /= 10
+    sum += n % 10  # 最下位の桁を取得
+    n /= 10        # 次の桁へ移動
   end
 
   sum
 end
 
+# 解法2: 文字列に変換
 def digit_sum_string(n)
   n.to_s.chars.map(&:to_i).sum
 end
 
+# 解法3: digitsメソッドを使用
 def digit_sum_digits(n)
+  # digitsは各桁を配列として返す（最下位から）
   n.digits.sum
 end
 
+# 解法4: reduceを使用
 def digit_sum_reduce(n)
   n.digits.reduce(0, :+)
 end
 
+# 解法5: 再帰
 def digit_sum_recursive(n)
   return n if n < 10
 
   n % 10 + digit_sum_recursive(n / 10)
 end
 
+# 発展: 桁の合計を繰り返して1桁にする
 def digital_root(n)
   return 0 if n == 0
 
+  # 数学的な公式: 1 + (n - 1) % 9
   1 + (n - 1) % 9
 end
+
+# テストケース
+puts digit_sum(12_345) # => 15
+puts digit_sum(0)       # => 0
+puts digit_sum(9999)    # => 36
+puts digit_sum(100)     # => 1
+
+puts digital_root(38)   # => 2（3 + 8 = 11, 1 + 1 = 2）
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 数字の桁の合計 テスト ==='

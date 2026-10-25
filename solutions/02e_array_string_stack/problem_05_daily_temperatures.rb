@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin daily_temperatures
 # 解法1: 単調減少スタック
 def daily_temperatures(temperatures)
   n = temperatures.length
@@ -75,6 +76,17 @@ def daily_temperatures_optimized(temperatures)
 
   result
 end
+
+# テストケース
+p daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73])
+# => [1, 1, 4, 2, 1, 1, 0, 0]
+
+p daily_temperatures([30, 40, 50, 60])
+# => [1, 1, 1, 0]
+
+p daily_temperatures([30, 60, 90])
+# => [1, 1, 0]
+# docs:end
 
 # ============================================================================
 # テストケース

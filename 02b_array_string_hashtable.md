@@ -45,15 +45,16 @@
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_01_character_frequency.rb#character_frequency -->
 ```ruby
 # 解法1: Hash.new(0)を使用
 def character_frequency(str)
   freq = Hash.new(0)
-  
+
   str.each_char do |char|
     freq[char] += 1
   end
-  
+
   freq
 end
 
@@ -76,16 +77,16 @@ def character_frequency_reduce(str)
 end
 
 # テストケース
-p character_frequency("hello")
+p character_frequency('hello')
 # => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
 
-p character_frequency("mississippi")
+p character_frequency('mississippi')
 # => {"m" => 1, "i" => 4, "s" => 4, "p" => 2}
 
-p character_frequency("")
+p character_frequency('')
 # => {}
 
-p character_frequency("aaa")
+p character_frequency('aaa')
 # => {"a" => 3}
 ```
 
@@ -131,30 +132,31 @@ p character_frequency("aaa")
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_02_first_unique_char.rb#first_unique_char -->
 ```ruby
 # 解法1: 2パス（頻度カウント + 検索）
 def first_unique_char(str)
   freq = Hash.new(0)
-  
+
   # 1パス目: 頻度をカウント
   str.each_char { |char| freq[char] += 1 }
-  
+
   # 2パス目: 最初の一意な文字を見つける
   str.each_char do |char|
     return char if freq[char] == 1
   end
-  
+
   nil
 end
 
 # 解法2: インデックスを返す版
 def first_unique_char_index(str)
   freq = str.chars.tally
-  
+
   str.each_char.with_index do |char, i|
     return i if freq[char] == 1
   end
-  
+
   -1
 end
 
@@ -165,13 +167,13 @@ def first_unique_char_tally(str)
 end
 
 # テストケース
-p first_unique_char("leetcode")         # => "l"
-p first_unique_char("loveleetcode")     # => "v"
-p first_unique_char("aabb")             # => nil
-p first_unique_char("z")                # => "z"
+p first_unique_char('leetcode')         # => "l"
+p first_unique_char('loveleetcode')     # => "v"
+p first_unique_char('aabb')             # => nil
+p first_unique_char('z')                # => "z"
 
-p first_unique_char_index("leetcode")   # => 0
-p first_unique_char_index("loveleetcode") # => 2
+p first_unique_char_index('leetcode')   # => 0
+p first_unique_char_index('loveleetcode') # => 2
 ```
 
 ---
@@ -217,14 +219,15 @@ true
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_03_is_anagram.rb#is_anagram -->
 ```ruby
 # 解法1: 文字頻度を比較（推奨）
 def is_anagram(s, t)
   return false if s.length != t.length
-  
+
   freq_s = s.chars.tally
   freq_t = t.chars.tally
-  
+
   freq_s == freq_t
 end
 
@@ -236,24 +239,24 @@ end
 # 解法3: 1つのハッシュでカウント
 def is_anagram_one_hash(s, t)
   return false if s.length != t.length
-  
+
   freq = Hash.new(0)
-  
+
   # sの文字をカウント
   s.each_char { |char| freq[char] += 1 }
-  
+
   # tの文字を減らす
   t.each_char { |char| freq[char] -= 1 }
-  
+
   # すべての値が0なら、アナグラム
   freq.values.all?(&:zero?)
 end
 
 # テストケース
-p is_anagram("anagram", "nagaram")      # => true
-p is_anagram("rat", "car")              # => false
-p is_anagram("listen", "silent")        # => true
-p is_anagram("hello", "world")          # => false
+p is_anagram('anagram', 'nagaram')      # => true
+p is_anagram('rat', 'car')              # => false
+p is_anagram('listen', 'silent')        # => true
+p is_anagram('hello', 'world')          # => false
 ```
 
 ---
@@ -298,31 +301,32 @@ p is_anagram("hello", "world")          # => false
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_04_group_anagrams.rb#group_anagrams -->
 ```ruby
 # 解法1: ソートをキーにする（推奨）
 def group_anagrams(strs)
   groups = Hash.new { |h, k| h[k] = [] }
-  
+
   strs.each do |str|
     # ソートした文字列をキーとする
     key = str.chars.sort.join
     groups[key] << str
   end
-  
+
   groups.values
 end
 
 # 解法2: 文字頻度をキーにする
 def group_anagrams_frequency(strs)
   groups = Hash.new { |h, k| h[k] = [] }
-  
+
   strs.each do |str|
     # 文字頻度の配列をキーとする（a-zの26文字）
     freq = Array.new(26, 0)
     str.each_char { |char| freq[char.ord - 'a'.ord] += 1 }
     groups[freq] << str
   end
-  
+
   groups.values
 end
 
@@ -332,13 +336,13 @@ def group_anagrams_group_by(strs)
 end
 
 # テストケース
-p group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+p group_anagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat'])
 # => [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
 
-p group_anagrams([""])
+p group_anagrams([''])
 # => [[""]]
 
-p group_anagrams(["a"])
+p group_anagrams(['a'])
 # => [["a"]]
 ```
 
@@ -390,41 +394,42 @@ true  # [3, 7] の和が10、[7, 5]の和が12
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_05_subarray_sum.rb#subarray_sum_exists -->
 ```ruby
 # 解法1: 累積和とハッシュセット
 def subarray_sum_exists(nums, target)
   sum = 0
-  seen = Set.new([0])  # 累積和0を初期状態
-  
+  seen = Set.new([0]) # 累積和0を初期状態
+
   nums.each do |num|
     sum += num
-    
+
     # sum - target が存在すれば、その間の和がtarget
     return true if seen.include?(sum - target)
-    
+
     seen.add(sum)
   end
-  
+
   false
 end
 
 # 解法2: インデックスを返す版
 def subarray_sum_indices(nums, target)
   sum = 0
-  sum_indices = { 0 => -1 }  # 累積和 => インデックス
-  
+  sum_indices = { 0 => -1 } # 累積和 => インデックス
+
   nums.each_with_index do |num, i|
     sum += num
-    
+
     if sum_indices.key?(sum - target)
       # 部分配列のインデックス範囲を返す
       start_idx = sum_indices[sum - target] + 1
       return [start_idx, i]
     end
-    
+
     sum_indices[sum] = i
   end
-  
+
   nil
 end
 
@@ -437,17 +442,17 @@ def subarray_sum_brute_force(nums, target)
       return true if sum == target
     end
   end
-  
+
   false
 end
 
 # テストケース
-p subarray_sum_exists([1, 2, 3, 7, 5], 12)   # => true ([7, 5])
+p subarray_sum_exists([1, 2, 3, 7, 5], 12)   # => true（[7, 5]）
 p subarray_sum_exists([1, 2, 3, 4], 100)     # => false
-p subarray_sum_exists([1, -1, 0], 0)         # => true (多くの組み合わせ)
+p subarray_sum_exists([1, -1, 0], 0)         # => true（多くの組み合わせ）
 
-p subarray_sum_indices([1, 2, 3, 7, 5], 12)  # => [1, 3] ([2, 3, 7])
-p subarray_sum_indices([1, 2, 3, 4], 6)      # => [0, 2] ([1, 2, 3])
+p subarray_sum_indices([1, 2, 3, 7, 5], 12)  # => [1, 3]（[2, 3, 7]）
+p subarray_sum_indices([1, 2, 3, 4], 6)      # => [0, 2]（[1, 2, 3]）
 ```
 
 ---
@@ -495,15 +500,16 @@ nums2 = [2, 2]
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_06_intersect.rb#intersect -->
 ```ruby
 # 解法1: ハッシュで頻度管理（推奨）
 def intersect(nums1, nums2)
   freq = Hash.new(0)
   result = []
-  
+
   # nums1の頻度をカウント
   nums1.each { |num| freq[num] += 1 }
-  
+
   # nums2を走査して共通要素を探す
   nums2.each do |num|
     if freq[num] > 0
@@ -511,7 +517,7 @@ def intersect(nums1, nums2)
       freq[num] -= 1
     end
   end
-  
+
   result
 end
 
@@ -519,10 +525,10 @@ end
 def intersect_sorted(nums1, nums2)
   nums1.sort!
   nums2.sort!
-  
+
   result = []
   i = j = 0
-  
+
   while i < nums1.length && j < nums2.length
     if nums1[i] == nums2[j]
       result << nums1[i]
@@ -534,7 +540,7 @@ def intersect_sorted(nums1, nums2)
       j += 1
     end
   end
-  
+
   result
 end
 
@@ -542,14 +548,14 @@ end
 def intersect_tally(nums1, nums2)
   freq1 = nums1.tally
   result = []
-  
+
   nums2.each do |num|
     if freq1[num] && freq1[num] > 0
       result << num
       freq1[num] -= 1
     end
   end
-  
+
   result
 end
 
@@ -609,41 +615,42 @@ p intersect([1, 2, 3], [4, 5, 6])           # => []
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_07_longest_consecutive.rb#longest_consecutive -->
 ```ruby
 # 解法1: セットを使用（O(n)、推奨）
 def longest_consecutive(nums)
   return 0 if nums.empty?
-  
+
   num_set = nums.to_set
   longest = 0
-  
+
   num_set.each do |num|
     # num - 1が存在しない場合のみ、連続数列の開始点
     next if num_set.include?(num - 1)
-    
+
     current_num = num
     current_length = 1
-    
+
     # 連続する数をカウント
     while num_set.include?(current_num + 1)
       current_num += 1
       current_length += 1
     end
-    
+
     longest = [longest, current_length].max
   end
-  
+
   longest
 end
 
 # 解法2: ソートして探索（O(n log n)）
 def longest_consecutive_sort(nums)
   return 0 if nums.empty?
-  
+
   sorted = nums.uniq.sort
   longest = 1
   current_length = 1
-  
+
   (1...sorted.length).each do |i|
     if sorted[i] == sorted[i - 1] + 1
       current_length += 1
@@ -652,13 +659,13 @@ def longest_consecutive_sort(nums)
       current_length = 1
     end
   end
-  
+
   longest
 end
 
 # テストケース
-p longest_consecutive([100, 4, 200, 1, 3, 2])  # => 4 ([1,2,3,4])
-p longest_consecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1])  # => 9 ([0-8])
+p longest_consecutive([100, 4, 200, 1, 3, 2]) # => 4（[1,2,3,4]）
+p longest_consecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]) # => 9（[0-8]）
 p longest_consecutive([])                       # => 0
 p longest_consecutive([1])                      # => 1
 ```
@@ -718,25 +725,26 @@ true  # e->a, g->d
 
 ### 解答
 
+<!-- source: solutions/02b_array_string_hashtable/problem_08_is_isomorphic.rb#is_isomorphic -->
 ```ruby
 # 解法1: 2つのハッシュマップ（推奨）
 def is_isomorphic(s, t)
   return false if s.length != t.length
-  
+
   s_to_t = {}
   t_to_s = {}
-  
+
   s.length.times do |i|
     char_s = s[i]
     char_t = t[i]
-    
+
     # sからtへのマッピングをチェック
     if s_to_t.key?(char_s)
       return false if s_to_t[char_s] != char_t
     else
       s_to_t[char_s] = char_t
     end
-    
+
     # tからsへのマッピングをチェック
     if t_to_s.key?(char_t)
       return false if t_to_s[char_t] != char_s
@@ -744,18 +752,18 @@ def is_isomorphic(s, t)
       t_to_s[char_t] = char_s
     end
   end
-  
+
   true
 end
 
 # 解法2: 変換パターンを比較
 def is_isomorphic_pattern(s, t)
   return false if s.length != t.length
-  
+
   # 各文字列を数値パターンに変換
   pattern_s = create_pattern(s)
   pattern_t = create_pattern(t)
-  
+
   pattern_s == pattern_t
 end
 
@@ -763,7 +771,7 @@ def create_pattern(str)
   char_to_index = {}
   next_index = 0
   pattern = []
-  
+
   str.each_char do |char|
     unless char_to_index.key?(char)
       char_to_index[char] = next_index
@@ -771,15 +779,15 @@ def create_pattern(str)
     end
     pattern << char_to_index[char]
   end
-  
+
   pattern
 end
 
 # テストケース
-p is_isomorphic("egg", "add")      # => true
-p is_isomorphic("foo", "bar")      # => false
-p is_isomorphic("paper", "title")  # => true
-p is_isomorphic("ab", "aa")        # => false
+p is_isomorphic('egg', 'add')      # => true
+p is_isomorphic('foo', 'bar')      # => false
+p is_isomorphic('paper', 'title')  # => true
+p is_isomorphic('ab', 'aa')        # => false
 ```
 
 ---

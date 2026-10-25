@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin max_cutter_height
+# 解法1: 答えの二分探索
 def max_cutter_height(trees, m)
   left = 0
   right = trees.max
@@ -9,12 +11,15 @@ def max_cutter_height(trees, m)
   while left <= right
     mid = (left + right) / 2
 
+    # mid の高さで切った場合の木材の量
     wood = trees.sum { |height| [0, height - mid].max }
 
     if wood >= m
+      # 十分な木材が得られる、さらに高く設定できるか試す
       result = mid
       left = mid + 1
     else
+      # 木材が不足、もっと低く設定する必要がある
       right = mid - 1
     end
   end
@@ -22,11 +27,13 @@ def max_cutter_height(trees, m)
   result
 end
 
+# 解法2: より明示的な実装
 def max_cutter_height_explicit(trees, m)
   left = 0
   right = trees.max
 
   while left < right
+    # 上界を探索（最大値を求めるため mid を切り上げ）
     mid = (left + right + 1) / 2
 
     wood = calculate_wood(trees, mid)
@@ -44,6 +51,12 @@ end
 def calculate_wood(trees, height)
   trees.sum { |tree| tree > height ? tree - height : 0 }
 end
+
+# テストケース
+p max_cutter_height([20, 15, 10, 17], 7) # => 15
+p max_cutter_height([4, 42, 40, 26, 46], 20) # => 36
+p max_cutter_height([1, 2, 3, 4, 5], 5) # => 2
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 木材の切断（答えの二分探索） テスト ==='

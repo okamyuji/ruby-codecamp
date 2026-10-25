@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin ListNode
 class ListNode
   attr_accessor :val, :next
 
@@ -9,7 +10,18 @@ class ListNode
     @next = _next
   end
 end
+# docs:end
 
+# docs:begin print_list
+# リストの作成
+node1 = ListNode.new(1)
+node2 = ListNode.new(2)
+node3 = ListNode.new(3)
+
+node1.next = node2
+node2.next = node3
+
+# リストの走査
 def print_list(head)
   current = head
   while current
@@ -19,6 +31,10 @@ def print_list(head)
   puts 'nil'
 end
 
+print_list(node1) # 出力: 1 -> 2 -> 3 -> nil
+# docs:end
+
+# docs:begin list_length
 def list_length(head)
   length = 0
   current = head
@@ -31,6 +47,12 @@ def list_length(head)
   length
 end
 
+# テストケース
+head = ListNode.new(1, ListNode.new(2, ListNode.new(3)))
+puts list_length(head) # => 3
+# docs:end
+
+# docs:begin get_nth_value
 def get_nth_value(head, n)
   current = head
   index = 0
@@ -42,15 +64,23 @@ def get_nth_value(head, n)
     index += 1
   end
 
-  nil
+  nil # nが範囲外の場合
 end
 
+# テストケース
+head = ListNode.new(1, ListNode.new(2, ListNode.new(3)))
+puts get_nth_value(head, 1) # => 2
+# docs:end
+
+# docs:begin delete_value
 def delete_value(head, val)
+  # ダミーノードを使用して、先頭ノード削除を簡単に処理
   dummy = ListNode.new(0, head)
   current = dummy
 
   while current.next
     if current.next.val == val
+      # ノードをスキップして削除
       current.next = current.next.next
     else
       current = current.next
@@ -59,7 +89,9 @@ def delete_value(head, val)
 
   dummy.next
 end
+# docs:end
 
+# docs:begin delete_nth_node
 def delete_nth_node(head, n)
   dummy = ListNode.new(0, head)
   current = dummy
@@ -76,21 +108,27 @@ def delete_nth_node(head, n)
 
   dummy.next
 end
+# docs:end
 
+# docs:begin reverse_list
 def reverse_list(head)
   prev = nil
   current = head
 
   while current
+    # 次のノードを一時保存
     next_node = current.next
+    # 現在のノードの next を前のノードに向ける
     current.next = prev
+    # prev と current を進める
     prev = current
     current = next_node
   end
 
-  prev
+  prev # 新しい先頭
 end
 
+# 再帰版
 def reverse_list_recursive(head, prev = nil)
   return prev if head.nil?
 
@@ -98,7 +136,9 @@ def reverse_list_recursive(head, prev = nil)
   head.next = prev
   reverse_list_recursive(next_node, head)
 end
+# docs:end
 
+# docs:begin merge_two_lists
 def merge_two_lists(list1, list2)
   dummy = ListNode.new(0)
   current = dummy
@@ -114,11 +154,14 @@ def merge_two_lists(list1, list2)
     current = current.next
   end
 
+  # 残りを追加
   current.next = list1 || list2
 
   dummy.next
 end
+# docs:end
 
+# docs:begin has_cycle
 def has_cycle(head)
   return false if head.nil?
 
@@ -134,7 +177,9 @@ def has_cycle(head)
 
   false
 end
+# docs:end
 
+# docs:begin middle_node
 def middle_node(head)
   slow = head
   fast = head
@@ -146,23 +191,29 @@ def middle_node(head)
 
   slow
 end
+# docs:end
 
+# docs:begin remove_nth_from_end
 def remove_nth_from_end(head, n)
   dummy = ListNode.new(0, head)
   first = dummy
   second = dummy
 
+  # first を n+1 歩進める
   (n + 1).times { first = first.next }
 
+  # 両方のポインタを進める
   while first
     first = first.next
     second = second.next
   end
 
+  # second の次のノードを削除
   second.next = second.next.next
 
   dummy.next
 end
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 連結リスト テスト ==='

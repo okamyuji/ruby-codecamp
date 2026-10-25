@@ -19,6 +19,7 @@
 # 空間計算量: O(1) - 結果配列を除く
 # ============================================================================
 
+# docs:begin find_diagonal_order
 # 解法1: 対角線ごとに処理
 def find_diagonal_order(matrix)
   return [] if matrix.empty?
@@ -68,7 +69,7 @@ def find_diagonal_order_vector(matrix)
       if col == n - 1
         row += 1
         going_up = false
-      elsif row.zero?
+      elsif row == 0
         col += 1
         going_up = false
       else
@@ -78,7 +79,7 @@ def find_diagonal_order_vector(matrix)
     elsif row == m - 1
       col += 1
       going_up = true
-    elsif col.zero?
+    elsif col == 0
       row += 1
       going_up = true
     else
@@ -89,6 +90,14 @@ def find_diagonal_order_vector(matrix)
 
   result
 end
+
+# テストケース
+p find_diagonal_order([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+# => [1, 2, 4, 7, 5, 3, 6, 8, 9]
+
+p find_diagonal_order([[1, 2], [3, 4]])
+# => [1, 2, 3, 4]
+# docs:end
 
 # ============================================================================
 # テストケース

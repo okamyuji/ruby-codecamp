@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin exist
+# 解法1: DFS + バックトラック
 def exist(board, word)
   m = board.length
   n = board[0].length
@@ -15,26 +17,33 @@ def exist(board, word)
 end
 
 def dfs_exist(board, word, row, col, index)
+  # ベースケース: すべての文字が一致
   return true if index == word.length
 
+  # 範囲外チェック
   return false if row < 0 || row >= board.length ||
                   col < 0 || col >= board[0].length
 
+  # 文字が一致しないか、訪問済み
   return false if board[row][col] != word[index]
 
+  # 訪問済みマーク
   temp = board[row][col]
   board[row][col] = '#'
 
+  # 4方向探索
   result = dfs_exist(board, word, row + 1, col, index + 1) ||
            dfs_exist(board, word, row - 1, col, index + 1) ||
            dfs_exist(board, word, row, col + 1, index + 1) ||
            dfs_exist(board, word, row, col - 1, index + 1)
 
+  # バックトラック
   board[row][col] = temp
 
   result
 end
 
+# 解法2: 訪問済みセットを使用
 def exist_with_set(board, word)
   m = board.length
   n = board[0].length
@@ -68,6 +77,18 @@ def dfs_exist_set(board, word, row, col, index, visited)
 
   result
 end
+
+# テストケース
+board = [
+  ['A', 'B', 'C', 'E'],
+  ['S', 'F', 'C', 'S'],
+  ['A', 'D', 'E', 'E']
+]
+
+p exist(board, 'ABCCED')  # => true
+p exist(board, 'SEE')     # => true
+p exist(board, 'ABCB')    # => false
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 単語検索 テスト ==='

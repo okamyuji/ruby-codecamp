@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_closest_elements
+# 解法1: Binary Search + Sliding Window
 def find_closest_elements(arr, k, x)
   left = 0
   right = arr.length - k
@@ -8,6 +10,7 @@ def find_closest_elements(arr, k, x)
   while left < right
     mid = (left + right) / 2
 
+    # 中央位置のウィンドウとその次のウィンドウを比較
     if x - arr[mid] > arr[mid + k] - x
       left = mid + 1
     else
@@ -18,10 +21,12 @@ def find_closest_elements(arr, k, x)
   arr[left, k]
 end
 
+# 解法2: Two Pointers（両端から縮小）
 def find_closest_elements_two_pointers(arr, k, x)
   left = 0
   right = arr.length - 1
 
+  # k個になるまで遠い方を削除
   while right - left >= k
     if (x - arr[left]).abs <= (arr[right] - x).abs
       right -= 1
@@ -33,11 +38,15 @@ def find_closest_elements_two_pointers(arr, k, x)
   arr[left..right]
 end
 
+# 解法3: Quickselect（距離でソート）
 def find_closest_elements_quickselect(arr, k, x)
+  # 距離の配列を作成
   distances = arr.map.with_index { |num, i| [i, (num - x).abs, num] }
 
+  # k番目に近い要素を見つける
   quickselect_distance(distances, k)
 
+  # 上位k個をソートして返す
   distances[0...k].map { |_, _, num| num }.sort
 end
 
@@ -66,6 +75,7 @@ def partition_distance(arr, left, right)
   i = left
 
   (left...right).each do |j|
+    # 距離で比較、同じなら値で比較
     if arr[j][1] < pivot[1] || (arr[j][1] == pivot[1] && arr[j][2] < pivot[2])
       arr[i], arr[j] = arr[j], arr[i]
       i += 1
@@ -75,6 +85,12 @@ def partition_distance(arr, left, right)
   arr[i], arr[right] = arr[right], arr[i]
   i
 end
+
+# テストケース
+p find_closest_elements([1, 2, 3, 4, 5], 4, 3) # => [1, 2, 3, 4]
+p find_closest_elements([1, 2, 3, 4, 5], 4, -1) # => [1, 2, 3, 4]
+p find_closest_elements([1, 1, 1, 10, 10, 10], 1, 9) # => [10]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== k番目に近い要素 テスト ==='

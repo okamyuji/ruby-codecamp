@@ -1,12 +1,17 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin top_k_frequent
+# 解法1: Quickselect + 頻度マップ
 def top_k_frequent(nums, k)
+  # 頻度をカウント
   freq = nums.tally
   unique = freq.keys
 
+  # k番目に高い頻度を持つ要素のインデックスを見つける
   quickselect_by_frequency(unique, unique.length - k, freq)
 
+  # 上位k個を返す
   unique[(unique.length - k)..]
 end
 
@@ -45,15 +50,18 @@ def partition_by_frequency(nums, left, right, freq)
   i
 end
 
+# 解法2: バケットソート
 def top_k_frequent_bucket(nums, k)
   freq = nums.tally
 
+  # 頻度ごとのバケット
   buckets = Array.new(nums.length + 1) { [] }
 
   freq.each do |num, count|
     buckets[count] << num
   end
 
+  # 高頻度から取得
   result = []
 
   buckets.reverse_each do |bucket|
@@ -65,6 +73,12 @@ def top_k_frequent_bucket(nums, k)
 
   result
 end
+
+# テストケース
+p top_k_frequent([1, 1, 1, 2, 2, 3], 2) # => [1, 2] または [2, 1]
+p top_k_frequent([1], 1) # => [1]
+p top_k_frequent([4, 1, -1, 2, -1, 2, 3], 2) # => [-1, 2] または [2, -1]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== トップK頻出要素（Quickselect版） テスト ==='

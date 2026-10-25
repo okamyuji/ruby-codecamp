@@ -16,6 +16,7 @@
 # 空間計算量: O(k) - kは一意な文字の数
 # ============================================================================
 
+# docs:begin first_unique_char
 # 解法1: 2パス（頻度カウント + 検索）
 def first_unique_char(str)
   freq = Hash.new(0)
@@ -47,6 +48,16 @@ def first_unique_char_tally(str)
   freq = str.chars.tally
   str.chars.find { |char| freq[char] == 1 }
 end
+
+# テストケース
+p first_unique_char('leetcode')         # => "l"
+p first_unique_char('loveleetcode')     # => "v"
+p first_unique_char('aabb')             # => nil
+p first_unique_char('z')                # => "z"
+
+p first_unique_char_index('leetcode')   # => 0
+p first_unique_char_index('loveleetcode') # => 2
+# docs:end
 
 # ============================================================================
 # テストケース

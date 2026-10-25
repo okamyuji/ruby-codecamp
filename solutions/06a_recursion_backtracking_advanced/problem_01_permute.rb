@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin permute
+# 解法1: バックトラック（使用済み配列）
 def permute(nums)
   result = []
   used = Array.new(nums.length, false)
@@ -9,24 +11,30 @@ def permute(nums)
 end
 
 def backtrack_permute(nums, current, used, result)
+  # ベースケース
   if current.length == nums.length
     result << current.dup
     return
   end
 
+  # 各要素を試す
   nums.each_with_index do |num, i|
     next if used[i]
 
+    # 選択
     current << num
     used[i] = true
 
+    # 再帰
     backtrack_permute(nums, current, used, result)
 
+    # バックトラック
     current.pop
     used[i] = false
   end
 end
 
+# 解法2: スワップを使用
 def permute_swap(nums)
   result = []
   backtrack_swap(nums.dup, 0, result)
@@ -40,14 +48,18 @@ def backtrack_swap(nums, start, result)
   end
 
   (start...nums.length).each do |i|
+    # スワップ
     nums[start], nums[i] = nums[i], nums[start]
 
+    # 再帰
     backtrack_swap(nums, start + 1, result)
 
+    # バックトラック
     nums[start], nums[i] = nums[i], nums[start]
   end
 end
 
+# 解法3: 再帰的に構築
 def permute_recursive(nums)
   return [[]] if nums.empty?
   return [nums] if nums.length == 1
@@ -55,6 +67,7 @@ def permute_recursive(nums)
   result = []
 
   nums.each_with_index do |num, i|
+    # 現在の要素を除いた残りで順列を生成
     rest = nums[0...i] + nums[(i + 1)..]
 
     permute_recursive(rest).each do |perm|
@@ -64,6 +77,12 @@ def permute_recursive(nums)
 
   result
 end
+
+# テストケース
+p permute([1, 2, 3]) # => [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+p permute([0, 1]) # => [[0, 1], [1, 0]]
+p permute([1]) # => [[1]]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 順列の生成 テスト ==='

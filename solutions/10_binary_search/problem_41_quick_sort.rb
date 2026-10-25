@@ -1,18 +1,24 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin quick_sort
+# 解法1: 関数型スタイル（シンプルで推奨）
 def quick_sort(arr)
   return arr if arr.length <= 1
 
+  # 中央の要素をピボットとして選択
   pivot = arr[arr.length / 2]
 
+  # 配列をピボットを基準に3つに分割
   smaller = arr.select { |x| x < pivot }
   equal = arr.select { |x| x == pivot }
   larger = arr.select { |x| x > pivot }
 
+  # 再帰的にソートして結合
   quick_sort(smaller) + equal + quick_sort(larger)
 end
 
+# 解法2: partitionを使用
 def quick_sort_partition(arr)
   return arr if arr.length <= 1
 
@@ -22,6 +28,7 @@ def quick_sort_partition(arr)
   quick_sort_partition(smaller) + [pivot] + quick_sort_partition(larger)
 end
 
+# 解法3: in-placeクイックソート
 def quick_sort_inplace(arr, low = 0, high = arr.length - 1)
   return arr if low >= high
 
@@ -47,6 +54,7 @@ def partition_inplace(arr, low, high)
   i + 1
 end
 
+# 解法4: ランダムピボット
 def quick_sort_random(arr)
   return arr if arr.length <= 1
 
@@ -69,6 +77,14 @@ def quick_sort_random(arr)
 
   quick_sort_random(smaller) + equal + quick_sort_random(larger)
 end
+
+# テストケース
+p quick_sort([10, 7, 8, 9, 1, 5])   # => [1, 5, 7, 8, 9, 10]
+p quick_sort([3, 6, 8, 10, 1, 2])   # => [1, 2, 3, 6, 8, 10]
+p quick_sort([1])                   # => [1]
+p quick_sort([])                    # => []
+p quick_sort([5, 5, 5, 5])          # => [5, 5, 5, 5]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== クイックソート テスト ==='

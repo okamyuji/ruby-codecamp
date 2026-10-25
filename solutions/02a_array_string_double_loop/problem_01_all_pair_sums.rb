@@ -16,6 +16,7 @@
 # 空間計算量: O(n²) - 最悪の場合、すべてのペアを保存
 # ============================================================================
 
+# docs:begin all_pair_sums
 # 解法1: 基本的な二重ループ
 def all_pair_sums(arr)
   result = []
@@ -48,6 +49,14 @@ end
 def all_pair_sums_combination(arr)
   arr.combination(2).map { |a, b| a + b }
 end
+
+# テストケース
+p all_pair_sums([1, 2, 3])           # => [3, 4, 5]
+p all_pair_sums([1, 2, 3, 4])        # => [3, 4, 5, 5, 6, 7]
+p all_pair_sums([5])                 # => []
+p all_pair_sums([])                  # => []
+p all_pair_sums([1, 1, 1])           # => [2, 2, 2]
+# docs:end
 
 # ============================================================================
 # テストケース

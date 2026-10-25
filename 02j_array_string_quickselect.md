@@ -67,18 +67,19 @@ Quickselectアルゴリズムを使用します。ピボットを選び、パー
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_01_find_kth_smallest.rb#find_kth_smallest -->
 ```ruby
 # 解法1: Quickselect
 def find_kth_smallest(nums, k)
   left = 0
   right = nums.length - 1
-  
+
   loop do
     return nums[left] if left == right
-    
+
     # パーティション
     pivot_idx = partition(nums, left, right)
-    
+
     # k-1 はゼロインデックス
     if k - 1 == pivot_idx
       return nums[pivot_idx]
@@ -94,17 +95,17 @@ def partition(nums, left, right)
   # ランダムなピボットを選んで右端と交換（最悪ケースを回避）
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-  
+
   pivot = nums[right]
   i = left
-  
+
   (left...right).each do |j|
     if nums[j] < pivot
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
   end
-  
+
   nums[i], nums[right] = nums[right], nums[i]
   i
 end
@@ -118,20 +119,20 @@ end
 def find_kth_smallest_heap(nums, k)
   # Rubyには組み込みのMinHeapがないので、MaxHeapを負の値で使用
   heap = []
-  
+
   nums.each do |num|
     heap << -num
-    heap.sort!  # 簡易実装（実際はheapifyを使用）
+    heap.sort! # 簡易実装（実際はheapifyを使用）
     heap.shift if heap.size > k
   end
-  
+
   -heap[0]
 end
 
 # テストケース
-p find_kth_smallest([3, 2, 1, 5, 6, 4], 2)  # => 2
-p find_kth_smallest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4)  # => 3
-p find_kth_smallest([1], 1)  # => 1
+p find_kth_smallest([3, 2, 1, 5, 6, 4], 2) # => 2
+p find_kth_smallest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) # => 3
+p find_kth_smallest([1], 1) # => 1
 ```
 
 ---
@@ -186,6 +187,7 @@ k番目に大きい要素は、(n - k + 1)番目に小さい要素と同じで�
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_02_find_kth_largest.rb#find_kth_largest -->
 ```ruby
 # 解法1: Quickselect（k番目に小さいを利用）
 def find_kth_largest(nums, k)
@@ -196,10 +198,10 @@ end
 def quickselect(nums, k)
   left = 0
   right = nums.length - 1
-  
+
   loop do
     pivot_idx = partition_asc(nums, left, right)
-    
+
     if pivot_idx == k
       return nums[k]
     elsif pivot_idx > k
@@ -213,17 +215,17 @@ end
 def partition_asc(nums, left, right)
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-  
+
   pivot = nums[right]
   i = left
-  
+
   (left...right).each do |j|
     if nums[j] < pivot
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
   end
-  
+
   nums[i], nums[right] = nums[right], nums[i]
   i
 end
@@ -232,10 +234,10 @@ end
 def find_kth_largest_desc(nums, k)
   left = 0
   right = nums.length - 1
-  
+
   loop do
     pivot_idx = partition_desc(nums, left, right)
-    
+
     if pivot_idx == k - 1
       return nums[k - 1]
     elsif pivot_idx > k - 1
@@ -249,17 +251,17 @@ end
 def partition_desc(nums, left, right)
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-  
+
   pivot = nums[right]
   i = left
-  
+
   (left...right).each do |j|
-    if nums[j] > pivot  # 降順
+    if nums[j] > pivot # 降順
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
   end
-  
+
   nums[i], nums[right] = nums[right], nums[i]
   i
 end
@@ -268,7 +270,7 @@ end
 def find_kth_largest_heap(nums, k)
   # k個の最大要素を保持するMinHeap
   heap = []
-  
+
   nums.each do |num|
     if heap.size < k
       heap << num
@@ -278,14 +280,14 @@ def find_kth_largest_heap(nums, k)
       heap.sort!
     end
   end
-  
+
   heap[0]
 end
 
 # テストケース
-p find_kth_largest([3, 2, 1, 5, 6, 4], 2)  # => 5
-p find_kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4)  # => 4
-p find_kth_largest([1], 1)  # => 1
+p find_kth_largest([3, 2, 1, 5, 6, 4], 2) # => 5
+p find_kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) # => 4
+p find_kth_largest([1], 1) # => 1
 ```
 
 ---
@@ -331,27 +333,28 @@ nums = [1, 1, 1, 2, 2, 3], k = 2
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_03_top_k_frequent.rb#top_k_frequent -->
 ```ruby
 # 解法1: Quickselect + 頻度マップ
 def top_k_frequent(nums, k)
   # 頻度をカウント
   freq = nums.tally
   unique = freq.keys
-  
+
   # k番目に高い頻度を持つ要素のインデックスを見つける
   quickselect_by_frequency(unique, unique.length - k, freq)
-  
+
   # 上位k個を返す
-  unique[unique.length - k..-1]
+  unique[(unique.length - k)..]
 end
 
 def quickselect_by_frequency(nums, k, freq)
   left = 0
   right = nums.length - 1
-  
+
   loop do
     pivot_idx = partition_by_frequency(nums, left, right, freq)
-    
+
     if pivot_idx == k
       return
     elsif pivot_idx > k
@@ -365,17 +368,17 @@ end
 def partition_by_frequency(nums, left, right, freq)
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-  
+
   pivot_freq = freq[nums[right]]
   i = left
-  
+
   (left...right).each do |j|
     if freq[nums[j]] < pivot_freq
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
   end
-  
+
   nums[i], nums[right] = nums[right], nums[i]
   i
 end
@@ -383,31 +386,31 @@ end
 # 解法2: バケットソート
 def top_k_frequent_bucket(nums, k)
   freq = nums.tally
-  
+
   # 頻度ごとのバケット
   buckets = Array.new(nums.length + 1) { [] }
-  
+
   freq.each do |num, count|
     buckets[count] << num
   end
-  
+
   # 高頻度から取得
   result = []
-  
+
   buckets.reverse_each do |bucket|
     bucket.each do |num|
       result << num
       return result if result.size == k
     end
   end
-  
+
   result
 end
 
 # テストケース
-p top_k_frequent([1, 1, 1, 2, 2, 3], 2)  # => [1, 2] または [2, 1]
-p top_k_frequent([1], 1)  # => [1]
-p top_k_frequent([4, 1, -1, 2, -1, 2, 3], 2)  # => [-1, 2] または [2, -1]
+p top_k_frequent([1, 1, 1, 2, 2, 3], 2) # => [1, 2] または [2, 1]
+p top_k_frequent([1], 1) # => [1]
+p top_k_frequent([4, 1, -1, 2, -1, 2, 3], 2) # => [-1, 2] または [2, -1]
 ```
 
 ---
@@ -458,15 +461,16 @@ Binary Searchで開始位置を見つけ、Two Pointersで拡張するか、Quic
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_04_find_closest_elements.rb#find_closest_elements -->
 ```ruby
 # 解法1: Binary Search + Sliding Window
 def find_closest_elements(arr, k, x)
   left = 0
   right = arr.length - k
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     # 中央位置のウィンドウとその次のウィンドウを比較
     if x - arr[mid] > arr[mid + k] - x
       left = mid + 1
@@ -474,7 +478,7 @@ def find_closest_elements(arr, k, x)
       right = mid
     end
   end
-  
+
   arr[left, k]
 end
 
@@ -482,7 +486,7 @@ end
 def find_closest_elements_two_pointers(arr, k, x)
   left = 0
   right = arr.length - 1
-  
+
   # k個になるまで遠い方を削除
   while right - left >= k
     if (x - arr[left]).abs <= (arr[right] - x).abs
@@ -491,7 +495,7 @@ def find_closest_elements_two_pointers(arr, k, x)
       left += 1
     end
   end
-  
+
   arr[left..right]
 end
 
@@ -499,10 +503,10 @@ end
 def find_closest_elements_quickselect(arr, k, x)
   # 距離の配列を作成
   distances = arr.map.with_index { |num, i| [i, (num - x).abs, num] }
-  
+
   # k番目に近い要素を見つける
   quickselect_distance(distances, k)
-  
+
   # 上位k個をソートして返す
   distances[0...k].map { |_, _, num| num }.sort
 end
@@ -510,10 +514,10 @@ end
 def quickselect_distance(arr, k)
   left = 0
   right = arr.length - 1
-  
+
   loop do
     pivot_idx = partition_distance(arr, left, right)
-    
+
     if pivot_idx == k - 1
       return
     elsif pivot_idx > k - 1
@@ -527,10 +531,10 @@ end
 def partition_distance(arr, left, right)
   pivot_idx = rand(left..right)
   arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
-  
+
   pivot = arr[right]
   i = left
-  
+
   (left...right).each do |j|
     # 距離で比較、同じなら値で比較
     if arr[j][1] < pivot[1] || (arr[j][1] == pivot[1] && arr[j][2] < pivot[2])
@@ -538,15 +542,15 @@ def partition_distance(arr, left, right)
       i += 1
     end
   end
-  
+
   arr[i], arr[right] = arr[right], arr[i]
   i
 end
 
 # テストケース
-p find_closest_elements([1, 2, 3, 4, 5], 4, 3)  # => [1, 2, 3, 4]
-p find_closest_elements([1, 2, 3, 4, 5], 4, -1)  # => [1, 2, 3, 4]
-p find_closest_elements([1, 1, 1, 10, 10, 10], 1, 9)  # => [10]
+p find_closest_elements([1, 2, 3, 4, 5], 4, 3) # => [1, 2, 3, 4]
+p find_closest_elements([1, 2, 3, 4, 5], 4, -1) # => [1, 2, 3, 4]
+p find_closest_elements([1, 1, 1, 10, 10, 10], 1, 9) # => [10]
 ```
 
 ---
@@ -601,19 +605,20 @@ p find_closest_elements([1, 1, 1, 10, 10, 10], 1, 9)  # => [10]
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_05_wiggle_sort.rb#wiggle_sort -->
 ```ruby
 # 解法1: Quickselect + 3-way partition
 def wiggle_sort(nums)
   n = nums.length
-  
+
   # 中央値を見つける
   median = find_median(nums.dup)
-  
+
   # 3-way partition
   smaller = []
   equal = []
   larger = []
-  
+
   nums.each do |num|
     if num < median
       smaller << num
@@ -623,20 +628,20 @@ def wiggle_sort(nums)
       equal << num
     end
   end
-  
+
   # ウィグル順序に配置
   # 奇数インデックス（1, 3, 5...）に大きい値
   # 偶数インデックス（0, 2, 4...）に小さい値
-  
+
   result = Array.new(n)
-  
+
   # 大きい値を奇数インデックスに配置（降順）
   pos = 1
   larger.reverse_each do |num|
     result[pos] = num
     pos += 2
   end
-  
+
   # 中央値を奇数インデックスに配置（残りがあれば）
   equal.reverse_each do |num|
     if pos < n
@@ -646,10 +651,10 @@ def wiggle_sort(nums)
       break
     end
   end
-  
+
   # 小さい値を偶数インデックスに配置（降順）
   pos = 0
-  
+
   # 残りの中央値を偶数インデックスに
   equal.reverse_each do |num|
     if result[1].nil? || num != result[1]
@@ -657,25 +662,25 @@ def wiggle_sort(nums)
       pos += 2
     end
   end
-  
+
   smaller.reverse_each do |num|
     result[pos] = num
     pos += 2
   end
-  
+
   nums.replace(result)
 end
 
 def find_median(nums)
   n = nums.length
   k = n / 2
-  
+
   left = 0
   right = nums.length - 1
-  
+
   loop do
     pivot_idx = partition_asc(nums, left, right)
-    
+
     if pivot_idx == k
       return nums[k]
     elsif pivot_idx > k
@@ -689,17 +694,17 @@ end
 def partition_asc(nums, left, right)
   pivot_idx = rand(left..right)
   nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-  
+
   pivot = nums[right]
   i = left
-  
+
   (left...right).each do |j|
     if nums[j] < pivot
       nums[i], nums[j] = nums[j], nums[i]
       i += 1
     end
   end
-  
+
   nums[i], nums[right] = nums[right], nums[i]
   i
 end
@@ -709,17 +714,17 @@ def wiggle_sort_simple(nums)
   sorted = nums.sort
   n = nums.length
   mid = (n + 1) / 2
-  
+
   smaller = sorted[0...mid].reverse
-  larger = sorted[mid..-1].reverse
-  
+  larger = sorted[mid..].reverse
+
   result = []
-  
+
   [smaller.length, larger.length].max.times do |i|
     result << smaller[i] if i < smaller.length
     result << larger[i] if i < larger.length
   end
-  
+
   nums.replace(result)
 end
 
@@ -797,64 +802,65 @@ Binary Search on Answer を使用します。可能な距離の範囲で二分�
 
 ### 解答
 
+<!-- source: solutions/02j_array_string_quickselect/problem_06_smallest_distance_pair.rb#smallest_distance_pair -->
 ```ruby
 # 解法1: Binary Search on Answer
 def smallest_distance_pair(nums, k)
   nums.sort!
-  
+
   left = 0
   right = nums[-1] - nums[0]
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     # mid以下の距離を持つペアの数を数える
     count = count_pairs_with_distance_le(nums, mid)
-    
+
     if count >= k
       right = mid
     else
       left = mid + 1
     end
   end
-  
+
   left
 end
 
 def count_pairs_with_distance_le(nums, distance)
   count = 0
   left = 0
-  
+
   nums.each_with_index do |num, right|
     # 距離が distance を超えたら left を移動
     left += 1 while nums[right] - nums[left] > distance
-    
+
     count += right - left
   end
-  
+
   count
 end
 
 # 解法2: すべてのペアを列挙してQuickselect（小さい配列用）
 def smallest_distance_pair_quickselect(nums, k)
   distances = []
-  
+
   nums.length.times do |i|
-    (i + 1...nums.length).each do |j|
+    ((i + 1)...nums.length).each do |j|
       distances << (nums[i] - nums[j]).abs
     end
   end
-  
+
   quickselect_simple(distances, k - 1)
 end
 
 def quickselect_simple(arr, k)
   left = 0
   right = arr.length - 1
-  
+
   loop do
     pivot_idx = partition_simple(arr, left, right)
-    
+
     if pivot_idx == k
       return arr[k]
     elsif pivot_idx > k
@@ -868,17 +874,17 @@ end
 def partition_simple(arr, left, right)
   pivot_idx = rand(left..right)
   arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
-  
+
   pivot = arr[right]
   i = left
-  
+
   (left...right).each do |j|
     if arr[j] < pivot
       arr[i], arr[j] = arr[j], arr[i]
       i += 1
     end
   end
-  
+
   arr[i], arr[right] = arr[right], arr[i]
   i
 end

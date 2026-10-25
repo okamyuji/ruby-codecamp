@@ -15,6 +15,7 @@
 # 空間計算量: O(k) - kは一意な文字の数
 # ============================================================================
 
+# docs:begin character_frequency
 # 解法1: Hash.new(0)を使用
 def character_frequency(str)
   freq = Hash.new(0)
@@ -43,6 +44,20 @@ def character_frequency_reduce(str)
     freq
   end
 end
+
+# テストケース
+p character_frequency('hello')
+# => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
+
+p character_frequency('mississippi')
+# => {"m" => 1, "i" => 4, "s" => 4, "p" => 2}
+
+p character_frequency('')
+# => {}
+
+p character_frequency('aaa')
+# => {"a" => 3}
+# docs:end
 
 # ============================================================================
 # テストケース

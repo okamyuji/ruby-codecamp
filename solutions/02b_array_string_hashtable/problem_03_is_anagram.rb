@@ -18,6 +18,7 @@
 # 空間計算量: O(k) - kは一意な文字の数
 # ============================================================================
 
+# docs:begin is_anagram
 # 解法1: 文字頻度を比較（推奨）
 def is_anagram(s, t)
   return false if s.length != t.length
@@ -48,6 +49,13 @@ def is_anagram_one_hash(s, t)
   # すべての値が0なら、アナグラム
   freq.values.all?(&:zero?)
 end
+
+# テストケース
+p is_anagram('anagram', 'nagaram')      # => true
+p is_anagram('rat', 'car')              # => false
+p is_anagram('listen', 'silent')        # => true
+p is_anagram('hello', 'world')          # => false
+# docs:end
 
 # ============================================================================
 # テストケース

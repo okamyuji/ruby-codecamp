@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin next_greater_element
 # 解法1: 単調減少スタック
 def next_greater_element(nums)
   n = nums.length
@@ -67,6 +68,17 @@ def next_greater_element_brute(nums)
     found
   end
 end
+
+# テストケース
+p next_greater_element([4, 5, 2, 10, 8])
+# => [5, 10, 10, -1, -1]
+
+p next_greater_element([1, 2, 3, 4, 5])
+# => [2, 3, 4, 5, -1]
+
+p next_greater_element([5, 4, 3, 2, 1])
+# => [-1, -1, -1, -1, -1]
+# docs:end
 
 # ============================================================================
 # テストケース

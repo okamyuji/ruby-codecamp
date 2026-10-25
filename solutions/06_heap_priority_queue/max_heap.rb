@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin MaxHeap
 class MaxHeap
   def initialize
     @heap = []
@@ -41,10 +42,10 @@ class MaxHeap
 
     parent_index = (index - 1) / 2
 
-    return unless @heap[index] > @heap[parent_index]
-
-    @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
-    heapify_up(parent_index)
+    if (@heap[index] <=> @heap[parent_index]).positive?
+      @heap[index], @heap[parent_index] = @heap[parent_index], @heap[index]
+      heapify_up(parent_index)
+    end
   end
 
   def heapify_down(index)
@@ -52,16 +53,21 @@ class MaxHeap
     right_child = 2 * index + 2
     largest = index
 
-    largest = left_child if left_child < @heap.length && @heap[left_child] > @heap[largest]
+    if left_child < @heap.length && (@heap[left_child] <=> @heap[largest]).positive?
+      largest = left_child
+    end
 
-    largest = right_child if right_child < @heap.length && @heap[right_child] > @heap[largest]
+    if right_child < @heap.length && (@heap[right_child] <=> @heap[largest]).positive?
+      largest = right_child
+    end
 
-    return unless largest != index
-
-    @heap[index], @heap[largest] = @heap[largest], @heap[index]
-    heapify_down(largest)
+    if largest != index
+      @heap[index], @heap[largest] = @heap[largest], @heap[index]
+      heapify_down(largest)
+    end
   end
 end
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== MaxHeap テスト ==='

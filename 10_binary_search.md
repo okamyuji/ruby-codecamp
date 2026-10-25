@@ -54,16 +54,17 @@ target = 9
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_35_binary_search.rb#binary_search -->
 ```ruby
 # 解法1: 反復的な二分探索（推奨）
 def binary_search(nums, target)
   left = 0
   right = nums.length - 1
-  
+
   while left <= right
     # オーバーフローを避ける計算方法
     mid = left + (right - left) / 2
-    
+
     if nums[mid] == target
       return mid
     elsif nums[mid] < target
@@ -74,7 +75,7 @@ def binary_search(nums, target)
       right = mid - 1
     end
   end
-  
+
   -1  # 見つからない
 end
 
@@ -88,11 +89,11 @@ end
 # 解法3: 再帰的な二分探索
 def binary_search_recursive(nums, target, left = 0, right = nil)
   right ||= nums.length - 1
-  
+
   return -1 if left > right
-  
+
   mid = left + (right - left) / 2
-  
+
   if nums[mid] == target
     mid
   elsif nums[mid] < target
@@ -112,7 +113,7 @@ puts binary_search([-1, 0, 3, 5, 9, 12], 9)   # => 4
 puts binary_search([-1, 0, 3, 5, 9, 12], 2)   # => -1
 puts binary_search([5], 5)                     # => 0
 puts binary_search([], 5)                      # => -1
-puts binary_search([1, 2, 3, 4, 5], 1)        # => 0
+puts binary_search([1, 2, 3, 4, 5], 1) # => 0
 ```
 
 ---
@@ -176,22 +177,23 @@ target = 2
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_36_search_insert.rb#search_insert -->
 ```ruby
 # 解法1: 二分探索で下限を求める（推奨）
 def search_insert(nums, target)
   left = 0
   right = nums.length
-  
+
   while left < right
     mid = left + (right - left) / 2
-    
+
     if nums[mid] < target
       left = mid + 1
     else
       right = mid
     end
   end
-  
+
   left
 end
 
@@ -213,10 +215,10 @@ end
 def search_insert_with_found(nums, target)
   left = 0
   right = nums.length - 1
-  
+
   while left <= right
     mid = left + (right - left) / 2
-    
+
     if nums[mid] == target
       return { index: mid, found: true }
     elsif nums[mid] < target
@@ -225,7 +227,7 @@ def search_insert_with_found(nums, target)
       right = mid - 1
     end
   end
-  
+
   { index: left, found: false }
 end
 
@@ -286,48 +288,49 @@ puts search_insert([], 1)            # => 0
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_37_bubble_sort.rb#bubble_sort -->
 ```ruby
 # 解法1: 基本的なバブルソート（最適化あり）
 def bubble_sort(arr)
-  arr = arr.dup  # 元の配列を変更しない
+  arr = arr.dup # 元の配列を変更しない
   n = arr.length
-  
+
   (0...n).each do |i|
     swapped = false
-    
+
     # 各パスで最大の要素が末尾に移動
     (0...(n - i - 1)).each do |j|
-      if arr[j] > arr[j + 1]
-        # 隣接要素を交換
-        arr[j], arr[j + 1] = arr[j + 1], arr[j]
-        swapped = true
-      end
+      next unless arr[j] > arr[j + 1]
+
+      # 隣接要素を交換
+      arr[j], arr[j + 1] = arr[j + 1], arr[j]
+      swapped = true
     end
-    
+
     # 交換がなければソート完了
     break unless swapped
   end
-  
+
   arr
 end
 
 # 解法2: 破壊的なバブルソート
 def bubble_sort!(arr)
   n = arr.length
-  
+
   loop do
     swapped = false
-    
+
     (0...(n - 1)).each do |i|
       if arr[i] > arr[i + 1]
         arr[i], arr[i + 1] = arr[i + 1], arr[i]
         swapped = true
       end
     end
-    
+
     break unless swapped
   end
-  
+
   arr
 end
 
@@ -335,11 +338,11 @@ end
 def bubble_sort_while(arr)
   arr = arr.dup
   n = arr.length
-  
+
   sorted = false
   until sorted
     sorted = true
-    
+
     (0...(n - 1)).each do |i|
       if arr[i] > arr[i + 1]
         arr[i], arr[i + 1] = arr[i + 1], arr[i]
@@ -347,7 +350,7 @@ def bubble_sort_while(arr)
       end
     end
   end
-  
+
   arr
 end
 
@@ -359,7 +362,7 @@ end
 # テストケース
 p bubble_sort([64, 34, 25, 12, 22, 11, 90])  # => [11, 12, 22, 25, 34, 64, 90]
 p bubble_sort([5, 1, 4, 2, 8])               # => [1, 2, 4, 5, 8]
-p bubble_sort([1, 2, 3])                     # => [1, 2, 3] (既にソート済み)
+p bubble_sort([1, 2, 3])                     # => [1, 2, 3]（既にソート済み）
 p bubble_sort([])                            # => []
 p bubble_sort([1])                           # => [1]
 ```
@@ -412,24 +415,25 @@ p bubble_sort([1])                           # => [1]
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_38_selection_sort.rb#selection_sort -->
 ```ruby
 # 解法1: 基本的な選択ソート
 def selection_sort(arr)
   arr = arr.dup
   n = arr.length
-  
+
   (0...(n - 1)).each do |i|
     # 未ソート部分の最小要素のインデックスを見つける
     min_index = i
-    
+
     ((i + 1)...n).each do |j|
       min_index = j if arr[j] < arr[min_index]
     end
-    
+
     # 最小要素を未ソート部分の先頭と交換
     arr[i], arr[min_index] = arr[min_index], arr[i] if min_index != i
   end
-  
+
   arr
 end
 
@@ -437,13 +441,13 @@ end
 def selection_sort_min_by(arr)
   arr = arr.dup
   n = arr.length
-  
+
   (0...(n - 1)).each do |i|
     # 未ソート部分から最小要素のインデックスを見つける
     min_index = (i...n).min_by { |j| arr[j] }
     arr[i], arr[min_index] = arr[min_index], arr[i]
   end
-  
+
   arr
 end
 
@@ -451,17 +455,17 @@ end
 def selection_sort_desc(arr)
   arr = arr.dup
   n = arr.length
-  
+
   (0...(n - 1)).each do |i|
     max_index = i
-    
+
     ((i + 1)...n).each do |j|
       max_index = j if arr[j] > arr[max_index]
     end
-    
+
     arr[i], arr[max_index] = arr[max_index], arr[i]
   end
-  
+
   arr
 end
 
@@ -521,77 +525,78 @@ p selection_sort([3, 3, 3])             # => [3, 3, 3]
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_39_insertion_sort.rb#insertion_sort -->
 ```ruby
 # 解法1: 基本的な挿入ソート
 def insertion_sort(arr)
   arr = arr.dup
   n = arr.length
-  
+
   (1...n).each do |i|
     # 現在の要素を保存
     key = arr[i]
     j = i - 1
-    
+
     # keyより大きい要素を右にシフト
     while j >= 0 && arr[j] > key
       arr[j + 1] = arr[j]
       j -= 1
     end
-    
+
     # keyを正しい位置に挿入
     arr[j + 1] = key
   end
-  
+
   arr
 end
 
 # 解法2: bsearchを使用して挿入位置を見つける
 def insertion_sort_binary(arr)
   arr = arr.dup
-  
+
   (1...arr.length).each do |i|
     key = arr[i]
-    
+
     # 二分探索で挿入位置を見つける
     insert_pos = (0...i).bsearch { |j| arr[j] > key } || i
-    
+
     # 要素を右にシフトして挿入
     (insert_pos...i).reverse_each { |j| arr[j + 1] = arr[j] }
     arr[insert_pos] = key
   end
-  
+
   arr
 end
 
 # 解法3: Rubyらしい実装
 def insertion_sort_ruby(arr)
   result = []
-  
+
   arr.each do |num|
     # 挿入位置を見つける
     insert_index = result.find_index { |x| x > num } || result.length
     result.insert(insert_index, num)
   end
-  
+
   result
 end
 
 # 解法4: 降順の挿入ソート
 def insertion_sort_desc(arr)
   arr = arr.dup
-  
+
   (1...arr.length).each do |i|
     key = arr[i]
     j = i - 1
-    
+
     while j >= 0 && arr[j] < key
       arr[j + 1] = arr[j]
       j -= 1
     end
-    
+
     arr[j + 1] = key
   end
-  
+
   arr
 end
 
@@ -658,24 +663,25 @@ p insertion_sort([])                   # => []
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_40_merge_sort.rb#merge_sort -->
 ```ruby
 # 解法1: 再帰的なマージソート（推奨）
 def merge_sort(arr)
   # ベースケース: 要素が1つ以下なら既にソート済み
   return arr if arr.length <= 1
-  
+
   # 配列を半分に分割
   mid = arr.length / 2
   left = merge_sort(arr[0...mid])
   right = merge_sort(arr[mid..])
-  
+
   # ソートされた2つの配列をマージ
   merge(left, right)
 end
 
 def merge(left, right)
   result = []
-  
+
   # 両方の配列に要素がある間、比較しながらマージ
   while !left.empty? && !right.empty?
     if left.first <= right.first
@@ -684,7 +690,7 @@ def merge(left, right)
       result << right.shift
     end
   end
-  
+
   # 残りの要素を追加
   result + left + right
 end
@@ -692,18 +698,18 @@ end
 # 解法2: インデックスベースのマージ
 def merge_sort_index(arr)
   return arr if arr.length <= 1
-  
+
   mid = arr.length / 2
   left = merge_sort_index(arr[0...mid])
   right = merge_sort_index(arr[mid..])
-  
+
   merge_index(left, right)
 end
 
 def merge_index(left, right)
   result = []
   i = j = 0
-  
+
   while i < left.length && j < right.length
     if left[i] <= right[j]
       result << left[i]
@@ -713,18 +719,18 @@ def merge_index(left, right)
       j += 1
     end
   end
-  
+
   result.concat(left[i..]).concat(right[j..])
 end
 
 # 解法3: 反復的なマージソート
 def merge_sort_iterative(arr)
   return arr if arr.length <= 1
-  
+
   arr = arr.dup
   n = arr.length
   width = 1
-  
+
   while width < n
     (0...n).step(width * 2) do |i|
       left = arr[i, width]
@@ -734,7 +740,7 @@ def merge_sort_iterative(arr)
     end
     width *= 2
   end
-  
+
   arr
 end
 
@@ -790,19 +796,20 @@ p merge_sort([2, 1])                      # => [1, 2]
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_41_quick_sort.rb#quick_sort -->
 ```ruby
 # 解法1: 関数型スタイル（シンプルで推奨）
 def quick_sort(arr)
   return arr if arr.length <= 1
-  
+
   # 中央の要素をピボットとして選択
   pivot = arr[arr.length / 2]
-  
+
   # 配列をピボットを基準に3つに分割
   smaller = arr.select { |x| x < pivot }
   equal = arr.select { |x| x == pivot }
   larger = arr.select { |x| x > pivot }
-  
+
   # 再帰的にソートして結合
   quick_sort(smaller) + equal + quick_sort(larger)
 end
@@ -810,35 +817,35 @@ end
 # 解法2: partitionを使用
 def quick_sort_partition(arr)
   return arr if arr.length <= 1
-  
+
   pivot = arr.first
   smaller, larger = arr[1..].partition { |x| x < pivot }
-  
+
   quick_sort_partition(smaller) + [pivot] + quick_sort_partition(larger)
 end
 
 # 解法3: in-placeクイックソート
 def quick_sort_inplace(arr, low = 0, high = arr.length - 1)
   return arr if low >= high
-  
+
   pivot_index = partition_inplace(arr, low, high)
   quick_sort_inplace(arr, low, pivot_index - 1)
   quick_sort_inplace(arr, pivot_index + 1, high)
-  
+
   arr
 end
 
 def partition_inplace(arr, low, high)
   pivot = arr[high]
   i = low - 1
-  
+
   (low...high).each do |j|
     if arr[j] <= pivot
       i += 1
       arr[i], arr[j] = arr[j], arr[i]
     end
   end
-  
+
   arr[i + 1], arr[high] = arr[high], arr[i + 1]
   i + 1
 end
@@ -846,14 +853,14 @@ end
 # 解法4: ランダムピボット
 def quick_sort_random(arr)
   return arr if arr.length <= 1
-  
+
   pivot_index = rand(arr.length)
   pivot = arr[pivot_index]
-  
+
   smaller = []
   equal = []
   larger = []
-  
+
   arr.each do |x|
     if x < pivot
       smaller << x
@@ -863,7 +870,7 @@ def quick_sort_random(arr)
       larger << x
     end
   end
-  
+
   quick_sort_random(smaller) + equal + quick_sort_random(larger)
 end
 
@@ -914,6 +921,7 @@ k = 2
 
 ### 解答
 
+<!-- source: solutions/10_binary_search/problem_42_find_kth_largest.rb#find_kth_largest -->
 ```ruby
 # 解法1: ソートを使用（シンプル）
 def find_kth_largest(nums, k)
@@ -930,12 +938,12 @@ end
 def find_kth_largest_heap(nums, k)
   # Rubyには標準のヒープがないが、maxを使用して模倣
   heap = nums.dup
-  
+
   (k - 1).times do
     max_val = heap.max
     heap.delete_at(heap.index(max_val))
   end
-  
+
   heap.max
 end
 
@@ -947,11 +955,11 @@ end
 
 def quickselect(arr, k)
   pivot = arr.sample
-  
+
   smaller = arr.select { |x| x < pivot }
   equal = arr.select { |x| x == pivot }
   larger = arr.select { |x| x > pivot }
-  
+
   if k < smaller.length
     quickselect(smaller, k)
   elsif k < smaller.length + equal.length

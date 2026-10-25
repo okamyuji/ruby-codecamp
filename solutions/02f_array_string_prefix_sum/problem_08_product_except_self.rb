@@ -16,6 +16,7 @@
 # 空間計算量: O(1) - 出力配列を除く
 # ============================================================================
 
+# docs:begin product_except_self
 # 解法1: 2パス（O(1)空間）
 def product_except_self(nums)
   n = nums.length
@@ -71,6 +72,20 @@ def product_except_self_division(nums)
 
   nums.map { |num| total_product / num }
 end
+
+# テストケース
+p product_except_self([1, 2, 3, 4])
+# => [24, 12, 8, 6]
+
+p product_except_self([0, 0])
+# => [0, 0]
+
+p product_except_self([0, 4, 0])
+# => [0, 0, 0]
+
+p product_except_self([1, 0])
+# => [0, 1]
+# docs:end
 
 # ============================================================================
 # テストケース

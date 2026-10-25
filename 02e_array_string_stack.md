@@ -58,23 +58,24 @@ true
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_01_is_valid.rb#is_valid -->
 ```ruby
 # 解法1: スタックとハッシュを使用
 def is_valid(s)
   stack = []
   pairs = { '(' => ')', '{' => '}', '[' => ']' }
-  
+
   s.each_char do |char|
     if pairs.key?(char)
       stack << char
     else
       return false if stack.empty?
-      
+
       opening = stack.pop
       return false if pairs[opening] != char
     end
   end
-  
+
   stack.empty?
 end
 
@@ -82,7 +83,7 @@ end
 def is_valid_reverse_map(s)
   stack = []
   closing = { ')' => '(', '}' => '{', ']' => '[' }
-  
+
   s.each_char do |char|
     if closing.key?(char)
       return false if stack.empty? || stack.pop != closing[char]
@@ -90,14 +91,14 @@ def is_valid_reverse_map(s)
       stack << char
     end
   end
-  
+
   stack.empty?
 end
 
 # 解法3: caseを使用
 def is_valid_case(s)
   stack = []
-  
+
   s.each_char do |char|
     case char
     when '(', '{', '['
@@ -110,16 +111,16 @@ def is_valid_case(s)
       return false if stack.empty? || stack.pop != '['
     end
   end
-  
+
   stack.empty?
 end
 
 # テストケース
-p is_valid("()")       # => true
-p is_valid("()[]{}")   # => true
-p is_valid("(]")       # => false
-p is_valid("([)]")     # => false
-p is_valid("{[]}")     # => true
+p is_valid('()')       # => true
+p is_valid('()[]{}')   # => true
+p is_valid('(]')       # => false
+p is_valid('([)]')     # => false
+p is_valid('{[]}')     # => true
 ```
 
 ---
@@ -132,6 +133,7 @@ push、pop、topの各操作に加えて、最小要素を定数時間で取得�
 
 **入力例:**
 
+<!-- docs:skip -->
 ```ruby
 min_stack = MinStack.new
 min_stack.push(-2)
@@ -179,6 +181,7 @@ min_stack.get_min  # => -2
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_02_min_stack.rb#MinStack -->
 ```ruby
 # 解法1: 2つのスタックを使用
 class MinStack
@@ -186,27 +189,27 @@ class MinStack
     @stack = []
     @min_stack = []
   end
-  
+
   def push(val)
     @stack << val
-    
+
     if @min_stack.empty? || val <= @min_stack.last
       @min_stack << val
     end
   end
-  
+
   def pop
     val = @stack.pop
-    
+
     @min_stack.pop if val == @min_stack.last
-    
+
     val
   end
-  
+
   def top
     @stack.last
   end
-  
+
   def get_min
     @min_stack.last
   end
@@ -215,22 +218,22 @@ end
 # 解法2: ペアでスタックに格納
 class MinStack2
   def initialize
-    @stack = []  # [value, min_so_far]のペアを格納
+    @stack = [] # [value, min_so_far]のペアを格納
   end
-  
+
   def push(val)
     min_val = @stack.empty? ? val : [val, @stack.last[1]].min
     @stack << [val, min_val]
   end
-  
+
   def pop
     @stack.pop[0]
   end
-  
+
   def top
     @stack.last[0]
   end
-  
+
   def get_min
     @stack.last[1]
   end
@@ -242,7 +245,7 @@ class MinStack3
     @stack = []
     @min = nil
   end
-  
+
   def push(val)
     if @stack.empty?
       @stack << 0
@@ -252,24 +255,24 @@ class MinStack3
       @min = val if val < @min
     end
   end
-  
+
   def pop
     diff = @stack.pop
-    
+
     if diff < 0
       val = @min
-      @min = @min - diff
+      @min -= diff
       val
     else
       @min + diff
     end
   end
-  
+
   def top
     diff = @stack.last
     diff < 0 ? @min : @min + diff
   end
-  
+
   def get_min
     @min
   end
@@ -333,17 +336,18 @@ p min_stack.get_min  # => -2
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_03_eval_rpn.rb#eval_rpn -->
 ```ruby
 # 解法1: 基本的な実装
 def eval_rpn(tokens)
   stack = []
   operators = %w[+ - * /]
-  
+
   tokens.each do |token|
     if operators.include?(token)
       right = stack.pop
       left = stack.pop
-      
+
       result = case token
                when '+'
                  left + right
@@ -354,51 +358,51 @@ def eval_rpn(tokens)
                when '/'
                  (left.to_f / right).to_i
                end
-      
+
       stack << result
     else
       stack << token.to_i
     end
   end
-  
+
   stack[0]
 end
 
 # 解法2: sendを使用
 def eval_rpn_send(tokens)
   stack = []
-  
+
   tokens.each do |token|
     if %w[+ - * /].include?(token)
       right = stack.pop
       left = stack.pop
-      
+
       result = if token == '/'
                  (left.to_f / right).to_i
                else
                  left.send(token, right)
                end
-      
+
       stack << result
     else
       stack << token.to_i
     end
   end
-  
+
   stack[0]
 end
 
 # 解法3: ハッシュで演算子を管理
 def eval_rpn_hash(tokens)
   stack = []
-  
+
   operations = {
     '+' => ->(a, b) { a + b },
     '-' => ->(a, b) { a - b },
     '*' => ->(a, b) { a * b },
     '/' => ->(a, b) { (a.to_f / b).to_i }
   }
-  
+
   tokens.each do |token|
     if operations.key?(token)
       right = stack.pop
@@ -408,14 +412,14 @@ def eval_rpn_hash(tokens)
       stack << token.to_i
     end
   end
-  
+
   stack[0]
 end
 
 # テストケース
-p eval_rpn(["2", "1", "+", "3", "*"])  # => 9
-p eval_rpn(["4", "13", "5", "/", "+"])  # => 6
-p eval_rpn(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"])  # => 22
+p eval_rpn(['2', '1', '+', '3', '*']) # => 9
+p eval_rpn(['4', '13', '5', '/', '+']) # => 6
+p eval_rpn(['10', '6', '9', '3', '+', '-11', '*', '/', '*', '17', '+', '5', '+']) # => 22
 ```
 
 ---
@@ -465,23 +469,24 @@ p eval_rpn(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_04_next_greater_element.rb#next_greater_element -->
 ```ruby
 # 解法1: 単調減少スタック
 def next_greater_element(nums)
   n = nums.length
   result = Array.new(n, -1)
-  stack = []  # インデックスを格納
-  
+  stack = [] # インデックスを格納
+
   nums.each_with_index do |num, i|
     # 現在の要素より小さいスタック上の要素を解決
     while !stack.empty? && nums[stack.last] < num
       idx = stack.pop
       result[idx] = num
     end
-    
+
     stack << i
   end
-  
+
   result
 end
 
@@ -490,15 +495,15 @@ def next_greater_element_reverse(nums)
   n = nums.length
   result = Array.new(n, -1)
   stack = []
-  
+
   (n - 1).downto(0) do |i|
     # 現在の要素以下のスタック上の要素を削除
     stack.pop while !stack.empty? && stack.last <= nums[i]
-    
-    result[i] = stack.last if !stack.empty?
+
+    result[i] = stack.last unless stack.empty?
     stack << nums[i]
   end
-  
+
   result
 end
 
@@ -506,14 +511,14 @@ end
 def next_greater_element_brute(nums)
   nums.map.with_index do |num, i|
     found = -1
-    
-    (i + 1...nums.length).each do |j|
+
+    ((i + 1)...nums.length).each do |j|
       if nums[j] > num
         found = nums[j]
         break
       end
     end
-    
+
     found
   end
 end
@@ -576,23 +581,24 @@ p next_greater_element([5, 4, 3, 2, 1])
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_05_daily_temperatures.rb#daily_temperatures -->
 ```ruby
 # 解法1: 単調減少スタック
 def daily_temperatures(temperatures)
   n = temperatures.length
   result = Array.new(n, 0)
   stack = []
-  
+
   temperatures.each_with_index do |temp, i|
     # より暖かい日が来た
     while !stack.empty? && temperatures[stack.last] < temp
       prev_day = stack.pop
       result[prev_day] = i - prev_day
     end
-    
+
     stack << i
   end
-  
+
   result
 end
 
@@ -601,15 +607,15 @@ def daily_temperatures_reverse(temperatures)
   n = temperatures.length
   result = Array.new(n, 0)
   stack = []
-  
+
   (n - 1).downto(0) do |i|
     # 現在以下の気温をスタックから削除
     stack.pop while !stack.empty? && temperatures[stack.last] <= temperatures[i]
-    
-    result[i] = stack.last - i if !stack.empty?
+
+    result[i] = stack.last - i unless stack.empty?
     stack << i
   end
-  
+
   result
 end
 
@@ -618,24 +624,22 @@ def daily_temperatures_optimized(temperatures)
   n = temperatures.length
   result = Array.new(n, 0)
   hottest = 0
-  
+
   (n - 1).downto(0) do |i|
     current = temperatures[i]
-    
+
     if current >= hottest
       hottest = current
       next
     end
-    
+
     days = 1
-    
-    while temperatures[i + days] <= current
-      days += result[i + days]
-    end
-    
+
+    days += result[i + days] while temperatures[i + days] <= current
+
     result[i] = days
   end
-  
+
   result
 end
 
@@ -706,13 +710,14 @@ p daily_temperatures([30, 60, 90])
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_06_largest_rectangle_area.rb#largest_rectangle_area -->
 ```ruby
 # 解法1: 単調増加スタック
 def largest_rectangle_area(heights)
   stack = []
   max_area = 0
-  heights << 0  # 番兵を追加
-  
+  heights << 0 # 番兵を追加
+
   heights.each_with_index do |h, i|
     while !stack.empty? && heights[stack.last] > h
       height_idx = stack.pop
@@ -721,30 +726,30 @@ def largest_rectangle_area(heights)
       area = height * width
       max_area = [max_area, area].max
     end
-    
+
     stack << i
   end
-  
-  heights.pop  # 番兵を削除
+
+  heights.pop # 番兵を削除
   max_area
 end
 
 # 解法2: スタックなし（分割統治）
 def largest_rectangle_area_divide_conquer(heights)
   return 0 if heights.empty?
-  
+
   helper(heights, 0, heights.length - 1)
 end
 
 def helper(heights, left, right)
   return 0 if left > right
-  
+
   # 最小の高さのインデックスを見つける
   min_idx = left
   (left..right).each do |i|
     min_idx = i if heights[i] < heights[min_idx]
   end
-  
+
   # 3つの選択肢の最大値
   # 1. 最小高さを含む長方形
   # 2. 左部分の最大
@@ -760,11 +765,11 @@ end
 def largest_rectangle_area_precompute(heights)
   n = heights.length
   return 0 if n.zero?
-  
+
   # 各バーについて、左側の小さいバーと右側の小さいバーを見つける
   left = Array.new(n)
   right = Array.new(n)
-  
+
   # 左側の境界
   left[0] = -1
   (1...n).each do |i|
@@ -772,7 +777,7 @@ def largest_rectangle_area_precompute(heights)
     p = left[p] while p >= 0 && heights[p] >= heights[i]
     left[i] = p
   end
-  
+
   # 右側の境界
   right[n - 1] = n
   (n - 2).downto(0) do |i|
@@ -780,7 +785,7 @@ def largest_rectangle_area_precompute(heights)
     p = right[p] while p < n && heights[p] >= heights[i]
     right[i] = p
   end
-  
+
   # 最大面積を計算
   max_area = 0
   n.times do |i|
@@ -788,7 +793,7 @@ def largest_rectangle_area_precompute(heights)
     area = heights[i] * width
     max_area = [max_area, area].max
   end
-  
+
   max_area
 end
 
@@ -846,22 +851,23 @@ p largest_rectangle_area([2, 1, 2])           # => 3
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_07_next_smaller_element.rb#next_smaller_element -->
 ```ruby
 # 解法1: 単調増加スタック
 def next_smaller_element(nums)
   n = nums.length
   result = Array.new(n, -1)
   stack = []
-  
+
   nums.each_with_index do |num, i|
     while !stack.empty? && nums[stack.last] > num
       idx = stack.pop
       result[idx] = num
     end
-    
+
     stack << i
   end
-  
+
   result
 end
 
@@ -870,14 +876,14 @@ def next_smaller_element_reverse(nums)
   n = nums.length
   result = Array.new(n, -1)
   stack = []
-  
+
   (n - 1).downto(0) do |i|
     stack.pop while !stack.empty? && stack.last >= nums[i]
-    
-    result[i] = stack.last if !stack.empty?
+
+    result[i] = stack.last unless stack.empty?
     stack << nums[i]
   end
-  
+
   result
 end
 
@@ -937,22 +943,23 @@ p next_smaller_element([3, 2, 1, 4, 5])
 
 ### 解答
 
+<!-- source: solutions/02e_array_string_stack/problem_08_stock_span.rb#stock_span -->
 ```ruby
 # 解法1: 単調減少スタック
 def stock_span(prices)
   n = prices.length
   span = Array.new(n, 1)
   stack = []
-  
+
   prices.each_with_index do |price, i|
     # 現在の株価以下の日をスタックから削除
     stack.pop while !stack.empty? && prices[stack.last] <= price
-    
+
     span[i] = stack.empty? ? i + 1 : i - stack.last
-    
+
     stack << i
   end
-  
+
   span
 end
 
@@ -962,17 +969,17 @@ class StockSpanner
     @prices = []
     @stack = []
   end
-  
+
   def next(price)
     @prices << price
     i = @prices.length - 1
-    
+
     @stack.pop while !@stack.empty? && @prices[@stack.last] <= price
-    
+
     span = @stack.empty? ? i + 1 : i - @stack.last
-    
+
     @stack << i
-    
+
     span
   end
 end

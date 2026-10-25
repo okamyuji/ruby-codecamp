@@ -5,6 +5,15 @@ require 'fileutils'
 require 'open3'
 require 'shellwords'
 
+$LOAD_PATH.unshift File.join(__dir__, 'lib')
+require 'codecamp_docs/markdown_sync'
+require 'codecamp_docs/arrow_check'
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'lib' << 'test'
+  t.pattern = 'test/**/*_test.rb'
+end
+
 # Default task
 task default: %i[syntax_check]
 
@@ -89,4 +98,42 @@ task :loc do
     total += File.readlines(file).size
   end
   puts "Total lines of code: #{total}"
+end
+
+namespace :docs do
+  # 各 md を [パス, 現在の内容, 埋め込み後の内容] で渡す。目印の誤りは abort で止める
+  sync_each = lambda do |&block|
+    Dir.glob('[0-9]*.md', base: __dir__).each do |path|
+      text = File.read(File.join(__dir__, path))
+      block.call(path, text, CodecampDocs::MarkdownSync.sync(text, md_path: path, root: __dir__))
+    end
+  rescue CodecampDocs::Error => e
+    abort e.message
+  end
+
+  desc 'Embed solution regions into markdown code blocks'
+  task :sync do
+    sync_each.call { |path, text, synced| File.write(File.join(__dir__, path), synced) unless text == synced }
+  end
+
+  desc 'Fail when a markdown code block differs from its solution region'
+  task :verify do
+    stale = []
+    sync_each.call { |path, text, synced| stale << path unless text == synced }
+    abort "解答ファイルとずれている md:\n#{stale.map { |p| "  - #{p}" }.join("\n")}\n`rake docs:sync` で直す" unless stale.empty?
+    puts 'docs:verify OK'
+  end
+end
+
+desc 'Check # => comments in markdown code blocks and solution regions against actual values'
+task 'docs:check' do
+  result = begin
+    CodecampDocs::ArrowCheck.check_repo(__dir__)
+  rescue CodecampDocs::Error => e
+    abort e.message
+  end
+  summary = "照合 #{result.checked} 件、除外 #{result.skipped} 件"
+  puts result.failures
+  abort "docs:check 失敗 #{result.failures.size} 件（#{summary}）" unless result.failures.empty?
+  puts "docs:check OK（#{summary}）"
 end

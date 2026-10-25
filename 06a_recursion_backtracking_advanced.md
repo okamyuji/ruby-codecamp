@@ -63,6 +63,7 @@ nums = [1, 2, 3]
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_01_permute.rb#permute -->
 ```ruby
 # 解法1: バックトラック（使用済み配列）
 def permute(nums)
@@ -78,18 +79,18 @@ def backtrack_permute(nums, current, used, result)
     result << current.dup
     return
   end
-  
+
   # 各要素を試す
   nums.each_with_index do |num, i|
     next if used[i]
-    
+
     # 選択
     current << num
     used[i] = true
-    
+
     # 再帰
     backtrack_permute(nums, current, used, result)
-    
+
     # バックトラック
     current.pop
     used[i] = false
@@ -108,14 +109,14 @@ def backtrack_swap(nums, start, result)
     result << nums.dup
     return
   end
-  
+
   (start...nums.length).each do |i|
     # スワップ
     nums[start], nums[i] = nums[i], nums[start]
-    
+
     # 再帰
     backtrack_swap(nums, start + 1, result)
-    
+
     # バックトラック
     nums[start], nums[i] = nums[i], nums[start]
   end
@@ -125,25 +126,25 @@ end
 def permute_recursive(nums)
   return [[]] if nums.empty?
   return [nums] if nums.length == 1
-  
+
   result = []
-  
+
   nums.each_with_index do |num, i|
     # 現在の要素を除いた残りで順列を生成
-    rest = nums[0...i] + nums[i+1..-1]
-    
+    rest = nums[0...i] + nums[(i + 1)..]
+
     permute_recursive(rest).each do |perm|
       result << [num] + perm
     end
   end
-  
+
   result
 end
 
 # テストケース
-p permute([1, 2, 3])  # => [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
-p permute([0, 1])  # => [[0, 1], [1, 0]]
-p permute([1])  # => [[1]]
+p permute([1, 2, 3]) # => [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+p permute([0, 1]) # => [[0, 1], [1, 0]]
+p permute([1]) # => [[1]]
 ```
 
 ---
@@ -197,6 +198,7 @@ n = 4, k = 2
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_02_combine.rb#combine -->
 ```ruby
 # 解法1: バックトラック
 def combine(n, k)
@@ -211,20 +213,20 @@ def backtrack_combine(start, n, k, current, result)
     result << current.dup
     return
   end
-  
+
   # 枝刈り: 残りの要素が足りない場合はスキップ
   needed = k - current.length
-  
+
   (start..n).each do |i|
     # 枝刈り: 残りの要素が足りない
     break if n - i + 1 < needed
-    
+
     # 選択
     current << i
-    
+
     # 再帰
     backtrack_combine(i + 1, n, k, current, result)
-    
+
     # バックトラック
     current.pop
   end
@@ -234,38 +236,38 @@ end
 def combine_recursive(n, k)
   return [[]] if k == 0
   return (1..n).map { |i| [i] } if k == 1
-  
+
   result = []
-  
+
   (1..n).each do |i|
     # i を含む組み合わせ
     combine_recursive(n - 1, k - 1).each do |comb|
       result << [i] + comb.map { |x| x + i }
     end
   end
-  
+
   result
 end
 
 # 解法3: イテレーティブ（レベルごと）
 def combine_iterative(n, k)
   return [[]] if k == 0
-  
+
   result = (1..n).map { |i| [i] }
-  
+
   (k - 1).times do
     new_result = []
-    
+
     result.each do |comb|
       last = comb.last
       ((last + 1)..n).each do |i|
         new_result << comb + [i]
       end
     end
-    
+
     result = new_result
   end
-  
+
   result
 end
 
@@ -324,6 +326,7 @@ nums = [1, 2, 3]
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_03_subsets.rb#subsets -->
 ```ruby
 # 解法1: バックトラック
 def subsets(nums)
@@ -335,7 +338,7 @@ end
 def backtrack_subsets(nums, start, current, result)
   # 現在の部分集合を追加
   result << current.dup
-  
+
   # 次の要素を追加
   (start...nums.length).each do |i|
     current << nums[i]
@@ -348,51 +351,51 @@ end
 def subsets_bit(nums)
   n = nums.length
   result = []
-  
+
   # 2^n 個の部分集合
-  (0...(2 ** n)).each do |mask|
+  (0...(2**n)).each do |mask|
     subset = []
-    
+
     n.times do |i|
       # i番目のビットが立っているか
       subset << nums[i] if (mask >> i) & 1 == 1
     end
-    
+
     result << subset
   end
-  
+
   result
 end
 
 # 解法3: イテレーティブ（カスケード）
 def subsets_iterative(nums)
   result = [[]]
-  
+
   nums.each do |num|
     # 既存の各部分集合に num を追加した新しい部分集合を作成
     new_subsets = result.map { |subset| subset + [num] }
     result.concat(new_subsets)
   end
-  
+
   result
 end
 
 # 解法4: 再帰的
 def subsets_recursive(nums)
   return [[]] if nums.empty?
-  
+
   # 最初の要素を取り出す
   first = nums[0]
-  rest_subsets = subsets_recursive(nums[1..-1])
-  
+  rest_subsets = subsets_recursive(nums[1..])
+
   # 最初の要素を含まない部分集合と含む部分集合
   rest_subsets + rest_subsets.map { |subset| [first] + subset }
 end
 
 # テストケース
-p subsets([1, 2, 3])  # => [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
-p subsets([0])  # => [[], [0]]
-p subsets([])  # => [[]]
+p subsets([1, 2, 3]) # => [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+p subsets([0]) # => [[], [0]]
+p subsets([]) # => [[]]
 ```
 
 ---
@@ -469,6 +472,7 @@ n = 4
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_04_solve_n_queens.rb#solve_n_queens -->
 ```ruby
 # 解法1: バックトラック（Set使用）
 def solve_n_queens(n)
@@ -477,7 +481,7 @@ def solve_n_queens(n)
   cols = Set.new
   pos_diag = Set.new  # row - col
   neg_diag = Set.new  # row + col
-  
+
   backtrack_queens(0, n, board, cols, pos_diag, neg_diag, result)
   result
 end
@@ -488,23 +492,23 @@ def backtrack_queens(row, n, board, cols, pos_diag, neg_diag, result)
     result << board.dup
     return
   end
-  
+
   # 各列を試す
   n.times do |col|
     # 制約チェック
     next if cols.include?(col)
     next if pos_diag.include?(row - col)
     next if neg_diag.include?(row + col)
-    
+
     # クイーンを配置
-    board[row] = board[row][0...col] + 'Q' + board[row][col+1..-1]
+    board[row] = "#{board[row][0...col]}Q#{board[row][(col + 1)..]}"
     cols.add(col)
     pos_diag.add(row - col)
     neg_diag.add(row + col)
-    
+
     # 再帰
     backtrack_queens(row + 1, n, board, cols, pos_diag, neg_diag, result)
-    
+
     # バックトラック
     board[row] = '.' * n
     cols.delete(col)
@@ -517,7 +521,7 @@ end
 def solve_n_queens_bit(n)
   result = []
   board = Array.new(n) { '.' * n }
-  
+
   backtrack_queens_bit(0, n, 0, 0, 0, board, result)
   result
 end
@@ -527,18 +531,18 @@ def backtrack_queens_bit(row, n, cols, pos_diag, neg_diag, board, result)
     result << board.dup
     return
   end
-  
+
   # 利用可能な位置（ビットが1の位置）
   available = ((1 << n) - 1) & ~(cols | pos_diag | neg_diag)
-  
+
   while available > 0
     # 最下位ビットを取得
     position = available & -available
     col = Math.log2(position).to_i
-    
+
     # クイーンを配置
-    board[row] = '.' * col + 'Q' + '.' * (n - col - 1)
-    
+    board[row] = "#{'.' * col}Q#{'.' * (n - col - 1)}"
+
     # 再帰
     backtrack_queens_bit(
       row + 1, n,
@@ -547,10 +551,10 @@ def backtrack_queens_bit(row, n, cols, pos_diag, neg_diag, board, result)
       (neg_diag | position) << 1,
       board, result
     )
-    
+
     # バックトラック
     board[row] = '.' * n
-    
+
     # 最下位ビットをクリア
     available &= available - 1
   end
@@ -629,6 +633,7 @@ p solve_n_queens(1)
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_05_solve_sudoku.rb#solve_sudoku -->
 ```ruby
 # 解法1: バックトラック
 def solve_sudoku(board)
@@ -638,43 +643,43 @@ end
 def backtrack_sudoku(board)
   9.times do |row|
     9.times do |col|
-      if board[row][col] == '.'
-        ('1'..'9').each do |num|
-          if is_valid_sudoku(board, row, col, num)
-            board[row][col] = num
-            
-            return true if backtrack_sudoku(board)
-            
-            # バックトラック
-            board[row][col] = '.'
-          end
-        end
-        
-        return false
+      next unless board[row][col] == '.'
+
+      ('1'..'9').each do |num|
+        next unless is_valid_sudoku(board, row, col, num)
+
+        board[row][col] = num
+
+        return true if backtrack_sudoku(board)
+
+        # バックトラック
+        board[row][col] = '.'
       end
+
+      return false
     end
   end
-  
+
   true
 end
 
 def is_valid_sudoku(board, row, col, num)
   # 行チェック
   return false if board[row].include?(num)
-  
+
   # 列チェック
   return false if board.any? { |r| r[col] == num }
-  
+
   # 3x3ブロックチェック
   box_row = (row / 3) * 3
   box_col = (col / 3) * 3
-  
-  (box_row...box_row + 3).each do |r|
-    (box_col...box_col + 3).each do |c|
+
+  (box_row...(box_row + 3)).each do |r|
+    (box_col...(box_col + 3)).each do |c|
       return false if board[r][c] == num
     end
   end
-  
+
   true
 end
 
@@ -684,69 +689,68 @@ def solve_sudoku_optimized(board)
   rows = Array.new(9) { Set.new }
   cols = Array.new(9) { Set.new }
   boxes = Array.new(9) { Set.new }
-  
+
   # 初期状態を記録
   9.times do |r|
     9.times do |c|
-      if board[r][c] != '.'
-        num = board[r][c]
-        rows[r].add(num)
-        cols[c].add(num)
-        box_idx = (r / 3) * 3 + c / 3
-        boxes[box_idx].add(num)
-      end
+      next if board[r][c] == '.'
+
+      num = board[r][c]
+      rows[r].add(num)
+      cols[c].add(num)
+      box_idx = (r / 3) * 3 + c / 3
+      boxes[box_idx].add(num)
     end
   end
-  
+
   backtrack_sudoku_optimized(board, rows, cols, boxes)
 end
 
 def backtrack_sudoku_optimized(board, rows, cols, boxes)
   9.times do |row|
     9.times do |col|
-      if board[row][col] == '.'
-        box_idx = (row / 3) * 3 + col / 3
-        
-        ('1'..'9').each do |num|
-          if !rows[row].include?(num) &&
-             !cols[col].include?(num) &&
-             !boxes[box_idx].include?(num)
-            
-            # 数字を配置
-            board[row][col] = num
-            rows[row].add(num)
-            cols[col].add(num)
-            boxes[box_idx].add(num)
-            
-            return true if backtrack_sudoku_optimized(board, rows, cols, boxes)
-            
-            # バックトラック
-            board[row][col] = '.'
-            rows[row].delete(num)
-            cols[col].delete(num)
-            boxes[box_idx].delete(num)
-          end
-        end
-        
-        return false
+      next unless board[row][col] == '.'
+
+      box_idx = (row / 3) * 3 + col / 3
+
+      ('1'..'9').each do |num|
+        next if rows[row].include?(num) ||
+                cols[col].include?(num) ||
+                boxes[box_idx].include?(num)
+
+        # 数字を配置
+        board[row][col] = num
+        rows[row].add(num)
+        cols[col].add(num)
+        boxes[box_idx].add(num)
+
+        return true if backtrack_sudoku_optimized(board, rows, cols, boxes)
+
+        # バックトラック
+        board[row][col] = '.'
+        rows[row].delete(num)
+        cols[col].delete(num)
+        boxes[box_idx].delete(num)
       end
+
+      return false
     end
   end
-  
+
   true
 end
 
 # テストケース
 board = [
-  ["5","3",".",".","7",".",".",".","."],
-  ["6",".",".","1","9","5",".",".","."],
-  [".","9","8",".",".",".",".","6","."],
-  ["8",".",".",".","6",".",".",".","3"],
-  ["4",".",".","8",".","3",".",".","1"],
-  ["7",".",".",".","2",".",".",".","6"],
-  [".","6",".",".",".",".","2","8","."],
-  [".",".",".","4","1","9",".",".","5"],
-  [".",".",".",".","8",".",".","7","9"]
+  ['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+  ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+  ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+  ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+  ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+  ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+  ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+  ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+  ['.', '.', '.', '.', '8', '.', '.', '7', '9']
 ]
 
 solve_sudoku(board)
@@ -818,45 +822,46 @@ DFS + バックトラックを使用します。各セルから開始し、4方�
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_06_exist.rb#exist -->
 ```ruby
 # 解法1: DFS + バックトラック
 def exist(board, word)
   m = board.length
   n = board[0].length
-  
+
   m.times do |r|
     n.times do |c|
       return true if dfs_exist(board, word, r, c, 0)
     end
   end
-  
+
   false
 end
 
 def dfs_exist(board, word, row, col, index)
   # ベースケース: すべての文字が一致
   return true if index == word.length
-  
+
   # 範囲外チェック
   return false if row < 0 || row >= board.length ||
                   col < 0 || col >= board[0].length
-  
+
   # 文字が一致しないか、訪問済み
   return false if board[row][col] != word[index]
-  
+
   # 訪問済みマーク
   temp = board[row][col]
   board[row][col] = '#'
-  
+
   # 4方向探索
   result = dfs_exist(board, word, row + 1, col, index + 1) ||
            dfs_exist(board, word, row - 1, col, index + 1) ||
            dfs_exist(board, word, row, col + 1, index + 1) ||
            dfs_exist(board, word, row, col - 1, index + 1)
-  
+
   # バックトラック
   board[row][col] = temp
-  
+
   result
 end
 
@@ -864,47 +869,47 @@ end
 def exist_with_set(board, word)
   m = board.length
   n = board[0].length
-  
+
   m.times do |r|
     n.times do |c|
       visited = Set.new
       return true if dfs_exist_set(board, word, r, c, 0, visited)
     end
   end
-  
+
   false
 end
 
 def dfs_exist_set(board, word, row, col, index, visited)
   return true if index == word.length
-  
+
   return false if row < 0 || row >= board.length ||
                   col < 0 || col >= board[0].length ||
                   visited.include?([row, col]) ||
                   board[row][col] != word[index]
-  
+
   visited.add([row, col])
-  
+
   result = dfs_exist_set(board, word, row + 1, col, index + 1, visited) ||
            dfs_exist_set(board, word, row - 1, col, index + 1, visited) ||
            dfs_exist_set(board, word, row, col + 1, index + 1, visited) ||
            dfs_exist_set(board, word, row, col - 1, index + 1, visited)
-  
+
   visited.delete([row, col])
-  
+
   result
 end
 
 # テストケース
 board = [
-  ['A','B','C','E'],
-  ['S','F','C','S'],
-  ['A','D','E','E']
+  ['A', 'B', 'C', 'E'],
+  ['S', 'F', 'C', 'S'],
+  ['A', 'D', 'E', 'E']
 ]
 
-p exist(board, "ABCCED")  # => true
-p exist(board, "SEE")     # => true
-p exist(board, "ABCB")    # => false
+p exist(board, 'ABCCED')  # => true
+p exist(board, 'SEE')     # => true
+p exist(board, 'ABCB')    # => false
 ```
 
 ---
@@ -956,6 +961,7 @@ n = 3
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_07_generate_parenthesis.rb#generate_parenthesis -->
 ```ruby
 # 解法1: バックトラック
 def generate_parenthesis(n)
@@ -970,39 +976,39 @@ def backtrack_paren(current, open_count, close_count, n, result)
     result << current
     return
   end
-  
+
   # 開き括弧を追加
   if open_count < n
-    backtrack_paren(current + '(', open_count + 1, close_count, n, result)
+    backtrack_paren("#{current}(", open_count + 1, close_count, n, result)
   end
-  
+
   # 閉じ括弧を追加（開き括弧より少ない場合のみ）
   if close_count < open_count
-    backtrack_paren(current + ')', open_count, close_count + 1, n, result)
+    backtrack_paren("#{current})", open_count, close_count + 1, n, result)
   end
 end
 
 # 解法2: クロージャーナンバー
 def generate_parenthesis_closure(n)
   return [''] if n == 0
-  
+
   result = []
-  
+
   (0...n).each do |c|
     (0...n).each do |i|
       left = generate_parenthesis_closure(c)
       right = generate_parenthesis_closure(i)
-      
-      if c + i + 1 == n
-        left.each do |l|
-          right.each do |r|
-            result << "(#{l})#{r}"
-          end
+
+      next unless c + i + 1 == n
+
+      left.each do |l|
+        right.each do |r|
+          result << "(#{l})#{r}"
         end
       end
     end
   end
-  
+
   result
 end
 
@@ -1010,7 +1016,7 @@ end
 def generate_parenthesis_dp(n)
   dp = Array.new(n + 1) { [] }
   dp[0] = ['']
-  
+
   (1..n).each do |i|
     (0...i).each do |c|
       dp[c].each do |left|
@@ -1020,7 +1026,7 @@ def generate_parenthesis_dp(n)
       end
     end
   end
-  
+
   dp[n]
 end
 
@@ -1092,17 +1098,18 @@ digits = "23"
 
 ### 解答
 
+<!-- source: solutions/06a_recursion_backtracking_advanced/problem_08_letter_combinations.rb#letter_combinations -->
 ```ruby
 # 解法1: バックトラック
 def letter_combinations(digits)
   return [] if digits.empty?
-  
+
   mapping = {
     '2' => 'abc', '3' => 'def', '4' => 'ghi',
     '5' => 'jkl', '6' => 'mno', '7' => 'pqrs',
     '8' => 'tuv', '9' => 'wxyz'
   }
-  
+
   result = []
   backtrack_letters('', 0, digits, mapping, result)
   result
@@ -1114,11 +1121,11 @@ def backtrack_letters(current, index, digits, mapping, result)
     result << current
     return
   end
-  
+
   # 現在の数字に対応する文字
   digit = digits[index]
   letters = mapping[digit]
-  
+
   letters.each_char do |letter|
     backtrack_letters(current + letter, index + 1, digits, mapping, result)
   end
@@ -1127,62 +1134,62 @@ end
 # 解法2: イテレーティブ
 def letter_combinations_iterative(digits)
   return [] if digits.empty?
-  
+
   mapping = {
     '2' => 'abc', '3' => 'def', '4' => 'ghi',
     '5' => 'jkl', '6' => 'mno', '7' => 'pqrs',
     '8' => 'tuv', '9' => 'wxyz'
   }
-  
+
   result = ['']
-  
+
   digits.each_char do |digit|
     letters = mapping[digit]
     new_result = []
-    
+
     result.each do |combo|
       letters.each_char do |letter|
         new_result << combo + letter
       end
     end
-    
+
     result = new_result
   end
-  
+
   result
 end
 
 # 解法3: 再帰的
 def letter_combinations_recursive(digits)
   return [] if digits.empty?
-  
+
   mapping = {
     '2' => 'abc', '3' => 'def', '4' => 'ghi',
     '5' => 'jkl', '6' => 'mno', '7' => 'pqrs',
     '8' => 'tuv', '9' => 'wxyz'
   }
-  
+
   return mapping[digits[0]].chars if digits.length == 1
-  
+
   first_letters = mapping[digits[0]].chars
-  rest_combinations = letter_combinations_recursive(digits[1..-1])
-  
+  rest_combinations = letter_combinations_recursive(digits[1..])
+
   result = []
   first_letters.each do |letter|
     rest_combinations.each do |combo|
       result << letter + combo
     end
   end
-  
+
   result
 end
 
 # テストケース
-p letter_combinations("23")
+p letter_combinations('23')
 # => ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
-p letter_combinations("")
+p letter_combinations('')
 # => []
-p letter_combinations("2")
+p letter_combinations('2')
 # => ["a", "b", "c"]
 ```
 

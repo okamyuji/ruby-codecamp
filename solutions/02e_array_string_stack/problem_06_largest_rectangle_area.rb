@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin largest_rectangle_area
 # 解法1: 単調増加スタック
 def largest_rectangle_area(heights)
   stack = []
@@ -100,6 +101,13 @@ def largest_rectangle_area_precompute(heights)
 
   max_area
 end
+
+# テストケース
+p largest_rectangle_area([2, 1, 5, 6, 2, 3])  # => 10
+p largest_rectangle_area([2, 4])              # => 4
+p largest_rectangle_area([1, 1])              # => 2
+p largest_rectangle_area([2, 1, 2])           # => 3
+# docs:end
 
 # ============================================================================
 # テストケース

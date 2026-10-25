@@ -16,6 +16,7 @@
 # 空間計算量: O(1) - 出力配列を除く
 # ============================================================================
 
+# docs:begin three_sum
 # 解法1: ソート + Two Pointers
 def three_sum(nums)
   nums.sort!
@@ -23,7 +24,7 @@ def three_sum(nums)
 
   (nums.length - 2).times do |i|
     # 重複をスキップ
-    next if i.positive? && nums[i] == nums[i - 1]
+    next if i > 0 && nums[i] == nums[i - 1]
 
     left = i + 1
     right = nums.length - 1
@@ -40,7 +41,7 @@ def three_sum(nums)
         # 重複をスキップ
         left += 1 while left < right && nums[left] == nums[left - 1]
         right -= 1 while left < right && nums[right] == nums[right + 1]
-      elsif sum.negative?
+      elsif sum < 0
         left += 1
       else
         right -= 1
@@ -72,6 +73,17 @@ def three_sum_hash(nums)
 
   result.to_a
 end
+
+# テストケース
+p three_sum([-1, 0, 1, 2, -1, -4])
+# => [[-1, -1, 2], [-1, 0, 1]]
+
+p three_sum([0, 0, 0])
+# => [[0, 0, 0]]
+
+p three_sum([])
+# => []
+# docs:end
 
 # ============================================================================
 # テストケース

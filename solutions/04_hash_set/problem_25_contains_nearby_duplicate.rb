@@ -1,32 +1,44 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin contains_nearby_duplicate
+# 解法1: ハッシュで最後のインデックスを追跡（推奨）
 def contains_nearby_duplicate(nums, k)
+  # 値をキー、最後に出現したインデックスを値とするハッシュ
   last_index = {}
 
   nums.each_with_index do |num, index|
-    return true if last_index.key?(num) && index - last_index[num] <= k
+    if last_index.key?(num) && (index - last_index[num] <= k)
+      # 同じ値が見つかったら、インデックスの差を確認
+      return true
+    end
 
+    # 最後に出現したインデックスを更新
     last_index[num] = index
   end
 
   false
 end
 
+# 解法2: スライディングウィンドウとセットを使用
 def contains_nearby_duplicate_window(nums, k)
+  # サイズkのウィンドウ内の要素を追跡
   window = Set.new
 
   nums.each_with_index do |num, index|
+    # ウィンドウがkを超えたら、最も古い要素を削除
     window.delete(nums[index - k - 1]) if index > k
 
+    # 既にウィンドウ内に存在すれば重複
     return true unless window.add?(num)
   end
 
   false
 end
 
+# 解法3: すべてのインデックスを記録
 def contains_nearby_duplicate_all_indices(nums, k)
-  indices = Hash.new { |h, key| h[key] = [] }
+  indices = Hash.new { |h, k| h[k] = [] }
 
   nums.each_with_index { |num, i| indices[num] << i }
 
@@ -34,6 +46,14 @@ def contains_nearby_duplicate_all_indices(nums, k)
     idx_list.each_cons(2).any? { |i, j| j - i <= k }
   end
 end
+
+# テストケース
+puts contains_nearby_duplicate([1, 2, 3, 1], 3)         # => true
+puts contains_nearby_duplicate([1, 0, 1, 1], 1)         # => true
+puts contains_nearby_duplicate([1, 2, 3, 1, 2, 3], 2)   # => false
+puts contains_nearby_duplicate([], 0)                   # => false
+puts contains_nearby_duplicate([1], 1)                  # => false
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 近くの重複要素（Contains Nearby Duplicate） テスト ==='

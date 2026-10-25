@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_duplicate
+# 解法1: Floyd's Cycle Detection
 def find_duplicate(nums)
+  # フェーズ1: サイクルを検出
   slow = nums[0]
   fast = nums[0]
 
@@ -11,6 +14,7 @@ def find_duplicate(nums)
     break if slow == fast
   end
 
+  # フェーズ2: サイクルの開始点を見つける
   slow = nums[0]
 
   while slow != fast
@@ -21,18 +25,22 @@ def find_duplicate(nums)
   fast
 end
 
+# 解法2: Negative Marking（配列を変更可能な場合）
 def find_duplicate_marking(nums)
   nums.each do |num|
     idx = num.abs
 
+    # 既に負の場合、これが重複
     return idx if nums[idx] < 0
 
+    # マークする
     nums[idx] = -nums[idx]
   end
 
   -1
 end
 
+# 解法3: Binary Search（値の範囲で二分探索）
 def find_duplicate_binary_search(nums)
   left = 1
   right = nums.length - 1
@@ -40,8 +48,10 @@ def find_duplicate_binary_search(nums)
   while left < right
     mid = (left + right) / 2
 
+    # mid以下の数字が何個あるか数える
     count = nums.count { |num| num <= mid }
 
+    # mid以下の数字がmid個より多ければ、重複はmid以下
     if count > mid
       right = mid
     else
@@ -51,6 +61,13 @@ def find_duplicate_binary_search(nums)
 
   left
 end
+
+# テストケース
+p find_duplicate([1, 3, 4, 2, 2])  # => 2
+p find_duplicate([3, 1, 3, 4, 2])  # => 3
+p find_duplicate([1, 1])           # => 1
+p find_duplicate([1, 1, 2])        # => 1
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 重複する数字を見つける テスト ==='

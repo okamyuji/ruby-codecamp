@@ -18,6 +18,7 @@
 # 空間計算量: O(1) - 二重ループ版、O(n) - ハッシュテーブル版
 # ============================================================================
 
+# docs:begin two_sum_brute_force
 # 解法1: 二重ループ（O(n²)）
 def two_sum_brute_force(nums, target)
   nums.each_with_index do |num1, i|
@@ -42,6 +43,31 @@ def two_sum(nums, target)
 
   nil
 end
+
+# 解法3: ハッシュテーブル（2パス）
+def two_sum_two_pass(nums, target)
+  hash = {}
+
+  # 1パス目: すべての要素をハッシュに格納
+  nums.each_with_index { |num, i| hash[num] = i }
+
+  # 2パス目: 補数を探す
+  nums.each_with_index do |num, i|
+    complement = target - num
+    if hash.key?(complement) && hash[complement] != i
+      return [i, hash[complement]]
+    end
+  end
+
+  nil
+end
+
+# テストケース
+p two_sum([2, 7, 11, 15], 9)     # => [0, 1]
+p two_sum([3, 2, 4], 6)          # => [1, 2]
+p two_sum([3, 3], 6)             # => [0, 1]
+p two_sum([1, 2, 3, 4], 7)       # => [2, 3]
+# docs:end
 
 # ============================================================================
 # テストケース

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_corrupt_value
+# 解法1: Negative Marking
 def find_corrupt_value(nums)
   # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
   nums.map! { |num| num + 1 }
@@ -8,7 +10,9 @@ def find_corrupt_value(nums)
   nums.each do |num|
     idx = num.abs - 1
 
-    nums[idx] = -nums[idx].abs if idx < nums.length
+    if idx < nums.length
+      nums[idx] = -nums[idx].abs
+    end
   end
 
   nums.each_with_index do |num, i|
@@ -18,6 +22,7 @@ def find_corrupt_value(nums)
   nums.length
 end
 
+# 解法2: In-place交換
 def find_corrupt_value_swap(nums)
   i = 0
 
@@ -31,12 +36,21 @@ def find_corrupt_value_swap(nums)
     end
   end
 
+  # 正しくない位置を見つける
   nums.each_with_index do |num, i|
     return i if num != i
   end
 
   nums.length
 end
+
+# テストケース
+p find_corrupt_value([0, 1, 3, 3])  # => 2
+p find_corrupt_value([1, 0, 2, 3])  # => 4
+p find_corrupt_value([0, 2, 2, 3])  # => 1
+p find_corrupt_value([0, 1, 0, 3])  # => 2
+p find_corrupt_value_swap([0, 1, 3, 3]) # => 2
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 配列内の正しくない数字 テスト ==='

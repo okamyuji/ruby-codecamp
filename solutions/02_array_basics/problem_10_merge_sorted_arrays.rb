@@ -17,6 +17,7 @@
 # 空間計算量: O(n + m) - 結果配列のサイズ
 # ============================================================================
 
+# docs:begin merge_sorted_arrays
 # 解法1: 2ポインタ法（効率的な実装）
 def merge_sorted_arrays(arr1, arr2)
   result = []
@@ -65,6 +66,14 @@ def merge_sorted_recursive(arr1, arr2)
     [arr2[0]] + merge_sorted_recursive(arr1, arr2[1..])
   end
 end
+
+# テストケース
+p merge_sorted_arrays([1, 3, 5, 7], [2, 4, 6, 8])  # => [1, 2, 3, 4, 5, 6, 7, 8]
+p merge_sorted_arrays([1, 2, 3], [4, 5, 6])        # => [1, 2, 3, 4, 5, 6]
+p merge_sorted_arrays([], [1, 2, 3])               # => [1, 2, 3]
+p merge_sorted_arrays([1, 2, 3], [])               # => [1, 2, 3]
+p merge_sorted_arrays([1, 1, 1], [1, 1])           # => [1, 1, 1, 1, 1]
+# docs:end
 
 # ============================================================================
 # テストケース

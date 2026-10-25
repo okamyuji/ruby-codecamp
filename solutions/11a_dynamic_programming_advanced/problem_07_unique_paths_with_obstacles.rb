@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin unique_paths_with_obstacles
+# 解法1: 二次元DP
 def unique_paths_with_obstacles(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
 
@@ -27,6 +29,7 @@ def unique_paths_with_obstacles(obstacle_grid)
   dp[m - 1][n - 1]
 end
 
+# 解法2: 一次元DP（空間最適化）
 def unique_paths_with_obstacles_1d(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
 
@@ -49,6 +52,7 @@ def unique_paths_with_obstacles_1d(obstacle_grid)
   dp[n - 1]
 end
 
+# 解法3: in-placeで計算
 def unique_paths_with_obstacles_inplace(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
 
@@ -57,14 +61,17 @@ def unique_paths_with_obstacles_inplace(obstacle_grid)
 
   obstacle_grid[0][0] = 1
 
+  # 最初の行を初期化
   (1...n).each do |j|
     obstacle_grid[0][j] = obstacle_grid[0][j] == 0 && obstacle_grid[0][j - 1] == 1 ? 1 : 0
   end
 
+  # 最初の列を初期化
   (1...m).each do |i|
     obstacle_grid[i][0] = obstacle_grid[i][0] == 0 && obstacle_grid[i - 1][0] == 1 ? 1 : 0
   end
 
+  # DP計算
   (1...m).each do |i|
     (1...n).each do |j|
       if obstacle_grid[i][j] == 0
@@ -77,6 +84,21 @@ def unique_paths_with_obstacles_inplace(obstacle_grid)
 
   obstacle_grid[m - 1][n - 1]
 end
+
+# テストケース
+grid1 = [
+  [0, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0]
+]
+p unique_paths_with_obstacles(grid1)  # => 2
+
+grid2 = [[0, 1], [0, 0]]
+p unique_paths_with_obstacles(grid2)  # => 1
+
+grid3 = [[1]]
+p unique_paths_with_obstacles(grid3)  # => 0
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== ユニークなパスII（障害物あり） テスト ==='

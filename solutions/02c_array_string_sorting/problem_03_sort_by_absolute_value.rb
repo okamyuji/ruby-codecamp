@@ -16,6 +16,7 @@
 # 空間計算量: O(n)
 # ============================================================================
 
+# docs:begin sort_by_absolute_value
 # 解法1: sort_byを使用（推奨）
 def sort_by_absolute_value(arr)
   arr.sort_by { |x| [x.abs, x] }
@@ -36,6 +37,17 @@ end
 def sort_by_absolute_value_stable(arr)
   arr.each_with_index.sort_by { |x, i| [x.abs, x, i] }.map(&:first)
 end
+
+# テストケース
+p sort_by_absolute_value([-5, -3, 3, 2, -1])
+# => [-1, 2, -3, 3, -5]
+
+p sort_by_absolute_value([1, -1, 2, -2, 3, -3])
+# => [-1, 1, -2, 2, -3, 3]
+
+p sort_by_absolute_value([5, -7, 3, -3])
+# => [-3, 3, 5, -7]
+# docs:end
 
 # ============================================================================
 # テストケース

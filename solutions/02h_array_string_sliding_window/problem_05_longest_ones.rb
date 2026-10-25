@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin longest_ones
+# 解法1: Sliding Window
 def longest_ones(nums, k)
   left = 0
   zero_count = 0
@@ -9,6 +11,7 @@ def longest_ones(nums, k)
   nums.each_with_index do |num, right|
     zero_count += 1 if num.zero?
 
+    # ゼロが多すぎたら左を縮小
     while zero_count > k
       zero_count -= 1 if nums[left].zero?
       left += 1
@@ -20,6 +23,7 @@ def longest_ones(nums, k)
   max_len
 end
 
+# 解法2: インデックスも返す
 def longest_ones_with_indices(nums, k)
   left = 0
   zero_count = 0
@@ -42,6 +46,14 @@ def longest_ones_with_indices(nums, k)
 
   { length: max_len, start: max_start, end: max_start + max_len - 1 }
 end
+
+# テストケース
+p longest_ones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2) # => 6
+p longest_ones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3) # => 10
+
+p longest_ones_with_indices([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2)
+# => {length: 6, start: 4, end: 9}
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最大連続1（k回の反転許可） テスト ==='

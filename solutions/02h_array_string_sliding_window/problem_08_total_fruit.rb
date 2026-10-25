@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin total_fruit
+# 解法1: Sliding Window
 def total_fruit(fruits)
   fruit_count = Hash.new(0)
   left = 0
@@ -9,6 +11,7 @@ def total_fruit(fruits)
   fruits.each_with_index do |fruit, right|
     fruit_count[fruit] += 1
 
+    # 果物の種類が2を超えたら左を縮小
     while fruit_count.size > 2
       fruit_count[fruits[left]] -= 1
       fruit_count.delete(fruits[left]) if fruit_count[fruits[left]].zero?
@@ -21,6 +24,7 @@ def total_fruit(fruits)
   max_fruits
 end
 
+# 解法2: インデックスも返す
 def total_fruit_with_range(fruits)
   fruit_count = Hash.new(0)
   left = 0
@@ -44,6 +48,16 @@ def total_fruit_with_range(fruits)
 
   { count: max_fruits, start: max_start, end: max_start + max_fruits - 1 }
 end
+
+# テストケース
+p total_fruit([1, 2, 1])            # => 3
+p total_fruit([0, 1, 2, 2])         # => 3
+p total_fruit([1, 2, 3, 2, 2])      # => 4
+p total_fruit([3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]) # => 5
+
+p total_fruit_with_range([1, 2, 3, 2, 2])
+# => {count: 4, start: 1, end: 4}
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 果物をバスケットに入れる テスト ==='

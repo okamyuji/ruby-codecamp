@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin climb_stairs
+# 解法1: 動的計画法（空間最適化、推奨）
 def climb_stairs(n)
   return n if n <= 2
 
-  prev_prev = 1
-  prev = 2
+  # 直前の2つの値のみを保持
+  prev_prev = 1  # f(1)
+  prev = 2       # f(2)
 
   (3..n).each do
     current = prev + prev_prev
@@ -16,9 +19,11 @@ def climb_stairs(n)
   prev
 end
 
+# 解法2: 動的計画法（配列使用）
 def climb_stairs_dp(n)
   return n if n <= 2
 
+  # dp[i]はi段目に到達する方法の数
   dp = Array.new(n + 1)
   dp[1] = 1
   dp[2] = 2
@@ -30,6 +35,7 @@ def climb_stairs_dp(n)
   dp[n]
 end
 
+# 解法3: 再帰（メモ化あり）
 def climb_stairs_memo(n, memo = {})
   return n if n <= 2
   return memo[n] if memo.key?(n)
@@ -37,15 +43,18 @@ def climb_stairs_memo(n, memo = {})
   memo[n] = climb_stairs_memo(n - 1, memo) + climb_stairs_memo(n - 2, memo)
 end
 
+# 解法4: 再帰（メモ化なし、遅い）
 def climb_stairs_naive(n)
   return n if n <= 2
 
   climb_stairs_naive(n - 1) + climb_stairs_naive(n - 2)
 end
 
+# 解法5: 行列累乗（高速）
 def climb_stairs_matrix(n)
   return n if n <= 2
 
+  # [[f(n+1), f(n)], [f(n), f(n-1)]] = [[1,1],[1,0]]^n
   matrix_power([[1, 1], [1, 0]], n)[0][0]
 end
 
@@ -65,6 +74,14 @@ def matrix_power(matrix, n)
   end
   result
 end
+
+# テストケース
+puts climb_stairs(2)   # => 2
+puts climb_stairs(3)   # => 3
+puts climb_stairs(4)   # => 5
+puts climb_stairs(5)   # => 8
+puts climb_stairs(10)  # => 89
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 階段の上り方 テスト ==='

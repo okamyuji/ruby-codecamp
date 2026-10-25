@@ -20,6 +20,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin diagonal_sum
 # 解法1: 効率的な1パス実装
 def diagonal_sum(matrix)
   n = matrix.length
@@ -46,7 +47,9 @@ def diagonal_sum_loop(matrix)
   n.times do |i|
     n.times do |j|
       # 主対角線または副対角線の要素
-      sum += matrix[i][j] if i == j || i + j == n - 1
+      if i == j || i + j == n - 1
+        sum += matrix[i][j]
+      end
     end
   end
 
@@ -69,6 +72,20 @@ def diagonal_sum_separate(matrix)
 
   total
 end
+
+# テストケース
+p diagonal_sum([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+# => 25（1+5+9+3+7）
+
+p diagonal_sum([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
+# => 8（すべて1なので、8個の対角線要素）
+
+p diagonal_sum([[5]])
+# => 5（1×1行列）
+
+p diagonal_sum([[1, 2], [3, 4]])
+# => 10（1+4+2+3）
+# docs:end
 
 # ============================================================================
 # テストケース

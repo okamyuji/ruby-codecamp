@@ -47,6 +47,7 @@
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_11_reverse_string.rb#reverse_string -->
 ```ruby
 # 解法1: reverseメソッドを使用（推奨）
 def reverse_string(str)
@@ -55,13 +56,13 @@ end
 
 # 解法2: 手動で逆順に構築
 def reverse_string_manual(str)
-  result = ""
-  
+  result = ''
+
   # 最後の文字から最初の文字まで逆順にイテレート
   (str.length - 1).downto(0) do |i|
     result += str[i]
   end
-  
+
   result
 end
 
@@ -74,15 +75,15 @@ end
 # 解法4: reduceを使用
 def reverse_string_reduce(str)
   # 各文字を逆順に結合
-  str.chars.reduce("") { |acc, char| char + acc }
+  str.chars.reduce('') { |acc, char| char + acc }
 end
 
 # テストケース
-puts reverse_string("hello")      # => "olleh"
-puts reverse_string("Ruby")       # => "ybuR"
-puts reverse_string("a")          # => "a"
-puts reverse_string("")           # => ""
-puts reverse_string("12345")      # => "54321"
+p reverse_string('hello')      # => "olleh"
+p reverse_string('Ruby')       # => "ybuR"
+p reverse_string('a')          # => "a"
+p reverse_string('')           # => ""
+p reverse_string('12345')      # => "54321"
 ```
 
 ---
@@ -124,6 +125,7 @@ true
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_12_palindrome.rb#palindrome? -->
 ```ruby
 # 解法1: reverseで比較（推奨）
 def palindrome?(str)
@@ -137,15 +139,15 @@ def palindrome_two_pointer?(str)
   normalized = str.downcase
   left = 0
   right = normalized.length - 1
-  
+
   while left < right
     # 両端の文字が一致しない場合は回文ではない
     return false if normalized[left] != normalized[right]
-    
+
     left += 1
     right -= 1
   end
-  
+
   true
 end
 
@@ -159,23 +161,23 @@ end
 # 解法4: 再帰的な実装
 def palindrome_recursive?(str, left = 0, right = str.length - 1)
   normalized = str.downcase
-  
+
   # ベースケース: ポインタが交差したら回文
   return true if left >= right
-  
+
   # 両端が一致しなければ回文ではない
   return false if normalized[left] != normalized[right]
-  
+
   # 内側に移動して再帰
   palindrome_recursive?(str, left + 1, right - 1)
 end
 
 # テストケース
-puts palindrome?("RaceCar")      # => true
-puts palindrome?("hello")        # => false
-puts palindrome?("A")            # => true
-puts palindrome?("")             # => true
-puts palindrome?("Was it a car or a cat I saw".gsub(' ', ''))  # => true
+puts palindrome?('RaceCar')      # => true
+puts palindrome?('hello')        # => false
+puts palindrome?('A')            # => true
+puts palindrome?('')             # => true
+puts palindrome?('Was it a car or a cat I saw'.gsub(' ', '')) # => true
 ```
 
 ---
@@ -222,6 +224,7 @@ puts palindrome?("Was it a car or a cat I saw".gsub(' ', ''))  # => true
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_13_count_chars.rb#count_chars -->
 ```ruby
 # 解法1: tallyメソッドを使用（Ruby 2.7+、推奨）
 def count_chars(str)
@@ -239,7 +242,7 @@ end
 # 解法3: 手動でカウント
 def count_chars_manual(str)
   count = {}
-  
+
   str.each_char do |char|
     if count.key?(char)
       count[char] += 1
@@ -247,7 +250,7 @@ def count_chars_manual(str)
       count[char] = 1
     end
   end
-  
+
   count
 end
 
@@ -258,19 +261,19 @@ end
 
 # 解法5: デフォルト値を持つハッシュ
 def count_chars_default_hash(str)
-  count = Hash.new(0)  # デフォルト値を0に設定
-  
+  count = Hash.new(0) # デフォルト値を0に設定
+
   str.each_char { |char| count[char] += 1 }
-  
+
   count
 end
 
 # テストケース
-p count_chars("hello")      # => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
-p count_chars("aaa")        # => {"a" => 3}
-p count_chars("abc")        # => {"a" => 1, "b" => 1, "c" => 1}
-p count_chars("")           # => {}
-p count_chars("AaBb")       # => {"A" => 1, "a" => 1, "B" => 1, "b" => 1}
+p count_chars('hello')      # => {"h" => 1, "e" => 1, "l" => 2, "o" => 1}
+p count_chars('aaa')        # => {"a" => 3}
+p count_chars('abc')        # => {"a" => 1, "b" => 1, "c" => 1}
+p count_chars('')           # => {}
+p count_chars('AaBb')       # => {"A" => 1, "a" => 1, "B" => 1, "b" => 1}
 ```
 
 ---
@@ -313,6 +316,7 @@ true
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_14_anagram.rb#anagram? -->
 ```ruby
 # 解法1: ソートして比較（シンプル）
 def anagram?(str1, str2)
@@ -324,7 +328,7 @@ end
 def anagram_count?(str1, str2)
   # 長さが異なれば即座にfalse
   return false if str1.length != str2.length
-  
+
   # 各文字の出現回数を比較
   str1.downcase.chars.tally == str2.downcase.chars.tally
 end
@@ -332,15 +336,15 @@ end
 # 解法3: 手動で文字カウント
 def anagram_manual?(str1, str2)
   return false if str1.length != str2.length
-  
+
   count = Hash.new(0)
-  
+
   # str1の文字をカウントアップ
   str1.downcase.each_char { |char| count[char] += 1 }
-  
+
   # str2の文字をカウントダウン
   str2.downcase.each_char { |char| count[char] -= 1 }
-  
+
   # すべてのカウントが0なら、アナグラム
   count.values.all?(&:zero?)
 end
@@ -350,17 +354,17 @@ def anagram_clean?(str1, str2)
   # 英字のみを抽出して比較
   clean1 = str1.downcase.gsub(/[^a-z]/, '').chars.sort
   clean2 = str2.downcase.gsub(/[^a-z]/, '').chars.sort
-  
+
   clean1 == clean2
 end
 
 # テストケース
-puts anagram?("listen", "silent")      # => true
-puts anagram?("hello", "world")        # => false
-puts anagram?("Dormitory", "dirty room".delete(' '))  # => true
-puts anagram?("a", "a")                # => true
-puts anagram?("ab", "ba")              # => true
-puts anagram?("abc", "ab")             # => false
+puts anagram?('listen', 'silent')      # => true
+puts anagram?('hello', 'world')        # => false
+puts anagram?('Dormitory', 'dirty room'.delete(' ')) # => true
+puts anagram?('a', 'a')                # => true
+puts anagram?('ab', 'ba')              # => true
+puts anagram?('abc', 'ab')             # => false
 ```
 
 ---
@@ -405,24 +409,25 @@ puts anagram?("abc", "ab")             # => false
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_15_first_unique_char.rb#first_unique_char -->
 ```ruby
 # 解法1: tallyを使用（推奨）
 def first_unique_char(str)
   # 文字の出現回数をカウント
   count = str.chars.tally
-  
+
   # 最初の出現回数1の文字のインデックスを返す
   str.chars.each_with_index do |char, index|
     return index if count[char] == 1
   end
-  
-  -1  # 見つからない場合
+
+  -1 # 見つからない場合
 end
 
 # 解法2: find_indexを使用
 def first_unique_char_find(str)
   count = str.chars.tally
-  
+
   # find_indexは条件を満たす最初の要素のインデックスを返す
   str.chars.find_index { |char| count[char] == 1 } || -1
 end
@@ -430,15 +435,15 @@ end
 # 解法3: 2回のループで手動実装
 def first_unique_char_manual(str)
   count = Hash.new(0)
-  
+
   # 1回目のループ: カウント
   str.each_char { |char| count[char] += 1 }
-  
+
   # 2回目のループ: 最初の非重複文字を探す
   str.each_char.with_index do |char, index|
     return index if count[char] == 1
   end
-  
+
   -1
 end
 
@@ -448,16 +453,16 @@ def first_unique_char_index(str)
     # 最初と最後の出現位置が同じなら、1回だけ出現
     return index if str.index(char) == str.rindex(char)
   end
-  
+
   -1
 end
 
 # テストケース
-puts first_unique_char("leetcode")     # => 0 ('l')
-puts first_unique_char("loveleetcode") # => 2 ('v')
-puts first_unique_char("aabb")         # => -1
-puts first_unique_char("z")            # => 0
-puts first_unique_char("")             # => -1
+puts first_unique_char('leetcode')     # => 0（'l'）
+puts first_unique_char('loveleetcode') # => 2（'v'）
+puts first_unique_char('aabb')         # => -1
+puts first_unique_char('z')            # => 0
+puts first_unique_char('')             # => -1
 ```
 
 ---
@@ -513,15 +518,16 @@ puts first_unique_char("")             # => -1
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_16_compress_string.rb#compress_string -->
 ```ruby
 # 解法1: ループで実装（推奨）
 def compress_string(str)
   return str if str.empty?
-  
-  result = ""
+
+  result = ''
   current_char = str[0]
   count = 1
-  
+
   # 2文字目から走査
   (1...str.length).each do |i|
     if str[i] == current_char
@@ -534,10 +540,10 @@ def compress_string(str)
       count = 1
     end
   end
-  
+
   # 最後のグループを追加
   result += "#{current_char}#{count}"
-  
+
   # 圧縮が効果的な場合のみ圧縮結果を返す
   result.length < str.length ? result : str
 end
@@ -545,34 +551,34 @@ end
 # 解法2: chunk_whileを使用
 def compress_string_chunk(str)
   return str if str.empty?
-  
+
   # 連続する同じ文字をグループ化
   groups = str.chars.chunk_while { |a, b| a == b }
-  
+
   # 各グループを文字と長さに変換
   result = groups.map { |group| "#{group[0]}#{group.length}" }.join
-  
+
   result.length < str.length ? result : str
 end
 
 # 解法3: 正規表現を使用
 def compress_string_regex(str)
   return str if str.empty?
-  
+
   # 連続する同じ文字にマッチ
   result = str.gsub(/(.)\1*/) { |match| "#{match[0]}#{match.length}" }
-  
+
   result.length < str.length ? result : str
 end
 
 # 解法4: each_cons的アプローチ
 def compress_string_functional(str)
   return str if str.empty?
-  
+
   result = []
   char = str[0]
   count = 0
-  
+
   str.each_char do |c|
     if c == char
       count += 1
@@ -582,19 +588,19 @@ def compress_string_functional(str)
       count = 1
     end
   end
-  
+
   result << "#{char}#{count}"
   compressed = result.join
-  
+
   compressed.length < str.length ? compressed : str
 end
 
 # テストケース
-puts compress_string("aabcccccaaa")  # => "a2b1c5a3"
-puts compress_string("abc")          # => "abc" (圧縮しても短くならない)
-puts compress_string("aaa")          # => "a3"
-puts compress_string("")             # => ""
-puts compress_string("a")            # => "a"
+p compress_string('aabcccccaaa')  # => "a2b1c5a3"
+p compress_string('abc')          # => "abc"（圧縮しても短くならない）
+p compress_string('aaa')          # => "a3"
+p compress_string('')             # => ""
+p compress_string('a')            # => "a"
 ```
 
 ---
@@ -644,14 +650,15 @@ puts compress_string("a")            # => "a"
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_17_longest_common_prefix.rb#longest_common_prefix -->
 ```ruby
 # 解法1: 垂直走査（推奨）
 def longest_common_prefix(strs)
-  return "" if strs.empty?
-  
+  return '' if strs.empty?
+
   # 最初の文字列を基準にする
   prefix = strs[0]
-  
+
   prefix.chars.each_with_index do |char, index|
     # 他のすべての文字列でこの位置の文字を確認
     strs[1..].each do |str|
@@ -661,45 +668,41 @@ def longest_common_prefix(strs)
       end
     end
   end
-  
+
   prefix
 end
 
 # 解法2: ソートを利用
 def longest_common_prefix_sort(strs)
-  return "" if strs.empty?
-  
+  return '' if strs.empty?
+
   # ソートすると、最初と最後の文字列の共通接頭辞が全体の共通接頭辞
   sorted = strs.sort
   first = sorted.first
   last = sorted.last
-  
+
   index = 0
-  while index < first.length && index < last.length && first[index] == last[index]
-    index += 1
-  end
-  
+  index += 1 while index < first.length && index < last.length && first[index] == last[index]
+
   first[0...index]
 end
 
 # 解法3: reduceを使用
 def longest_common_prefix_reduce(strs)
-  return "" if strs.empty?
-  
+  return '' if strs.empty?
+
   strs.reduce do |prefix, str|
     # prefixとstrの共通接頭辞を計算
     i = 0
-    while i < prefix.length && i < str.length && prefix[i] == str[i]
-      i += 1
-    end
+    i += 1 while i < prefix.length && i < str.length && prefix[i] == str[i]
     prefix[0...i]
   end
 end
 
 # 解法4: 分割統治法
 def longest_common_prefix_divide(strs)
-  return "" if strs.empty?
-  
+  return '' if strs.empty?
+
   divide_and_conquer(strs, 0, strs.length - 1)
 end
 
@@ -717,19 +720,17 @@ end
 def common_prefix(str1, str2)
   min_len = [str1.length, str2.length].min
   i = 0
-  while i < min_len && str1[i] == str2[i]
-    i += 1
-  end
+  i += 1 while i < min_len && str1[i] == str2[i]
   str1[0...i]
 end
 
 # テストケース
-puts longest_common_prefix(["flower", "flow", "flight"])  # => "fl"
-puts longest_common_prefix(["dog", "racecar", "car"])     # => ""
-puts longest_common_prefix(["abc"])                       # => "abc"
-puts longest_common_prefix([])                            # => ""
-puts longest_common_prefix(["", "abc"])                   # => ""
-puts longest_common_prefix(["abc", "abc", "abc"])         # => "abc"
+p longest_common_prefix(['flower', 'flow', 'flight'])  # => "fl"
+p longest_common_prefix(['dog', 'racecar', 'car'])     # => ""
+p longest_common_prefix(['abc'])                       # => "abc"
+p longest_common_prefix([])                            # => ""
+p longest_common_prefix(['', 'abc'])                   # => ""
+p longest_common_prefix(['abc', 'abc', 'abc'])         # => "abc"
 ```
 
 ---
@@ -770,62 +771,63 @@ puts longest_common_prefix(["abc", "abc", "abc"])         # => "abc"
 
 ### 解答
 
+<!-- source: solutions/03_string_manipulation/problem_18_reverse_words.rb#reverse_words -->
 ```ruby
 # 解法1: split, reverse, joinを使用（推奨）
 def reverse_words(str)
   # splitは連続する空白も処理し、空文字列を除外
-  str.split.reverse.join(" ")
+  str.split.reverse.join(' ')
 end
 
 # 解法2: 正規表現で分割
 def reverse_words_regex(str)
   # 1つ以上の空白で分割
   words = str.strip.split(/\s+/)
-  words.reverse.join(" ")
+  words.reverse.join(' ')
 end
 
 # 解法3: 手動で単語を抽出
 def reverse_words_manual(str)
   words = []
-  current_word = ""
-  
+  current_word = ''
+
   str.each_char do |char|
     if char == ' '
       # 空白に遭遇したら、現在の単語を保存
       words << current_word unless current_word.empty?
-      current_word = ""
+      current_word = ''
     else
       current_word += char
     end
   end
-  
+
   # 最後の単語を追加
   words << current_word unless current_word.empty?
-  
-  words.reverse.join(" ")
+
+  words.reverse.join(' ')
 end
 
 # 解法4: scanを使用
 def reverse_words_scan(str)
   # 非空白文字の連続にマッチ
-  str.scan(/\S+/).reverse.join(" ")
+  str.scan(/\S+/).reverse.join(' ')
 end
 
 # 解法5: in-placeで反転（参考実装）
 def reverse_words_inplace(str)
   # まず文字列全体を反転
   reversed = str.strip.reverse
-  
+
   # 次に各単語を個別に反転
-  reversed.split.map(&:reverse).join(" ")
+  reversed.split.map(&:reverse).join(' ')
 end
 
 # テストケース
-puts reverse_words("  hello   world  ")    # => "world hello"
-puts reverse_words("the sky is blue")      # => "blue is sky the"
-puts reverse_words("hello")                # => "hello"
-puts reverse_words("   ")                  # => ""
-puts reverse_words("a b c")                # => "c b a"
+p reverse_words('  hello   world  ')    # => "world hello"
+p reverse_words('the sky is blue')      # => "blue is sky the"
+p reverse_words('hello')                # => "hello"
+p reverse_words('   ')                  # => ""
+p reverse_words('a b c')                # => "c b a"
 ```
 
 ---

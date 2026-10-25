@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin upper_bound
+# 解法1: 標準的な Upper Bound
 def upper_bound(nums, target)
   left = 0
   right = nums.length
@@ -18,10 +20,12 @@ def upper_bound(nums, target)
   left
 end
 
+# 解法2: Rubyの bsearch_index を使用
 def upper_bound_builtin(nums, target)
   nums.bsearch_index { |x| x > target } || nums.length
 end
 
+# 解法3: より明示的な実装
 def upper_bound_explicit(nums, target)
   left = 0
   right = nums.length - 1
@@ -41,9 +45,17 @@ def upper_bound_explicit(nums, target)
   result
 end
 
+# 解法4: Lower Bound を利用
 def upper_bound_from_lower(nums, target)
   lower_bound(nums, target + 1)
 end
+
+# テストケース
+p upper_bound([1, 2, 4, 4, 5, 6], 4)  # => 4
+p upper_bound([1, 2, 4, 4, 5, 6], 3)  # => 2
+p upper_bound([1, 2, 4, 4, 5, 6], 7)  # => 6
+p upper_bound([1, 2, 4, 4, 5, 6], 0)  # => 0
+# docs:end
 
 def lower_bound(nums, target)
   left = 0

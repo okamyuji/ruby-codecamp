@@ -54,63 +54,64 @@ W = 7
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_01_knapsack.rb#knapsack -->
 ```ruby
 # 解法1: 二次元DP（貰うDP）
 def knapsack(weights, values, w)
   n = weights.length
   dp = Array.new(n + 1) { Array.new(w + 1, 0) }
-  
+
   (1..n).each do |i|
     (0..w).each do |cap|
       # アイテム i-1 を選ばない
       dp[i][cap] = dp[i - 1][cap]
-      
+
       # アイテム i-1 を選ぶ（可能なら）
-      if cap >= weights[i - 1]
-        dp[i][cap] = [
-          dp[i][cap],
-          dp[i - 1][cap - weights[i - 1]] + values[i - 1]
-        ].max
-      end
+      next unless cap >= weights[i - 1]
+
+      dp[i][cap] = [
+        dp[i][cap],
+        dp[i - 1][cap - weights[i - 1]] + values[i - 1]
+      ].max
     end
   end
-  
+
   dp[n][w]
 end
 
 # 解法2: 一次元DP（空間最適化）
 def knapsack_1d(weights, values, w)
   dp = Array.new(w + 1, 0)
-  
+
   weights.each_with_index do |weight, i|
     value = values[i]
-    
+
     # 後ろから更新（上書きを防ぐ）
     w.downto(weight) do |cap|
       dp[cap] = [dp[cap], dp[cap - weight] + value].max
     end
   end
-  
+
   dp[w]
 end
 
 # 解法3: 配るDP
 def knapsack_push(weights, values, w)
   dp = Array.new(w + 1, 0)
-  
+
   weights.each_with_index do |weight, i|
     value = values[i]
     new_dp = dp.dup
-    
+
     (0..w).each do |cap|
       if cap + weight <= w
         new_dp[cap + weight] = [new_dp[cap + weight], dp[cap] + value].max
       end
     end
-    
+
     dp = new_dp
   end
-  
+
   dp[w]
 end
 
@@ -118,26 +119,26 @@ end
 def knapsack_with_items(weights, values, w)
   n = weights.length
   dp = Array.new(n + 1) { Array.new(w + 1, 0) }
-  
+
   # DP計算
   (1..n).each do |i|
     (0..w).each do |cap|
       dp[i][cap] = dp[i - 1][cap]
-      
-      if cap >= weights[i - 1]
-        dp[i][cap] = [
-          dp[i][cap],
-          dp[i - 1][cap - weights[i - 1]] + values[i - 1]
-        ].max
-      end
+
+      next unless cap >= weights[i - 1]
+
+      dp[i][cap] = [
+        dp[i][cap],
+        dp[i - 1][cap - weights[i - 1]] + values[i - 1]
+      ].max
     end
   end
-  
+
   # バックトラック
   selected = []
   i = n
   cap = w
-  
+
   while i > 0 && cap > 0
     # アイテムiが選ばれたか
     if dp[i][cap] != dp[i - 1][cap]
@@ -146,16 +147,16 @@ def knapsack_with_items(weights, values, w)
     end
     i -= 1
   end
-  
+
   [dp[n][w], selected.reverse]
 end
 
 # テストケース
 weights = [1, 3, 4, 5]
 values = [1, 4, 5, 7]
-p knapsack(weights, values, 7)  # => 9
-p knapsack_1d(weights, values, 7)  # => 9
-p knapsack_with_items(weights, values, 7)  # => [9, [1, 2]]
+p knapsack(weights, values, 7) # => 9
+p knapsack_1d(weights, values, 7) # => 9
+p knapsack_with_items(weights, values, 7) # => [9, [1, 2]]
 ```
 
 ---
@@ -206,13 +207,14 @@ text2 = "ace"
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_02_longest_common_subsequence.rb#longest_common_subsequence -->
 ```ruby
 # 解法1: 二次元DP
 def longest_common_subsequence(text1, text2)
   m = text1.length
   n = text2.length
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
-  
+
   (1..m).each do |i|
     (1..n).each do |j|
       if text1[i - 1] == text2[j - 1]
@@ -222,7 +224,7 @@ def longest_common_subsequence(text1, text2)
       end
     end
   end
-  
+
   dp[m][n]
 end
 
@@ -230,15 +232,15 @@ end
 def longest_common_subsequence_1d(text1, text2)
   # 短い方を列にする
   text1, text2 = text2, text1 if text1.length > text2.length
-  
+
   m = text1.length
   n = text2.length
-  
+
   prev = Array.new(n + 1, 0)
-  
+
   (1..m).each do |i|
     curr = Array.new(n + 1, 0)
-    
+
     (1..n).each do |j|
       if text1[i - 1] == text2[j - 1]
         curr[j] = prev[j - 1] + 1
@@ -246,10 +248,10 @@ def longest_common_subsequence_1d(text1, text2)
         curr[j] = [prev[j], curr[j - 1]].max
       end
     end
-    
+
     prev = curr
   end
-  
+
   prev[n]
 end
 
@@ -258,7 +260,7 @@ def longest_common_subsequence_with_string(text1, text2)
   m = text1.length
   n = text2.length
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
-  
+
   # DP計算
   (1..m).each do |i|
     (1..n).each do |j|
@@ -269,12 +271,12 @@ def longest_common_subsequence_with_string(text1, text2)
       end
     end
   end
-  
+
   # バックトラック
   lcs = []
   i = m
   j = n
-  
+
   while i > 0 && j > 0
     if text1[i - 1] == text2[j - 1]
       lcs.unshift(text1[i - 1])
@@ -286,15 +288,15 @@ def longest_common_subsequence_with_string(text1, text2)
       j -= 1
     end
   end
-  
+
   [dp[m][n], lcs.join]
 end
 
 # テストケース
-p longest_common_subsequence("abcde", "ace")  # => 3
-p longest_common_subsequence("abc", "abc")  # => 3
-p longest_common_subsequence("abc", "def")  # => 0
-p longest_common_subsequence_with_string("abcde", "ace")  # => [3, "ace"]
+p longest_common_subsequence('abcde', 'ace') # => 3
+p longest_common_subsequence('abc', 'abc')  # => 3
+p longest_common_subsequence('abc', 'def')  # => 0
+p longest_common_subsequence_with_string('abcde', 'ace') # => [3, "ace"]
 ```
 
 ---
@@ -341,14 +343,15 @@ DPまたは二分探索を使用します。dp[i] = i番目の要素で終わる
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_03_length_of_lis.rb#length_of_lis -->
 ```ruby
 # 解法1: DP（O(n²)）
 def length_of_lis(nums)
   return 0 if nums.empty?
-  
+
   n = nums.length
   dp = Array.new(n, 1)
-  
+
   (1...n).each do |i|
     (0...i).each do |j|
       if nums[j] < nums[i]
@@ -356,39 +359,39 @@ def length_of_lis(nums)
       end
     end
   end
-  
+
   dp.max
 end
 
 # 解法2: 二分探索（O(n log n)）
 def length_of_lis_binary(nums)
   return 0 if nums.empty?
-  
+
   # tails[i] = 長さ i+1 のLISの末尾の最小値
   tails = []
-  
+
   nums.each do |num|
     # num が入る位置を二分探索
     idx = tails.bsearch_index { |x| x >= num } || tails.length
-    
+
     if idx == tails.length
       tails << num
     else
       tails[idx] = num
     end
   end
-  
+
   tails.length
 end
 
 # 解法3: LIS配列を復元
 def length_of_lis_with_sequence(nums)
   return [0, []] if nums.empty?
-  
+
   n = nums.length
   dp = Array.new(n, 1)
   parent = Array.new(n, -1)
-  
+
   (1...n).each do |i|
     (0...i).each do |j|
       if nums[j] < nums[i] && dp[j] + 1 > dp[i]
@@ -397,29 +400,29 @@ def length_of_lis_with_sequence(nums)
       end
     end
   end
-  
+
   # 最大長のインデックス
   max_length = dp.max
   max_idx = dp.index(max_length)
-  
+
   # バックトラック
   lis = []
   idx = max_idx
-  
+
   while idx != -1
     lis.unshift(nums[idx])
     idx = parent[idx]
   end
-  
+
   [max_length, lis]
 end
 
 # テストケース
-p length_of_lis([10, 9, 2, 5, 3, 7, 101, 18])  # => 4
-p length_of_lis_binary([10, 9, 2, 5, 3, 7, 101, 18])  # => 4
-p length_of_lis_with_sequence([10, 9, 2, 5, 3, 7, 101, 18])  # => [4, [2, 5, 7, 101]]
-p length_of_lis([0, 1, 0, 3, 2, 3])  # => 4
-p length_of_lis([7, 7, 7, 7, 7, 7, 7])  # => 1
+p length_of_lis([10, 9, 2, 5, 3, 7, 101, 18]) # => 4
+p length_of_lis_binary([10, 9, 2, 5, 3, 7, 101, 18]) # => 4
+p length_of_lis_with_sequence([10, 9, 2, 5, 3, 7, 101, 18]) # => [4, [2, 5, 7, 101]]
+p length_of_lis([0, 1, 0, 3, 2, 3]) # => 4
+p length_of_lis([7, 7, 7, 7, 7, 7, 7]) # => 1
 ```
 
 ---
@@ -478,18 +481,19 @@ word2 = "ros"
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_04_min_distance.rb#min_distance -->
 ```ruby
 # 解法1: 二次元DP
 def min_distance(word1, word2)
   m = word1.length
   n = word2.length
-  
+
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
-  
+
   # 初期化
   (0..m).each { |i| dp[i][0] = i }
   (0..n).each { |j| dp[0][j] = j }
-  
+
   (1..m).each do |i|
     (1..n).each do |j|
       if word1[i - 1] == word2[j - 1]
@@ -503,7 +507,7 @@ def min_distance(word1, word2)
       end
     end
   end
-  
+
   dp[m][n]
 end
 
@@ -511,15 +515,15 @@ end
 def min_distance_1d(word1, word2)
   # 短い方を列にする
   word1, word2 = word2, word1 if word1.length > word2.length
-  
+
   m = word1.length
   n = word2.length
-  
+
   prev = (0..n).to_a
-  
+
   (1..m).each do |i|
     curr = [i] + Array.new(n, 0)
-    
+
     (1..n).each do |j|
       if word1[i - 1] == word2[j - 1]
         curr[j] = prev[j - 1]
@@ -527,10 +531,10 @@ def min_distance_1d(word1, word2)
         curr[j] = 1 + [prev[j], curr[j - 1], prev[j - 1]].min
       end
     end
-    
+
     prev = curr
   end
-  
+
   prev[n]
 end
 
@@ -538,21 +542,21 @@ end
 def min_distance_with_operations(word1, word2)
   m = word1.length
   n = word2.length
-  
+
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
   operations = Array.new(m + 1) { Array.new(n + 1, '') }
-  
+
   # 初期化
   (0..m).each do |i|
     dp[i][0] = i
     operations[i][0] = 'D' * i
   end
-  
+
   (0..n).each do |j|
     dp[0][j] = j
     operations[0][j] = 'I' * j
   end
-  
+
   (1..m).each do |i|
     (1..n).each do |j|
       if word1[i - 1] == word2[j - 1]
@@ -562,29 +566,29 @@ def min_distance_with_operations(word1, word2)
         delete_cost = dp[i - 1][j]
         insert_cost = dp[i][j - 1]
         replace_cost = dp[i - 1][j - 1]
-        
+
         min_cost = [delete_cost, insert_cost, replace_cost].min
         dp[i][j] = 1 + min_cost
-        
+
         if min_cost == delete_cost
-          operations[i][j] = operations[i - 1][j] + 'D'
+          operations[i][j] = "#{operations[i - 1][j]}D"
         elsif min_cost == insert_cost
-          operations[i][j] = operations[i][j - 1] + 'I'
+          operations[i][j] = "#{operations[i][j - 1]}I"
         else
-          operations[i][j] = operations[i - 1][j - 1] + 'R'
+          operations[i][j] = "#{operations[i - 1][j - 1]}R"
         end
       end
     end
   end
-  
+
   [dp[m][n], operations[m][n]]
 end
 
 # テストケース
-p min_distance("horse", "ros")  # => 3
-p min_distance("intention", "execution")  # => 5
-p min_distance("", "a")  # => 1
-p min_distance_with_operations("horse", "ros")  # => [3, "RDD"]
+p min_distance('horse', 'ros') # => 3
+p min_distance('intention', 'execution') # => 5
+p min_distance('', 'a') # => 1
+p min_distance_with_operations('horse', 'ros') # => [3, "RDD"]
 ```
 
 ---
@@ -632,12 +636,13 @@ coins = [1, 2, 5], amount = 11
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_05_coin_change.rb#coin_change -->
 ```ruby
 # 解法1: 貰うDP
 def coin_change(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   dp[0] = 0
-  
+
   (1..amount).each do |i|
     coins.each do |coin|
       if i >= coin
@@ -645,7 +650,7 @@ def coin_change(coins, amount)
       end
     end
   end
-  
+
   dp[amount] == Float::INFINITY ? -1 : dp[amount]
 end
 
@@ -653,17 +658,17 @@ end
 def coin_change_push(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   dp[0] = 0
-  
+
   (0...amount).each do |i|
     next if dp[i] == Float::INFINITY
-    
+
     coins.each do |coin|
       if i + coin <= amount
         dp[i + coin] = [dp[i + coin], dp[i] + 1].min
       end
     end
   end
-  
+
   dp[amount] == Float::INFINITY ? -1 : dp[amount]
 end
 
@@ -672,7 +677,7 @@ def coin_change_with_coins(coins, amount)
   dp = Array.new(amount + 1, Float::INFINITY)
   parent = Array.new(amount + 1, -1)
   dp[0] = 0
-  
+
   (1..amount).each do |i|
     coins.each do |coin|
       if i >= coin && dp[i - coin] + 1 < dp[i]
@@ -681,27 +686,27 @@ def coin_change_with_coins(coins, amount)
       end
     end
   end
-  
+
   return [-1, []] if dp[amount] == Float::INFINITY
-  
+
   # バックトラック
   result = []
   curr = amount
-  
+
   while curr > 0
     coin = parent[curr]
     result << coin
     curr -= coin
   end
-  
+
   [dp[amount], result.sort]
 end
 
 # テストケース
-p coin_change([1, 2, 5], 11)  # => 3
+p coin_change([1, 2, 5], 11) # => 3
 p coin_change([2], 3)  # => -1
 p coin_change([1], 0)  # => 0
-p coin_change_with_coins([1, 2, 5], 11)  # => [3, [1, 5, 5]]
+p coin_change_with_coins([1, 2, 5], 11) # => [3, [1, 5, 5]]
 ```
 
 ---
@@ -760,108 +765,109 @@ matrix = [
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_06_maximal_square.rb#maximal_square -->
 ```ruby
 # 解法1: 二次元DP
 def maximal_square(matrix)
   return 0 if matrix.empty?
-  
+
   m = matrix.length
   n = matrix[0].length
-  
+
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
   max_side = 0
-  
+
   (1..m).each do |i|
     (1..n).each do |j|
-      if matrix[i - 1][j - 1] == '1'
-        dp[i][j] = 1 + [
-          dp[i - 1][j],
-          dp[i][j - 1],
-          dp[i - 1][j - 1]
-        ].min
-        
-        max_side = [max_side, dp[i][j]].max
-      end
+      next unless matrix[i - 1][j - 1] == '1'
+
+      dp[i][j] = 1 + [
+        dp[i - 1][j],
+        dp[i][j - 1],
+        dp[i - 1][j - 1]
+      ].min
+
+      max_side = [max_side, dp[i][j]].max
     end
   end
-  
+
   max_side * max_side
 end
 
 # 解法2: 一次元DP（空間最適化）
 def maximal_square_1d(matrix)
   return 0 if matrix.empty?
-  
+
   m = matrix.length
   n = matrix[0].length
-  
+
   prev = Array.new(n + 1, 0)
   max_side = 0
-  
+
   (1..m).each do |i|
     curr = Array.new(n + 1, 0)
-    
+
     (1..n).each do |j|
       if matrix[i - 1][j - 1] == '1'
         curr[j] = 1 + [prev[j], curr[j - 1], prev[j - 1]].min
         max_side = [max_side, curr[j]].max
       end
     end
-    
+
     prev = curr
   end
-  
+
   max_side * max_side
 end
 
 # 解法3: 位置を追跡
 def maximal_square_with_position(matrix)
   return [0, nil] if matrix.empty?
-  
+
   m = matrix.length
   n = matrix[0].length
-  
+
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
   max_side = 0
   max_i = 0
   max_j = 0
-  
+
   (1..m).each do |i|
     (1..n).each do |j|
-      if matrix[i - 1][j - 1] == '1'
-        dp[i][j] = 1 + [dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]].min
-        
-        if dp[i][j] > max_side
-          max_side = dp[i][j]
-          max_i = i
-          max_j = j
-        end
-      end
+      next unless matrix[i - 1][j - 1] == '1'
+
+      dp[i][j] = 1 + [dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]].min
+
+      next unless dp[i][j] > max_side
+
+      max_side = dp[i][j]
+      max_i = i
+      max_j = j
     end
   end
-  
+
   # 左上の座標
   top_left = [max_i - max_side, max_j - max_side]
-  
+
   [max_side * max_side, top_left]
 end
 
 # テストケース
 matrix1 = [
-  ["1","0","1","0","0"],
-  ["1","0","1","1","1"],
-  ["1","1","1","1","1"],
-  ["1","0","0","1","0"]
+  ['1', '0', '1', '0', '0'],
+  ['1', '0', '1', '1', '1'],
+  ['1', '1', '1', '1', '1'],
+  ['1', '0', '0', '1', '0']
 ]
 p maximal_square(matrix1)  # => 4
 
 matrix2 = [
-  ["0","1"],
-  ["1","0"]
+  ['0', '1'],
+  ['1', '0']
 ]
 p maximal_square(matrix2)  # => 1
 
-matrix3 = [["0"]]
+matrix3 = [['0']]
 p maximal_square(matrix3)  # => 0
 ```
 
@@ -925,21 +931,22 @@ obstacleGrid = [
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_07_unique_paths_with_obstacles.rb#unique_paths_with_obstacles -->
 ```ruby
 # 解法1: 二次元DP
 def unique_paths_with_obstacles(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
-  
+
   m = obstacle_grid.length
   n = obstacle_grid[0].length
-  
+
   dp = Array.new(m) { Array.new(n, 0) }
   dp[0][0] = 1
-  
+
   (0...m).each do |i|
     (0...n).each do |j|
       next if i == 0 && j == 0
-      
+
       if obstacle_grid[i][j] == 1
         dp[i][j] = 0
       else
@@ -949,20 +956,20 @@ def unique_paths_with_obstacles(obstacle_grid)
       end
     end
   end
-  
+
   dp[m - 1][n - 1]
 end
 
 # 解法2: 一次元DP（空間最適化）
 def unique_paths_with_obstacles_1d(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
-  
+
   m = obstacle_grid.length
   n = obstacle_grid[0].length
-  
+
   dp = Array.new(n, 0)
   dp[0] = 1
-  
+
   (0...m).each do |i|
     (0...n).each do |j|
       if obstacle_grid[i][j] == 1
@@ -972,29 +979,29 @@ def unique_paths_with_obstacles_1d(obstacle_grid)
       end
     end
   end
-  
+
   dp[n - 1]
 end
 
 # 解法3: in-placeで計算
 def unique_paths_with_obstacles_inplace(obstacle_grid)
   return 0 if obstacle_grid[0][0] == 1
-  
+
   m = obstacle_grid.length
   n = obstacle_grid[0].length
-  
+
   obstacle_grid[0][0] = 1
-  
+
   # 最初の行を初期化
   (1...n).each do |j|
-    obstacle_grid[0][j] = (obstacle_grid[0][j] == 0 && obstacle_grid[0][j - 1] == 1) ? 1 : 0
+    obstacle_grid[0][j] = obstacle_grid[0][j] == 0 && obstacle_grid[0][j - 1] == 1 ? 1 : 0
   end
-  
+
   # 最初の列を初期化
   (1...m).each do |i|
-    obstacle_grid[i][0] = (obstacle_grid[i][0] == 0 && obstacle_grid[i - 1][0] == 1) ? 1 : 0
+    obstacle_grid[i][0] = obstacle_grid[i][0] == 0 && obstacle_grid[i - 1][0] == 1 ? 1 : 0
   end
-  
+
   # DP計算
   (1...m).each do |i|
     (1...n).each do |j|
@@ -1005,19 +1012,19 @@ def unique_paths_with_obstacles_inplace(obstacle_grid)
       end
     end
   end
-  
+
   obstacle_grid[m - 1][n - 1]
 end
 
 # テストケース
 grid1 = [
-  [0,0,0],
-  [0,1,0],
-  [0,0,0]
+  [0, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0]
 ]
 p unique_paths_with_obstacles(grid1)  # => 2
 
-grid2 = [[0,1], [0,0]]
+grid2 = [[0, 1], [0, 0]]
 p unique_paths_with_obstacles(grid2)  # => 1
 
 grid3 = [[1]]
@@ -1086,65 +1093,66 @@ DPまたは中心拡張法を使用します。`dp[i][j]` = s[i...j]が回文か
 
 ### 解答
 
+<!-- source: solutions/11a_dynamic_programming_advanced/problem_08_longest_palindrome.rb#longest_palindrome -->
 ```ruby
 # 解法1: DP
 def longest_palindrome(s)
   return '' if s.empty?
-  
+
   n = s.length
   dp = Array.new(n) { Array.new(n, false) }
   start = 0
   max_len = 1
-  
+
   # 長さ1
   n.times { |i| dp[i][i] = true }
-  
+
   # 長さ2
-  (0...n - 1).each do |i|
-    if s[i] == s[i + 1]
-      dp[i][i + 1] = true
-      start = i
-      max_len = 2
-    end
+  (0...(n - 1)).each do |i|
+    next unless s[i] == s[i + 1]
+
+    dp[i][i + 1] = true
+    start = i
+    max_len = 2
   end
-  
+
   # 長さ3以上
   (3..n).each do |len|
-    (0..n - len).each do |i|
+    (0..(n - len)).each do |i|
       j = i + len - 1
-      
-      if s[i] == s[j] && dp[i + 1][j - 1]
-        dp[i][j] = true
-        start = i
-        max_len = len
-      end
+
+      next unless s[i] == s[j] && dp[i + 1][j - 1]
+
+      dp[i][j] = true
+      start = i
+      max_len = len
     end
   end
-  
+
   s[start, max_len]
 end
 
 # 解法2: 中心拡張法
 def longest_palindrome_expand(s)
   return '' if s.empty?
-  
+
   start = 0
   max_len = 0
-  
+
   s.length.times do |i|
     # 奇数長
     len1 = expand_around_center(s, i, i)
     # 偶数長
     len2 = expand_around_center(s, i, i + 1)
-    
+
     len = [len1, len2].max
-    
+
     if len > max_len
       max_len = len
       start = i - (len - 1) / 2
     end
   end
-  
+
   s[start, max_len]
 end
 
@@ -1153,63 +1161,63 @@ def expand_around_center(s, left, right)
     left -= 1
     right += 1
   end
-  
+
   right - left - 1
 end
 
 # 解法3: Manacherのアルゴリズム（O(n)）
 def longest_palindrome_manacher(s)
   return '' if s.empty?
-  
+
   # 文字列を変換（'#'を挿入）
-  t = '#' + s.chars.join('#') + '#'
+  t = "##{s.chars.join('#')}#"
   n = t.length
-  
+
   # 各位置を中心とする回文の半径
   p_arr = Array.new(n, 0)
   center = 0
   right = 0
-  
+
   max_len = 0
   center_index = 0
-  
+
   (0...n).each do |i|
     # ミラー位置
     mirror = 2 * center - i
-    
+
     # 境界内であれば、ミラーの値を利用
-    p_arr[i] = (right > i) ? [right - i, p_arr[mirror]].min : 0
-    
+    p_arr[i] = right > i ? [right - i, p_arr[mirror]].min : 0
+
     # 中心拡張
     while i + 1 + p_arr[i] < n && i - 1 - p_arr[i] >= 0 &&
           t[i + 1 + p_arr[i]] == t[i - 1 - p_arr[i]]
       p_arr[i] += 1
     end
-    
+
     # 境界を更新
     if i + p_arr[i] > right
       center = i
       right = i + p_arr[i]
     end
-    
+
     # 最大長を更新
     if p_arr[i] > max_len
       max_len = p_arr[i]
       center_index = i
     end
   end
-  
+
   # 元の文字列でのインデックスに変換
   start = (center_index - max_len) / 2
   s[start, max_len]
 end
 
 # テストケース
-p longest_palindrome("babad")  # => "bab" または "aba"
-p longest_palindrome("cbbd")  # => "bb"
-p longest_palindrome("a")  # => "a"
-p longest_palindrome_expand("babad")  # => "bab" または "aba"
-p longest_palindrome_manacher("babad")  # => "bab" または "aba"
+p longest_palindrome('babad') # => "bab" または "aba"
+p longest_palindrome('cbbd') # => "bb"
+p longest_palindrome('a') # => "a"
+p longest_palindrome_expand('babad') # => "bab" または "aba"
+p longest_palindrome_manacher('babad') # => "bab" または "aba"
 ```
 
 ---

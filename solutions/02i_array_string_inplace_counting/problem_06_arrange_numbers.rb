@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin arrange_numbers
+# 解法1: In-place交換
 def arrange_numbers(nums)
   i = 0
 
@@ -8,6 +10,7 @@ def arrange_numbers(nums)
     correct_pos = nums[i]
 
     if nums[i] != i && nums[i] != nums[correct_pos]
+      # 交換
       nums[i], nums[correct_pos] = nums[correct_pos], nums[i]
     else
       i += 1
@@ -17,6 +20,7 @@ def arrange_numbers(nums)
   nums
 end
 
+# 解法2: 1パスで処理
 def arrange_numbers_one_pass(nums)
   nums.each_index do |i|
     while nums[i] != i && nums[i] != nums[nums[i]]
@@ -28,15 +32,22 @@ def arrange_numbers_one_pass(nums)
   nums
 end
 
+# 解法3: 新しい配列を作成
 def arrange_numbers_new_array(nums)
   result = Array.new(nums.length)
 
-  nums.each_with_index do |num, _i|
+  nums.each_with_index do |num, i|
     result[num] = num
   end
 
   result
 end
+
+# テストケース
+p arrange_numbers([4, 0, 2, 1, 3])  # => [0, 1, 2, 3, 4]
+p arrange_numbers([3, 1, 0, 2])     # => [0, 1, 2, 3]
+p arrange_numbers([0, 1, 2])        # => [0, 1, 2]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 配列の要素を正しい位置に配置 テスト ==='

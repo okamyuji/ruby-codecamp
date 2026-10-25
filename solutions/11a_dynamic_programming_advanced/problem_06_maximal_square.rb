@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin maximal_square
+# 解法1: 二次元DP
 def maximal_square(matrix)
   return 0 if matrix.empty?
 
@@ -27,6 +29,7 @@ def maximal_square(matrix)
   max_side * max_side
 end
 
+# 解法2: 一次元DP（空間最適化）
 def maximal_square_1d(matrix)
   return 0 if matrix.empty?
 
@@ -52,6 +55,7 @@ def maximal_square_1d(matrix)
   max_side * max_side
 end
 
+# 解法3: 位置を追跡
 def maximal_square_with_position(matrix)
   return [0, nil] if matrix.empty?
 
@@ -77,10 +81,30 @@ def maximal_square_with_position(matrix)
     end
   end
 
+  # 左上の座標
   top_left = [max_i - max_side, max_j - max_side]
 
   [max_side * max_side, top_left]
 end
+
+# テストケース
+matrix1 = [
+  ['1', '0', '1', '0', '0'],
+  ['1', '0', '1', '1', '1'],
+  ['1', '1', '1', '1', '1'],
+  ['1', '0', '0', '1', '0']
+]
+p maximal_square(matrix1)  # => 4
+
+matrix2 = [
+  ['0', '1'],
+  ['1', '0']
+]
+p maximal_square(matrix2)  # => 1
+
+matrix3 = [['0']]
+p maximal_square(matrix3)  # => 0
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最大正方形（Maximal Square） テスト ==='

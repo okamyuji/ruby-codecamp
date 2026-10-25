@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin min_window
+# 解法1: Sliding Window with Hash
 def min_window(s, t)
   return '' if s.empty? || t.empty?
 
@@ -18,18 +20,25 @@ def min_window(s, t)
   s.each_char.with_index do |char, right|
     window_count[char] += 1
 
-    formed += 1 if t_count.key?(char) && window_count[char] == t_count[char]
+    if t_count.key?(char) && window_count[char] == t_count[char]
+      formed += 1
+    end
 
+    # すべての文字を満たしたらウィンドウを縮小
     while formed == required && left <= right
+      # ウィンドウを更新
       if right - left + 1 < min_len
         min_len = right - left + 1
         min_start = left
       end
 
+      # 左端を縮小
       left_char = s[left]
       window_count[left_char] -= 1
 
-      formed -= 1 if t_count.key?(left_char) && window_count[left_char] < t_count[left_char]
+      if t_count.key?(left_char) && window_count[left_char] < t_count[left_char]
+        formed -= 1
+      end
 
       left += 1
     end
@@ -38,12 +47,14 @@ def min_window(s, t)
   min_len == Float::INFINITY ? '' : s[min_start, min_len]
 end
 
+# 解法2: 最適化版（tに含まれる文字のみを処理）
 def min_window_optimized(s, t)
   return '' if s.empty? || t.empty?
 
   t_count = Hash.new(0)
   t.each_char { |char| t_count[char] += 1 }
 
+  # tに含まれる文字のインデックスのみを記録
   filtered = []
   s.each_char.with_index do |char, i|
     filtered << [i, char] if t_count.key?(char)
@@ -79,6 +90,12 @@ def min_window_optimized(s, t)
 
   min_len == Float::INFINITY ? '' : s[min_start, min_len]
 end
+
+# テストケース
+p min_window('ADOBECODEBANC', 'ABC')  # => "BANC"
+p min_window('a', 'a')                # => "a"
+p min_window('a', 'aa')               # => ""
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最小ウィンドウ部分文字列 テスト ==='

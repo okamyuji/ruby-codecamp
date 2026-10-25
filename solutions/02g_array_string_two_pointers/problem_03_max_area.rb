@@ -16,6 +16,7 @@
 # 空間計算量: O(1)
 # ============================================================================
 
+# docs:begin max_area
 # 解法1: Two Pointers
 def max_area(height)
   max_area = 0
@@ -83,6 +84,15 @@ def max_area_brute(height)
 
   max_area
 end
+
+# テストケース
+p max_area([1, 8, 6, 2, 5, 4, 8, 3, 7])  # => 49
+p max_area([1, 1])                       # => 1
+p max_area([4, 3, 2, 1, 4])              # => 16
+
+p max_area_with_indices([1, 8, 6, 2, 5, 4, 8, 3, 7])
+# => {area: 49, left: 1, right: 8}
+# docs:end
 
 # ============================================================================
 # テストケース

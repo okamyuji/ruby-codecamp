@@ -17,6 +17,7 @@
 # 空間計算量: O(k)
 # ============================================================================
 
+# docs:begin longest_substring_k_unique
 # 解法1: Sliding Window with Hash
 def longest_substring_k_unique(s, k)
   return 0 if s.empty? || k.zero?
@@ -68,6 +69,14 @@ def longest_substring_k_unique_with_string(s, k)
 
   s[max_start, max_len]
 end
+
+# テストケース
+p longest_substring_k_unique('eceba', 2)  # => 3（"ece"）
+p longest_substring_k_unique('aa', 1)     # => 2（"aa"）
+p longest_substring_k_unique('abcba', 2)  # => 3（"bcb"）
+
+p longest_substring_k_unique_with_string('eceba', 2) # => "ece"
+# docs:end
 
 # ============================================================================
 # テストケース

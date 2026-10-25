@@ -43,18 +43,19 @@
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_01_array_sum.rb#array_sum_loop -->
 ```ruby
 # 解法1: 基本的なループを使用
 # 配列の各要素を順番に走査し、累積的に加算する
 def array_sum_loop(arr)
   # 合計値を保持する変数を初期化
   total = 0
-  
+
   # 配列の各要素をイテレート
   arr.each do |num|
     total += num
   end
-  
+
   total
 end
 
@@ -128,16 +129,17 @@ puts array_sum([100])            # => 100
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_02_min_max.rb#min_max_manual -->
 ```ruby
 # 解法1: 手動で最大値・最小値を追跡
 def min_max_manual(arr)
   # 空配列のエッジケース処理
   return nil if arr.empty?
-  
+
   # 最初の要素で初期化
   min_val = arr[0]
   max_val = arr[0]
-  
+
   # 2番目の要素から走査（最初は既に処理済み）
   arr[1..].each do |num|
     # 現在の最小値より小さければ更新
@@ -145,14 +147,14 @@ def min_max_manual(arr)
     # 現在の最大値より大きければ更新
     max_val = num if num > max_val
   end
-  
+
   [min_val, max_val]
 end
 
 # 解法2: 組み込みメソッドを使用（推奨）
 def min_max(arr)
   return nil if arr.empty?
-  
+
   # minmaxメソッドは[最小値, 最大値]の配列を返す
   arr.minmax
 end
@@ -160,7 +162,7 @@ end
 # 解法3: min, maxを個別に使用
 def min_max_separate(arr)
   return nil if arr.empty?
-  
+
   [arr.min, arr.max]
 end
 
@@ -210,6 +212,7 @@ p min_max([])                        # => nil
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_03_double_array.rb#double_array -->
 ```ruby
 # 解法1: mapメソッドを使用（推奨）
 # mapは各要素にブロックを適用し、新しい配列を返す
@@ -220,12 +223,12 @@ end
 # 解法2: 手動でループ
 def double_array_loop(arr)
   result = []
-  
+
   arr.each do |num|
     # 各要素を2倍にして結果配列に追加
     result << num * 2
   end
-  
+
   result
 end
 
@@ -282,6 +285,7 @@ p double_array([])               # => []
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_04_filter_even.rb#filter_even -->
 ```ruby
 # 解法1: selectメソッドを使用（推奨）
 # selectは条件を満たす要素のみを含む新しい配列を返す
@@ -298,12 +302,12 @@ end
 # 解法3: 手動でループ
 def filter_even_loop(arr)
   result = []
-  
+
   arr.each do |num|
     # 偶数かどうかをチェック
     result << num if num.even?
   end
-  
+
   result
 end
 
@@ -314,7 +318,7 @@ def filter_even_reject(arr)
 end
 
 # テストケース
-p filter_even([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])  # => [2, 4, 6, 8, 10]
+p filter_even([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) # => [2, 4, 6, 8, 10]
 p filter_even([1, 3, 5])                         # => []
 p filter_even([2, 4, 6])                         # => [2, 4, 6]
 p filter_even([])                                # => []
@@ -364,6 +368,7 @@ p filter_even([-2, -1, 0, 1, 2])                 # => [-2, 0, 2]
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_05_reverse_array.rb#reverse_array -->
 ```ruby
 # 解法1: reverseメソッドを使用（推奨）
 def reverse_array(arr)
@@ -374,12 +379,12 @@ end
 # 解法2: 手動で逆順に構築
 def reverse_array_manual(arr)
   result = []
-  
+
   # 最後のインデックスから0まで逆順にイテレート
   (arr.length - 1).downto(0) do |i|
     result << arr[i]
   end
-  
+
   result
 end
 
@@ -387,14 +392,14 @@ end
 def reverse_array_inplace!(arr)
   left = 0
   right = arr.length - 1
-  
+
   while left < right
     # 両端の要素を交換
     arr[left], arr[right] = arr[right], arr[left]
     left += 1
     right -= 1
   end
-  
+
   arr
 end
 
@@ -407,7 +412,7 @@ def reverse_array_each(arr)
 end
 
 # テストケース
-p reverse_array([1, 2, 3, 4, 5])  # => [5, 4, 3, 2, 1]
+p reverse_array([1, 2, 3, 4, 5]) # => [5, 4, 3, 2, 1]
 p reverse_array(['a', 'b', 'c']) # => ["c", "b", "a"]
 p reverse_array([1])             # => [1]
 p reverse_array([])              # => []
@@ -454,6 +459,7 @@ p reverse_array([])              # => []
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_06_count_element.rb#count_element -->
 ```ruby
 # 解法1: countメソッドを使用（推奨）
 def count_element(arr, target)
@@ -470,12 +476,12 @@ end
 # 解法3: 手動でカウント
 def count_element_manual(arr, target)
   count = 0
-  
+
   arr.each do |elem|
     # 一致する要素をカウント
     count += 1 if elem == target
   end
-  
+
   count
 end
 
@@ -536,6 +542,7 @@ puts count_element(['a', 'b', 'a'], 'a')      # => 2
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_07_remove_duplicates.rb#remove_duplicates -->
 ```ruby
 # 解法1: uniqメソッドを使用（推奨）
 def remove_duplicates(arr)
@@ -546,16 +553,16 @@ end
 
 # 解法2: 手動でセットを使用
 def remove_duplicates_manual(arr)
-  seen = Set.new  # 見た要素を追跡するセット
+  seen = Set.new # 見た要素を追跡するセット
   result = []
-  
+
   arr.each do |elem|
     unless seen.include?(elem)
       seen.add(elem)
       result << elem
     end
   end
-  
+
   result
 end
 
@@ -563,14 +570,14 @@ end
 def remove_duplicates_hash(arr)
   seen = {}
   result = []
-  
+
   arr.each do |elem|
     unless seen[elem]
       seen[elem] = true
       result << elem
     end
   end
-  
+
   result
 end
 
@@ -633,6 +640,7 @@ p remove_duplicates([1, 2, 3])                   # => [1, 2, 3]
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_08_flatten_array.rb#flatten_array -->
 ```ruby
 # 解法1: flattenメソッドを使用（推奨）
 def flatten_array(arr)
@@ -649,7 +657,7 @@ end
 # 解法3: 再帰的に手動実装
 def flatten_array_recursive(arr)
   result = []
-  
+
   arr.each do |elem|
     if elem.is_a?(Array)
       # 配列の場合は再帰的に平坦化して結果に連結
@@ -659,18 +667,18 @@ def flatten_array_recursive(arr)
       result << elem
     end
   end
-  
+
   result
 end
 
 # 解法4: スタックを使用（再帰なし）
 def flatten_array_iterative(arr)
   result = []
-  stack = arr.dup  # 元の配列をコピー
-  
-  while !stack.empty?
-    elem = stack.shift  # 先頭から取り出し
-    
+  stack = arr.dup # 元の配列をコピー
+
+  until stack.empty?
+    elem = stack.shift # 先頭から取り出し
+
     if elem.is_a?(Array)
       # 配列の場合はその要素をスタックの先頭に追加
       stack.unshift(*elem)
@@ -678,7 +686,7 @@ def flatten_array_iterative(arr)
       result << elem
     end
   end
-  
+
   result
 end
 
@@ -730,11 +738,12 @@ k: 2
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_09_rotate_array.rb#rotate_array -->
 ```ruby
 # 解法1: rotateメソッドを使用（推奨）
 def rotate_array(arr, k)
   return arr if arr.empty?
-  
+
   # Rubyのrotateは左回転なので、負の値を渡して右回転
   arr.rotate(-k)
 end
@@ -742,10 +751,10 @@ end
 # 解法2: スライスを使用
 def rotate_array_slice(arr, k)
   return arr if arr.empty?
-  
+
   n = arr.length
-  k = k % n  # kを正規化（配列長より大きい場合に対応）
-  
+  k %= n # kを正規化（配列長より大きい場合に対応）
+
   # 最後のk要素を先頭に移動
   arr[-k..] + arr[0...-k]
 end
@@ -753,34 +762,34 @@ end
 # 解法3: 手動で新しい配列を構築
 def rotate_array_manual(arr, k)
   return arr if arr.empty?
-  
+
   n = arr.length
-  k = k % n
+  k %= n
   result = Array.new(n)
-  
+
   # 各要素の新しい位置を計算
   arr.each_with_index do |elem, i|
     new_index = (i + k) % n
     result[new_index] = elem
   end
-  
+
   result
 end
 
 # 解法4: 3回の反転を使用（in-place）
 def rotate_array_reverse!(arr, k)
   return arr if arr.empty?
-  
+
   n = arr.length
-  k = k % n
-  
+  k %= n
+
   # 配列全体を反転
   arr.reverse!
   # 最初のk要素を反転
   arr[0...k] = arr[0...k].reverse
   # 残りの要素を反転
   arr[k...n] = arr[k...n].reverse
-  
+
   arr
 end
 
@@ -788,8 +797,8 @@ end
 p rotate_array([1, 2, 3, 4, 5], 2)   # => [4, 5, 1, 2, 3]
 p rotate_array([1, 2, 3, 4, 5], 0)   # => [1, 2, 3, 4, 5]
 p rotate_array([1, 2, 3, 4, 5], 5)   # => [1, 2, 3, 4, 5]
-p rotate_array([1, 2, 3, 4, 5], 7)   # => [4, 5, 1, 2, 3] (7 % 5 = 2)
-p rotate_array([], 3)                 # => []
+p rotate_array([1, 2, 3, 4, 5], 7)   # => [4, 5, 1, 2, 3]（7 % 5 = 2）
+p rotate_array([], 3) # => []
 ```
 
 ---
@@ -844,13 +853,14 @@ p rotate_array([], 3)                 # => []
 
 ### 解答
 
+<!-- source: solutions/02_array_basics/problem_10_merge_sorted_arrays.rb#merge_sorted_arrays -->
 ```ruby
 # 解法1: 2ポインタ法（効率的な実装）
 def merge_sorted_arrays(arr1, arr2)
   result = []
   i = 0  # arr1のポインタ
   j = 0  # arr2のポインタ
-  
+
   # 両方の配列に要素がある間、比較しながらマージ
   while i < arr1.length && j < arr2.length
     if arr1[i] <= arr2[j]
@@ -861,11 +871,11 @@ def merge_sorted_arrays(arr1, arr2)
       j += 1
     end
   end
-  
+
   # 残りの要素を追加（片方の配列が先に終わった場合）
   result.concat(arr1[i..]) if i < arr1.length
   result.concat(arr2[j..]) if j < arr2.length
-  
+
   result
 end
 
@@ -886,7 +896,7 @@ def merge_sorted_recursive(arr1, arr2)
   # ベースケース
   return arr2 if arr1.empty?
   return arr1 if arr2.empty?
-  
+
   if arr1[0] <= arr2[0]
     [arr1[0]] + merge_sorted_recursive(arr1[1..], arr2)
   else

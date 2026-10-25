@@ -1,10 +1,14 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin group_anagrams
+# 解法1: ソートをキーとして使用（推奨）
 def group_anagrams(strs)
+  # デフォルト値として空配列を持つハッシュ
   groups = Hash.new { |hash, key| hash[key] = [] }
 
   strs.each do |str|
+    # ソートした文字列をキーとして使用
     key = str.chars.sort.join
     groups[key] << str
   end
@@ -12,14 +16,17 @@ def group_anagrams(strs)
   groups.values
 end
 
+# 解法2: group_byを使用
 def group_anagrams_group_by(strs)
   strs.group_by { |str| str.chars.sort.join }.values
 end
 
+# 解法3: 文字カウントをキーとして使用
 def group_anagrams_count(strs)
   groups = Hash.new { |hash, key| hash[key] = [] }
 
   strs.each do |str|
+    # 文字カウントをキーとして使用（ソートより効率的な場合あり）
     count = Array.new(26, 0)
     str.each_char { |char| count[char.ord - 'a'.ord] += 1 }
     key = count.join(',')
@@ -29,16 +36,29 @@ def group_anagrams_count(strs)
   groups.values
 end
 
+# 解法4: tallyをキーとして使用
 def group_anagrams_tally(strs)
   groups = Hash.new { |hash, key| hash[key] = [] }
 
   strs.each do |str|
+    # tallyの結果をソートしてキーにする
     key = str.chars.tally.sort.to_s
     groups[key] << str
   end
 
   groups.values
 end
+
+# テストケース
+p group_anagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat'])
+# => [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]] （順序は異なる可能性あり）
+
+p group_anagrams([''])
+# => [[""]]
+
+p group_anagrams(['a'])
+# => [["a"]]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== グループアナグラム テスト ==='

@@ -40,8 +40,8 @@ hash.has_key?("orange")  # => false
 hash.delete("apple")
 
 # すべてのキーと値の取得
-hash.keys    # => すべてのキーの配列
-hash.values  # => すべての値の配列
+hash.keys    # => ["banana"]（すべてのキーの配列）
+hash.values  # => [200]（すべての値の配列）
 ```
 
 ### ハッシュテーブルの活用例
@@ -404,8 +404,8 @@ def decode_string(s)
   stack.join
 end
 
-puts decode_string("3[a]2[bc]")  # => "aaabcbc"
-puts decode_string("3[a2[c]]")   # => "accaccacc"
+p decode_string("3[a]2[bc]")     # => "aaabcbc"
+p decode_string("3[a2[c]]")      # => "accaccacc"
 ```
 
 ### スタックの計算量

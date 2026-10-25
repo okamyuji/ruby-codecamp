@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin missing_number
+# 解法1: 合計の差を使用
 def missing_number(nums)
   n = nums.length
   expected_sum = n * (n + 1) / 2
@@ -9,6 +11,7 @@ def missing_number(nums)
   expected_sum - actual_sum
 end
 
+# 解法2: XOR演算を使用
 def missing_number_xor(nums)
   result = nums.length
 
@@ -19,22 +22,35 @@ def missing_number_xor(nums)
   result
 end
 
+# 解法3: Negative Markingを使用
 def missing_number_marking(nums)
   n = nums.length
   # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
   nums.map! { |num| num + 1 }
 
+  # 各数字に対応する位置を負にしてマーク（n は配列外なので飛ばす）
   nums.each do |num|
     idx = num.abs - 1
     nums[idx] = -nums[idx].abs if idx < n
   end
 
+  # 正の値のインデックスが消えた数字
   nums.each_with_index do |num, i|
     return i if num.positive?
   end
 
   n
 end
+
+# テストケース
+p missing_number([3, 0, 1])        # => 2
+p missing_number([0, 1])           # => 2
+p missing_number([9, 6, 4, 2, 3, 5, 7, 0, 1]) # => 8
+
+p missing_number_xor([3, 0, 1]) # => 2
+p missing_number_marking([3, 0, 1])  # => 2
+p missing_number_marking([0, 1])     # => 2
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 消えた数字を見つける テスト ==='

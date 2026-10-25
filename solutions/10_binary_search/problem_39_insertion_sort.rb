@@ -1,33 +1,41 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin insertion_sort
+# 解法1: 基本的な挿入ソート
 def insertion_sort(arr)
   arr = arr.dup
   n = arr.length
 
   (1...n).each do |i|
+    # 現在の要素を保存
     key = arr[i]
     j = i - 1
 
+    # keyより大きい要素を右にシフト
     while j >= 0 && arr[j] > key
       arr[j + 1] = arr[j]
       j -= 1
     end
 
+    # keyを正しい位置に挿入
     arr[j + 1] = key
   end
 
   arr
 end
 
+# 解法2: bsearchを使用して挿入位置を見つける
 def insertion_sort_binary(arr)
   arr = arr.dup
 
   (1...arr.length).each do |i|
     key = arr[i]
 
+    # 二分探索で挿入位置を見つける
     insert_pos = (0...i).bsearch { |j| arr[j] > key } || i
 
+    # 要素を右にシフトして挿入
     (insert_pos...i).reverse_each { |j| arr[j + 1] = arr[j] }
     arr[insert_pos] = key
   end
@@ -35,10 +43,12 @@ def insertion_sort_binary(arr)
   arr
 end
 
+# 解法3: Rubyらしい実装
 def insertion_sort_ruby(arr)
   result = []
 
   arr.each do |num|
+    # 挿入位置を見つける
     insert_index = result.find_index { |x| x > num } || result.length
     result.insert(insert_index, num)
   end
@@ -46,6 +56,7 @@ def insertion_sort_ruby(arr)
   result
 end
 
+# 解法4: 降順の挿入ソート
 def insertion_sort_desc(arr)
   arr = arr.dup
 
@@ -63,6 +74,14 @@ def insertion_sort_desc(arr)
 
   arr
 end
+
+# テストケース
+p insertion_sort([12, 11, 13, 5, 6])   # => [5, 6, 11, 12, 13]
+p insertion_sort([5, 2, 4, 6, 1, 3])   # => [1, 2, 3, 4, 5, 6]
+p insertion_sort([1, 2, 3])            # => [1, 2, 3]
+p insertion_sort([3, 2, 1])            # => [1, 2, 3]
+p insertion_sort([])                   # => []
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 挿入ソート テスト ==='

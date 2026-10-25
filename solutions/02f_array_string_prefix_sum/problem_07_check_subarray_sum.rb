@@ -17,6 +17,7 @@
 # 空間計算量: O(k)
 # ============================================================================
 
+# docs:begin check_subarray_sum
 # 解法1: 余りを記録
 def check_subarray_sum(nums, k)
   sum = 0
@@ -48,7 +49,9 @@ def find_all_subarray_sum_multiple(nums, k)
     remainder = sum % k
 
     remainder_map[remainder].each do |start_idx|
-      result << [start_idx + 1, i] if i - start_idx >= 2
+      if i - start_idx >= 2
+        result << [start_idx + 1, i]
+      end
     end
 
     remainder_map[remainder] << i
@@ -56,6 +59,15 @@ def find_all_subarray_sum_multiple(nums, k)
 
   result
 end
+
+# テストケース
+p check_subarray_sum([23, 2, 4, 6, 7], 6)  # => true
+p check_subarray_sum([23, 2, 6, 4, 7], 6)  # => true
+p check_subarray_sum([23, 2, 6, 4, 7], 13) # => false
+
+p find_all_subarray_sum_multiple([23, 2, 4, 6, 7], 6)
+# => [[1, 2], [1, 3], [0, 4]]
+# docs:end
 
 # ============================================================================
 # テストケース

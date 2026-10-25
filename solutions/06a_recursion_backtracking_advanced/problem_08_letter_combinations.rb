@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin letter_combinations
+# 解法1: バックトラック
 def letter_combinations(digits)
   return [] if digits.empty?
 
@@ -16,11 +18,13 @@ def letter_combinations(digits)
 end
 
 def backtrack_letters(current, index, digits, mapping, result)
+  # ベースケース
   if index == digits.length
     result << current
     return
   end
 
+  # 現在の数字に対応する文字
   digit = digits[index]
   letters = mapping[digit]
 
@@ -29,6 +33,7 @@ def backtrack_letters(current, index, digits, mapping, result)
   end
 end
 
+# 解法2: イテレーティブ
 def letter_combinations_iterative(digits)
   return [] if digits.empty?
 
@@ -56,6 +61,7 @@ def letter_combinations_iterative(digits)
   result
 end
 
+# 解法3: 再帰的
 def letter_combinations_recursive(digits)
   return [] if digits.empty?
 
@@ -79,6 +85,15 @@ def letter_combinations_recursive(digits)
 
   result
 end
+
+# テストケース
+p letter_combinations('23')
+# => ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+p letter_combinations('')
+# => []
+p letter_combinations('2')
+# => ["a", "b", "c"]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 電話番号の文字の組み合わせ テスト ==='

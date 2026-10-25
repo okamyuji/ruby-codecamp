@@ -52,20 +52,21 @@ m × n の行列が与えられます。転置行列を返してください。�
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_01_transpose.rb#transpose -->
 ```ruby
 # 解法1: 基本的な転置
 def transpose(matrix)
   m = matrix.length
   n = matrix[0].length
-  
+
   result = Array.new(n) { Array.new(m) }
-  
+
   m.times do |i|
     n.times do |j|
       result[j][i] = matrix[i][j]
     end
   end
-  
+
   result
 end
 
@@ -83,7 +84,7 @@ end
 
 # 解法4: zipを使用
 def transpose_zip(matrix)
-  matrix[0].zip(*matrix[1..-1])
+  matrix[0].zip(*matrix[1..])
 end
 
 # テストケース
@@ -148,53 +149,54 @@ n × n の正方行列が与えられます。時計回りに90度回転させ�
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_02_rotate_90.rb#rotate_90 -->
 ```ruby
 # 解法1: 転置してから各行を反転
 def rotate_90(matrix)
   n = matrix.length
-  
+
   # 転置
   (n - 1).times do |i|
-    (i + 1...n).each do |j|
+    ((i + 1)...n).each do |j|
       matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
     end
   end
-  
+
   # 各行を反転
   matrix.each { |row| row.reverse! }
-  
+
   matrix
 end
 
 # 解法2: 4つの要素を一度に回転
 def rotate_90_four_way(matrix)
   n = matrix.length
-  
+
   (n / 2).times do |i|
-    (i...n - i - 1).each do |j|
+    (i...(n - i - 1)).each do |j|
       temp = matrix[i][j]
-      
+
       # 左から上へ
       matrix[i][j] = matrix[n - j - 1][i]
-      
+
       # 下から左へ
       matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1]
-      
+
       # 右から下へ
       matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1]
-      
+
       # 上から右へ
       matrix[j][n - i - 1] = temp
     end
   end
-  
+
   matrix
 end
 
 # 解法3: 新しい配列を作成（in-placeではない）
 def rotate_90_new_array(matrix)
   n = matrix.length
-  
+
   Array.new(n) do |i|
     Array.new(n) { |j| matrix[n - j - 1][i] }
   end
@@ -269,74 +271,78 @@ m × n の行列が与えられます。スパイラル順序（渦巻き状）�
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_03_spiral_order.rb#spiral_order -->
 ```ruby
 # 解法1: 4つの境界を使用
 def spiral_order(matrix)
   return [] if matrix.empty?
-  
+
   result = []
   top = 0
   bottom = matrix.length - 1
   left = 0
   right = matrix[0].length - 1
-  
+
   while top <= bottom && left <= right
     # 右へ移動
     (left..right).each { |j| result << matrix[top][j] }
     top += 1
-    
+
     # 下へ移動
     (top..bottom).each { |i| result << matrix[i][right] }
     right -= 1
-    
+
     if top <= bottom
       # 左へ移動
       right.downto(left).each { |j| result << matrix[bottom][j] }
       bottom -= 1
     end
-    
-    if left <= right
-      # 上へ移動
-      bottom.downto(top).each { |i| result << matrix[i][left] }
-      left += 1
-    end
+
+    next unless left <= right
+
+    # 上へ移動
+    bottom.downto(top).each { |i| result << matrix[i][left] }
+    left += 1
   end
-  
+
   result
 end
 
 # 解法2: 方向ベクトルを使用
 def spiral_order_direction(matrix)
   return [] if matrix.empty?
-  
-  m, n = matrix.length, matrix[0].length
+
+  m = matrix.length
+  n = matrix[0].length
   result = []
   visited = Array.new(m) { Array.new(n, false) }
-  
+
   # 右、下、左、上
   directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
   dir_idx = 0
-  
-  row, col = 0, 0
-  
+
+  row = 0
+  col = 0
+
   (m * n).times do
     result << matrix[row][col]
     visited[row][col] = true
-    
+
     # 次の位置を計算
     next_row = row + directions[dir_idx][0]
     next_col = col + directions[dir_idx][1]
-    
+
     # 方向転換が必要か確認
     if next_row < 0 || next_row >= m || next_col < 0 || next_col >= n || visited[next_row][next_col]
       dir_idx = (dir_idx + 1) % 4
       next_row = row + directions[dir_idx][0]
       next_col = col + directions[dir_idx][1]
     end
-    
-    row, col = next_row, next_col
+
+    row = next_row
+    col = next_col
   end
-  
+
   result
 end
 
@@ -405,16 +411,17 @@ m × n の行列が与えられます。要素が0の場合、その行と列の
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_04_set_zeroes.rb#set_zeroes -->
 ```ruby
 # 解法1: O(1)空間 - 最初の行と列を記録用に使用
 def set_zeroes(matrix)
   m = matrix.length
   n = matrix[0].length
-  
+
   # 最初の行と列に0があるか確認
   first_row_zero = matrix[0].any?(&:zero?)
   first_col_zero = matrix.any? { |row| row[0].zero? }
-  
+
   # 残りの要素で0を探し、最初の行・列に記録
   (1...m).each do |i|
     (1...n).each do |j|
@@ -424,18 +431,18 @@ def set_zeroes(matrix)
       end
     end
   end
-  
+
   # 記録を基に0を設定
   (1...m).each do |i|
     (1...n).each do |j|
       matrix[i][j] = 0 if matrix[i][0].zero? || matrix[0][j].zero?
     end
   end
-  
+
   # 最初の行と列を処理
   matrix[0].fill(0) if first_row_zero
   matrix.each { |row| row[0] = 0 } if first_col_zero
-  
+
   matrix
 end
 
@@ -443,10 +450,10 @@ end
 def set_zeroes_set(matrix)
   m = matrix.length
   n = matrix[0].length
-  
+
   zero_rows = Set.new
   zero_cols = Set.new
-  
+
   # 0の位置を記録
   m.times do |i|
     n.times do |j|
@@ -456,14 +463,14 @@ def set_zeroes_set(matrix)
       end
     end
   end
-  
+
   # 0を設定
   m.times do |i|
     n.times do |j|
       matrix[i][j] = 0 if zero_rows.include?(i) || zero_cols.include?(j)
     end
   end
-  
+
   matrix
 end
 
@@ -527,48 +534,49 @@ true
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_05_search_matrix.rb#search_matrix -->
 ```ruby
 # 解法1: 右上から検索
 def search_matrix(matrix, target)
   return false if matrix.empty? || matrix[0].empty?
-  
+
   row = 0
   col = matrix[0].length - 1
-  
+
   while row < matrix.length && col >= 0
     current = matrix[row][col]
-    
+
     return true if current == target
-    
+
     if current > target
       col -= 1  # 左へ移動
     else
       row += 1  # 下へ移動
     end
   end
-  
+
   false
 end
 
 # 解法2: 左下から検索
 def search_matrix_bottom_left(matrix, target)
   return false if matrix.empty? || matrix[0].empty?
-  
+
   row = matrix.length - 1
   col = 0
-  
+
   while row >= 0 && col < matrix[0].length
     current = matrix[row][col]
-    
+
     return true if current == target
-    
+
     if current > target
       row -= 1  # 上へ移動
     else
       col += 1  # 右へ移動
     end
   end
-  
+
   false
 end
 
@@ -642,50 +650,53 @@ m × n の行列が与えられます。対角線順序ですべての要素を�
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_06_find_diagonal_order.rb#find_diagonal_order -->
 ```ruby
 # 解法1: 対角線ごとに処理
 def find_diagonal_order(matrix)
   return [] if matrix.empty?
-  
+
   m = matrix.length
   n = matrix[0].length
   result = []
-  
+
   # 対角線の数は m + n - 1
   (m + n - 1).times do |d|
     diagonal = []
-    
+
     # 対角線上の要素を収集
     row = [d, m - 1].min
     col = d - row
-    
+
     while row >= 0 && col < n
       diagonal << matrix[row][col]
       row -= 1
       col += 1
     end
-    
+
     # 奇数番目の対角線は逆順
     diagonal.reverse! if d.odd?
-    
+
     result.concat(diagonal)
   end
-  
+
   result
 end
 
 # 解法2: 方向ベクトルを使用
 def find_diagonal_order_vector(matrix)
   return [] if matrix.empty?
-  
-  m, n = matrix.length, matrix[0].length
+
+  m = matrix.length
+  n = matrix[0].length
   result = []
-  row, col = 0, 0
+  row = 0
+  col = 0
   going_up = true
-  
+
   (m * n).times do
     result << matrix[row][col]
-    
+
     if going_up
       if col == n - 1
         row += 1
@@ -697,20 +708,18 @@ def find_diagonal_order_vector(matrix)
         row -= 1
         col += 1
       end
+    elsif row == m - 1
+      col += 1
+      going_up = true
+    elsif col == 0
+      row += 1
+      going_up = true
     else
-      if row == m - 1
-        col += 1
-        going_up = true
-      elsif col == 0
-        row += 1
-        going_up = true
-      else
-        row += 1
-        col -= 1
-      end
+      row += 1
+      col -= 1
     end
   end
-  
+
   result
 end
 
@@ -775,15 +784,16 @@ B = [[7, 8],
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_07_matrix_multiply.rb#matrix_multiply -->
 ```ruby
 # 解法1: 基本的な行列の積
 def matrix_multiply(a, b)
   m = a.length
   k = a[0].length
   n = b[0].length
-  
+
   c = Array.new(m) { Array.new(n, 0) }
-  
+
   m.times do |i|
     n.times do |j|
       k.times do |p|
@@ -791,14 +801,14 @@ def matrix_multiply(a, b)
       end
     end
   end
-  
+
   c
 end
 
 # 解法2: zipとreduceを使用
 def matrix_multiply_functional(a, b)
   b_t = b.transpose
-  
+
   a.map do |row_a|
     b_t.map do |col_b|
       row_a.zip(col_b).map { |x, y| x * y }.sum
@@ -811,19 +821,19 @@ def matrix_multiply_sparse(a, b)
   m = a.length
   k = a[0].length
   n = b[0].length
-  
+
   c = Array.new(m) { Array.new(n, 0) }
-  
+
   m.times do |i|
     k.times do |p|
-      next if a[i][p].zero?  # 0なら計算をスキップ
-      
+      next if a[i][p].zero? # 0なら計算をスキップ
+
       n.times do |j|
         c[i][j] += a[i][p] * b[p][j]
       end
     end
   end
-  
+
   c
 end
 
@@ -896,15 +906,16 @@ DFS または BFS を使用して、訪問済みの陸地をマークしなが�
 
 ### 解答
 
+<!-- source: solutions/02d_array_string_2d_matrix/problem_08_num_islands.rb#num_islands -->
 ```ruby
 # 解法1: DFS（再帰）
 def num_islands(grid)
   return 0 if grid.empty?
-  
+
   count = 0
   m = grid.length
   n = grid[0].length
-  
+
   m.times do |i|
     n.times do |j|
       if grid[i][j] == '1'
@@ -913,20 +924,20 @@ def num_islands(grid)
       end
     end
   end
-  
+
   count
 end
 
 def dfs(grid, i, j)
   m = grid.length
   n = grid[0].length
-  
+
   # 範囲外または水の場合は終了
   return if i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0'
-  
+
   # 訪問済みとしてマーク
   grid[i][j] = '0'
-  
+
   # 4方向を探索
   dfs(grid, i - 1, j)  # 上
   dfs(grid, i + 1, j)  # 下
@@ -937,11 +948,11 @@ end
 # 解法2: BFS
 def num_islands_bfs(grid)
   return 0 if grid.empty?
-  
+
   count = 0
   m = grid.length
   n = grid[0].length
-  
+
   m.times do |i|
     n.times do |j|
       if grid[i][j] == '1'
@@ -950,7 +961,7 @@ def num_islands_bfs(grid)
       end
     end
   end
-  
+
   count
 end
 
@@ -959,15 +970,16 @@ def bfs(grid, start_i, start_j)
   n = grid[0].length
   queue = [[start_i, start_j]]
   grid[start_i][start_j] = '0'
-  
+
   directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-  
+
   until queue.empty?
     i, j = queue.shift
-    
+
     directions.each do |di, dj|
-      ni, nj = i + di, j + dj
-      
+      ni = i + di
+      nj = j + dj
+
       if ni >= 0 && ni < m && nj >= 0 && nj < n && grid[ni][nj] == '1'
         grid[ni][nj] = '0'
         queue << [ni, nj]
@@ -983,18 +995,18 @@ class UnionFind
     @rank = Array.new(n, 0)
     @count = n
   end
-  
+
   def find(x)
     @parent[x] = find(@parent[x]) if @parent[x] != x
     @parent[x]
   end
-  
+
   def union(x, y)
     root_x = find(x)
     root_y = find(y)
-    
+
     return if root_x == root_y
-    
+
     if @rank[root_x] < @rank[root_y]
       @parent[root_x] = root_y
     elsif @rank[root_x] > @rank[root_y]
@@ -1003,28 +1015,28 @@ class UnionFind
       @parent[root_y] = root_x
       @rank[root_x] += 1
     end
-    
+
     @count -= 1
   end
-  
+
   attr_reader :count
 end
 
 def num_islands_union_find(grid)
   return 0 if grid.empty?
-  
+
   m = grid.length
   n = grid[0].length
-  
+
   # 水のセルの数を数える
   water_count = grid.flatten.count('0')
-  
+
   uf = UnionFind.new(m * n)
-  
+
   m.times do |i|
     n.times do |j|
       next if grid[i][j] == '0'
-      
+
       # 右と下のセルと統合
       [[i, j + 1], [i + 1, j]].each do |ni, nj|
         if ni < m && nj < n && grid[ni][nj] == '1'
@@ -1033,25 +1045,25 @@ def num_islands_union_find(grid)
       end
     end
   end
-  
+
   uf.count - water_count
 end
 
 # テストケース
 grid1 = [
-  ['1','1','0','0','0'],
-  ['1','1','0','0','0'],
-  ['0','0','1','0','0'],
-  ['0','0','0','1','1']
+  ['1', '1', '0', '0', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '1', '0', '0'],
+  ['0', '0', '0', '1', '1']
 ]
 
 p num_islands(grid1.map(&:dup))  # => 3
 
 grid2 = [
-  ['1','1','1','1','0'],
-  ['1','1','0','1','0'],
-  ['1','1','0','0','0'],
-  ['0','0','0','0','0']
+  ['1', '1', '1', '1', '0'],
+  ['1', '1', '0', '1', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '0', '0', '0']
 ]
 
 p num_islands(grid2.map(&:dup))  # => 1

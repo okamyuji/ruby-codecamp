@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_anagrams
+# 解法1: Sliding Window with Hash
 def find_anagrams(s, p)
   return [] if s.length < p.length
 
@@ -13,18 +15,21 @@ def find_anagrams(s, p)
   s.each_char.with_index do |char, right|
     window_count[char] += 1
 
+    # ウィンドウサイズがpより大きくなったら左端を削除
     if right >= p.length
       left_char = s[right - p.length]
       window_count[left_char] -= 1
       window_count.delete(left_char) if window_count[left_char].zero?
     end
 
+    # アナグラムかチェック
     result << right - p.length + 1 if window_count == p_count
   end
 
   result
 end
 
+# 解法2: カウンターで効率化
 def find_anagrams_counter(s, p)
   return [] if s.length < p.length
 
@@ -36,11 +41,13 @@ def find_anagrams_counter(s, p)
   matches = 0
 
   s.each_char.with_index do |char, right|
+    # 右端を追加
     if p_count.key?(char)
       window_count[char] += 1
       matches += 1 if window_count[char] == p_count[char]
     end
 
+    # ウィンドウサイズがpより大きくなったら左端を削除
     if right >= p.length
       left_char = s[right - p.length]
 
@@ -50,11 +57,18 @@ def find_anagrams_counter(s, p)
       end
     end
 
+    # すべての文字が一致
     result << right - p.length + 1 if matches == p_count.size
   end
 
   result
 end
+
+# テストケース
+p find_anagrams('cbaebabacd', 'abc')  # => [0, 6]
+p find_anagrams('abab', 'ab')         # => [0, 1, 2]
+p find_anagrams('baa', 'aa')          # => [1]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== アナグラムの検索 テスト ==='

@@ -22,6 +22,7 @@
 # 空間計算量: O(n) - result配列が最大n個の要素を保持
 # ============================================================================
 
+# docs:begin process_data
 def process_data(arr)
   result = []
 
@@ -31,6 +32,7 @@ def process_data(arr)
 
   result.sort
 end
+# docs:end
 
 def analyze_complexity(arr)
   arr.length

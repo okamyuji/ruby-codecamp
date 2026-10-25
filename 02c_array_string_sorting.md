@@ -51,41 +51,42 @@
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_01_selection_sort.rb#selection_sort -->
 ```ruby
 # 解法1: 基本的な選択ソート
 def selection_sort(arr)
   n = arr.length
-  
+
   # 各位置について最小値を探す
   (n - 1).times do |i|
     min_index = i
-    
+
     # 未ソート部分から最小値を探す
-    (i + 1...n).each do |j|
+    ((i + 1)...n).each do |j|
       min_index = j if arr[j] < arr[min_index]
     end
-    
+
     # 最小値を現在位置と交換
     arr[i], arr[min_index] = arr[min_index], arr[i]
   end
-  
+
   arr
 end
 
 # 解法2: 降順選択ソート
 def selection_sort_descending(arr)
   n = arr.length
-  
+
   (n - 1).times do |i|
     max_index = i
-    
-    (i + 1...n).each do |j|
+
+    ((i + 1)...n).each do |j|
       max_index = j if arr[j] > arr[max_index]
     end
-    
+
     arr[i], arr[max_index] = arr[max_index], arr[i]
   end
-  
+
   arr
 end
 
@@ -94,22 +95,22 @@ def kth_smallest_selection(arr, k)
   # k回だけ選択ソートを実行
   k.times do |i|
     min_index = i
-    
-    (i + 1...arr.length).each do |j|
+
+    ((i + 1)...arr.length).each do |j|
       min_index = j if arr[j] < arr[min_index]
     end
-    
+
     arr[i], arr[min_index] = arr[min_index], arr[i]
   end
-  
+
   arr[k - 1]
 end
 
 # テストケース
 p selection_sort([64, 25, 12, 22, 11])        # => [11, 12, 22, 25, 64]
 p selection_sort([5, 2, 8, 1, 9])             # => [1, 2, 5, 8, 9]
-p selection_sort_descending([64, 25, 12, 22, 11])  # => [64, 25, 22, 12, 11]
-p kth_smallest_selection([7, 10, 4, 3, 20, 15], 3)  # => 7
+p selection_sort_descending([64, 25, 12, 22, 11]) # => [64, 25, 22, 12, 11]
+p kth_smallest_selection([7, 10, 4, 3, 20, 15], 3) # => 7
 ```
 
 ---
@@ -160,26 +161,27 @@ p kth_smallest_selection([7, 10, 4, 3, 20, 15], 3)  # => 7
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_02_insertion_sort.rb#insertion_sort -->
 ```ruby
 # 解法1: 基本的な挿入ソート
 def insertion_sort(arr)
   n = arr.length
-  
+
   # 2番目の要素から開始（最初の要素はソート済みとみなす）
   (1...n).each do |i|
     key = arr[i]
     j = i - 1
-    
+
     # keyより大きい要素を右にシフト
     while j >= 0 && arr[j] > key
       arr[j + 1] = arr[j]
       j -= 1
     end
-    
+
     # keyを適切な位置に挿入
     arr[j + 1] = key
   end
-  
+
   arr
 end
 
@@ -187,14 +189,14 @@ end
 def insertion_sort_swap(arr)
   (1...arr.length).each do |i|
     j = i
-    
+
     # 左側のソート済み部分で適切な位置まで交換
     while j > 0 && arr[j - 1] > arr[j]
       arr[j - 1], arr[j] = arr[j], arr[j - 1]
       j -= 1
     end
   end
-  
+
   arr
 end
 
@@ -203,23 +205,23 @@ def insertion_sort_descending(arr)
   (1...arr.length).each do |i|
     key = arr[i]
     j = i - 1
-    
-    while j >= 0 && arr[j] < key  # 比較演算子を逆にする
+
+    while j >= 0 && arr[j] < key # 比較演算子を逆にする
       arr[j + 1] = arr[j]
       j -= 1
     end
-    
+
     arr[j + 1] = key
   end
-  
+
   arr
 end
 
 # テストケース
 p insertion_sort([5, 2, 4, 6, 1, 3])  # => [1, 2, 3, 4, 5, 6]
 p insertion_sort([12, 11, 13, 5, 6])  # => [5, 6, 11, 12, 13]
-p insertion_sort([1, 2, 3])           # => [1, 2, 3] (既にソート済み)
-p insertion_sort_descending([5, 2, 4, 6, 1, 3])  # => [6, 5, 4, 3, 2, 1]
+p insertion_sort([1, 2, 3])           # => [1, 2, 3]（既にソート済み）
+p insertion_sort_descending([5, 2, 4, 6, 1, 3]) # => [6, 5, 4, 3, 2, 1]
 ```
 
 ---
@@ -259,6 +261,7 @@ Rubyのsortメソッドにブロックを渡して、カスタムな比較条件
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_03_sort_by_absolute_value.rb#sort_by_absolute_value -->
 ```ruby
 # 解法1: sort_byを使用（推奨）
 def sort_by_absolute_value(arr)
@@ -269,9 +272,9 @@ end
 def sort_by_absolute_value_sort(arr)
   arr.sort do |a, b|
     if a.abs == b.abs
-      a <=> b  # 絶対値が同じなら元の値で比較
+      a <=> b # 絶対値が同じなら元の値で比較
     else
-      a.abs <=> b.abs  # 絶対値で比較
+      a.abs <=> b.abs # 絶対値で比較
     end
   end
 end
@@ -329,6 +332,7 @@ sort_byで文字列の長さと文字列自体をキーとして使用します�
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_04_sort_by_length.rb#sort_by_length -->
 ```ruby
 # 解法1: sort_byを使用（推奨）
 def sort_by_length(strs)
@@ -352,13 +356,13 @@ def sort_by_length_descending(strs)
 end
 
 # テストケース
-p sort_by_length(["apple", "pie", "a", "zoo", "elephant"])
+p sort_by_length(['apple', 'pie', 'a', 'zoo', 'elephant'])
 # => ["a", "pie", "zoo", "apple", "elephant"]
 
-p sort_by_length(["aa", "a", "aaa", "aaaa"])
+p sort_by_length(['aa', 'a', 'aaa', 'aaaa'])
 # => ["a", "aa", "aaa", "aaaa"]
 
-p sort_by_length_descending(["apple", "pie", "a", "zoo"])
+p sort_by_length_descending(['apple', 'pie', 'a', 'zoo'])
 # => ["apple", "pie", "zoo", "a"]
 ```
 
@@ -410,20 +414,21 @@ k = 8
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_05_counting_sort.rb#counting_sort -->
 ```ruby
 # 解法1: 基本的な計数ソート
 def counting_sort(arr, k)
   count = Array.new(k + 1, 0)
-  
+
   # 各値の出現回数をカウント
   arr.each { |num| count[num] += 1 }
-  
+
   # カウントから結果配列を構築
   result = []
   count.each_with_index do |freq, value|
     freq.times { result << value }
   end
-  
+
   result
 end
 
@@ -431,20 +436,20 @@ end
 def counting_sort_stable(arr, k)
   count = Array.new(k + 1, 0)
   output = Array.new(arr.length)
-  
+
   # 各値の出現回数をカウント
   arr.each { |num| count[num] += 1 }
-  
+
   # 累積カウントに変換
   (1..k).each { |i| count[i] += count[i - 1] }
-  
+
   # 結果配列を構築（逆順で安定性を保証）
   (arr.length - 1).downto(0) do |i|
     value = arr[i]
     output[count[value] - 1] = value
     count[value] -= 1
   end
-  
+
   output
 end
 
@@ -452,12 +457,12 @@ end
 def counting_sort_hash(arr)
   freq = Hash.new(0)
   arr.each { |num| freq[num] += 1 }
-  
+
   result = []
   freq.keys.sort.each do |value|
     freq[value].times { result << value }
   end
-  
+
   result
 end
 
@@ -519,21 +524,22 @@ p counting_sort_hash([64, 25, 12, 22, 11])
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_06_bucket_sort.rb#bucket_sort -->
 ```ruby
 # 解法1: 基本的なバケットソート
 def bucket_sort(arr, bucket_count = 10)
   return arr if arr.empty?
-  
+
   # バケットを初期化
   buckets = Array.new(bucket_count) { [] }
-  
+
   # 各要素を適切なバケットに配置
   arr.each do |num|
     index = (num * bucket_count).to_i
     index = bucket_count - 1 if index >= bucket_count
     buckets[index] << num
   end
-  
+
   # 各バケットをソートして連結
   buckets.flat_map { |bucket| bucket.sort }
 end
@@ -541,33 +547,33 @@ end
 # 解法2: 整数配列用のバケットソート
 def bucket_sort_integers(arr, bucket_size = 5)
   return arr if arr.empty?
-  
+
   min_val = arr.min
   max_val = arr.max
   bucket_count = ((max_val - min_val) / bucket_size).to_i + 1
-  
+
   buckets = Array.new(bucket_count) { [] }
-  
+
   arr.each do |num|
     index = ((num - min_val) / bucket_size).to_i
     buckets[index] << num
   end
-  
+
   buckets.flat_map { |bucket| bucket.sort }
 end
 
 # 解法3: 挿入ソートを使ったバケットソート
 def bucket_sort_with_insertion(arr, bucket_count = 10)
   return arr if arr.empty?
-  
+
   buckets = Array.new(bucket_count) { [] }
-  
+
   arr.each do |num|
     index = (num * bucket_count).to_i
     index = bucket_count - 1 if index >= bucket_count
     buckets[index] << num
   end
-  
+
   # 各バケットを挿入ソート
   buckets.each do |bucket|
     (1...bucket.length).each do |i|
@@ -580,7 +586,7 @@ def bucket_sort_with_insertion(arr, bucket_count = 10)
       bucket[j + 1] = key
     end
   end
-  
+
   buckets.flatten
 end
 
@@ -630,6 +636,7 @@ p bucket_sort_integers([29, 25, 3, 49, 9, 37, 21, 43])
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_07_segregate_even_odd.rb#segregate_even_odd -->
 ```ruby
 # 解法1: selectで分離（推奨、簡単）
 def segregate_even_odd(arr)
@@ -648,22 +655,22 @@ end
 def segregate_even_odd_inplace(arr)
   left = 0
   right = arr.length - 1
-  
+
   while left < right
     # 左から奇数を探す
     left += 1 while left < right && arr[left].even?
-    
+
     # 右から偶数を探す
     right -= 1 while left < right && arr[right].odd?
-    
+
     # 交換
-    if left < right
-      arr[left], arr[right] = arr[right], arr[left]
-      left += 1
-      right -= 1
-    end
+    next unless left < right
+
+    arr[left], arr[right] = arr[right], arr[left]
+    left += 1
+    right -= 1
   end
-  
+
   arr
 end
 
@@ -680,7 +687,7 @@ p segregate_even_odd([12, 34, 45, 9, 8, 90, 3])
 # => [12, 34, 8, 90, 45, 9, 3] または類似
 
 p segregate_even_odd([1, 3, 5, 7])
-# => [1, 3, 5, 7] (すべて奇数)
+# => [1, 3, 5, 7]（すべて奇数）
 ```
 
 ---
@@ -724,11 +731,12 @@ k = 2
 
 ### 解答
 
+<!-- source: solutions/02c_array_string_sorting/problem_08_top_k_frequent.rb#top_k_frequent -->
 ```ruby
 # 解法1: ハッシュとソート（推奨）
 def top_k_frequent(nums, k)
   freq = nums.tally
-  
+
   # 頻度の降順でソートし、トップk個の要素を取得
   freq.sort_by { |_, count| -count }.first(k).map(&:first)
 end
@@ -744,16 +752,16 @@ end
 # 解法3: max_byを使用（k個取得）
 def top_k_frequent_max(nums, k)
   freq = nums.tally
-  
+
   result = []
   k.times do
     break if freq.empty?
-    
+
     max_num = freq.max_by { |_, count| count }[0]
     result << max_num
     freq.delete(max_num)
   end
-  
+
   result
 end
 

@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin power
+# 解法1: 組み込み演算子を使用（推奨）
 def power(x, n)
   x**n
 end
 
+# 解法2: 二分累乗法（効率的）
 def power_fast(x, n)
+  # 負の指数の処理
   if n < 0
     x = 1.0 / x
     n = -n
@@ -14,14 +18,18 @@ def power_fast(x, n)
   result = 1.0
 
   while n > 0
+    # nが奇数なら、結果にxを掛ける
     result *= x if n.odd?
+    # xを2乗
     x *= x
+    # nを半分にする
     n /= 2
   end
 
   result
 end
 
+# 解法3: 再帰的な二分累乗法
 def power_recursive(x, n)
   return 1.0 if n == 0
 
@@ -39,6 +47,7 @@ def power_recursive(x, n)
   end
 end
 
+# 解法4: 反復での単純な実装（遅い）
 def power_simple(x, n)
   return 1.0 if n == 0
 
@@ -51,6 +60,14 @@ def power_simple(x, n)
   n.times { result *= x }
   result
 end
+
+# テストケース
+puts power(2.0, 10)    # => 1024.0
+puts power(2.1, 3)     # => 9.261000000000001（浮動小数点の丸め誤差）
+puts power(2.0, -2)    # => 0.25
+puts power(0.0, 1)     # => 0.0
+puts power(1.0, 1000)  # => 1.0
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== べき乗の計算 テスト ==='

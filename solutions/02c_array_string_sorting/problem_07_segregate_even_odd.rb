@@ -16,6 +16,7 @@
 # 空間計算量: O(n) - 新しい配列を作成する場合
 # ============================================================================
 
+# docs:begin segregate_even_odd
 # 解法1: selectで分離（推奨、簡単）
 def segregate_even_odd(arr)
   even = arr.select(&:even?)
@@ -56,6 +57,17 @@ end
 def segregate_even_odd_sort(arr)
   arr.sort_by { |x| [x % 2, x] }
 end
+
+# テストケース
+p segregate_even_odd([3, 1, 2, 4, 5, 6])
+# => [2, 4, 6, 3, 1, 5] または類似
+
+p segregate_even_odd([12, 34, 45, 9, 8, 90, 3])
+# => [12, 34, 8, 90, 45, 9, 3] または類似
+
+p segregate_even_odd([1, 3, 5, 7])
+# => [1, 3, 5, 7]（すべて奇数）
+# docs:end
 
 # ============================================================================
 # テストケース

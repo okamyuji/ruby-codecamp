@@ -44,24 +44,25 @@
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_01_missing_number.rb#missing_number -->
 ```ruby
 # 解法1: 合計の差を使用
 def missing_number(nums)
   n = nums.length
   expected_sum = n * (n + 1) / 2
   actual_sum = nums.sum
-  
+
   expected_sum - actual_sum
 end
 
 # 解法2: XOR演算を使用
 def missing_number_xor(nums)
   result = nums.length
-  
+
   nums.each_with_index do |num, i|
     result ^= i ^ num
   end
-  
+
   result
 end
 
@@ -70,27 +71,27 @@ def missing_number_marking(nums)
   n = nums.length
   # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
   nums.map! { |num| num + 1 }
-  
+
   # 各数字に対応する位置を負にしてマーク（n は配列外なので飛ばす）
   nums.each do |num|
     idx = num.abs - 1
     nums[idx] = -nums[idx].abs if idx < n
   end
-  
+
   # 正の値のインデックスが消えた数字
   nums.each_with_index do |num, i|
     return i if num.positive?
   end
-  
+
   n
 end
 
 # テストケース
 p missing_number([3, 0, 1])        # => 2
 p missing_number([0, 1])           # => 2
-p missing_number([9, 6, 4, 2, 3, 5, 7, 0, 1])  # => 8
+p missing_number([9, 6, 4, 2, 3, 5, 7, 0, 1]) # => 8
 
-p missing_number_xor([3, 0, 1])    # => 2
+p missing_number_xor([3, 0, 1]) # => 2
 p missing_number_marking([3, 0, 1])  # => 2
 p missing_number_marking([0, 1])     # => 2
 ```
@@ -147,27 +148,28 @@ Floyd's Cycle Detection（亀と兎のアルゴリズム）を使用します。
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_02_find_duplicate.rb#find_duplicate -->
 ```ruby
 # 解法1: Floyd's Cycle Detection
 def find_duplicate(nums)
   # フェーズ1: サイクルを検出
   slow = nums[0]
   fast = nums[0]
-  
+
   loop do
     slow = nums[slow]
     fast = nums[nums[fast]]
     break if slow == fast
   end
-  
+
   # フェーズ2: サイクルの開始点を見つける
   slow = nums[0]
-  
+
   while slow != fast
     slow = nums[slow]
     fast = nums[fast]
   end
-  
+
   fast
 end
 
@@ -175,14 +177,14 @@ end
 def find_duplicate_marking(nums)
   nums.each do |num|
     idx = num.abs
-    
+
     # 既に負の場合、これが重複
     return idx if nums[idx] < 0
-    
+
     # マークする
     nums[idx] = -nums[idx]
   end
-  
+
   -1
 end
 
@@ -190,13 +192,13 @@ end
 def find_duplicate_binary_search(nums)
   left = 1
   right = nums.length - 1
-  
+
   while left < right
     mid = (left + right) / 2
-    
+
     # mid以下の数字が何個あるか数える
     count = nums.count { |num| num <= mid }
-    
+
     # mid以下の数字がmid個より多ければ、重複はmid以下
     if count > mid
       right = mid
@@ -204,7 +206,7 @@ def find_duplicate_binary_search(nums)
       left = mid + 1
     end
   end
-  
+
   left
 end
 
@@ -263,14 +265,15 @@ Negative Markingを使用します。各値に対応するインデックスを�
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_03_find_duplicates.rb#find_duplicates -->
 ```ruby
 # 解法1: Negative Marking
 def find_duplicates(nums)
   duplicates = []
-  
+
   nums.each do |num|
     idx = num.abs - 1
-    
+
     if nums[idx] < 0
       # 既に訪問済み = 重複
       duplicates << num.abs
@@ -279,28 +282,28 @@ def find_duplicates(nums)
       nums[idx] = -nums[idx]
     end
   end
-  
+
   duplicates
 end
 
 # 解法2: 元の配列を復元する版
 def find_duplicates_restore(nums)
   duplicates = []
-  
+
   # マークして重複を見つける
   nums.each do |num|
     idx = num.abs - 1
-    
+
     if nums[idx] < 0
       duplicates << num.abs
     else
       nums[idx] = -nums[idx]
     end
   end
-  
+
   # 配列を元に戻す
   nums.map! { |num| num.abs }
-  
+
   duplicates
 end
 
@@ -308,7 +311,7 @@ end
 def find_duplicates_hash(nums)
   seen = Set.new
   duplicates = []
-  
+
   nums.each do |num|
     if seen.include?(num)
       duplicates << num
@@ -316,7 +319,7 @@ def find_duplicates_hash(nums)
       seen << num
     end
   end
-  
+
   duplicates
 end
 
@@ -374,6 +377,7 @@ Negative Markingを使用します。各値に対応するインデックスを�
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_04_find_disappeared_numbers.rb#find_disappeared_numbers -->
 ```ruby
 # 解法1: Negative Marking
 def find_disappeared_numbers(nums)
@@ -382,14 +386,14 @@ def find_disappeared_numbers(nums)
     idx = num.abs - 1
     nums[idx] = -nums[idx].abs
   end
-  
+
   # 正の値のインデックスが消えた数字
   disappeared = []
-  
+
   nums.each_with_index do |num, i|
     disappeared << i + 1 if num > 0
   end
-  
+
   disappeared
 end
 
@@ -399,23 +403,23 @@ def find_disappeared_numbers_restore(nums)
     idx = num.abs - 1
     nums[idx] = -nums[idx].abs
   end
-  
+
   disappeared = []
-  
+
   nums.each_with_index do |num, i|
     disappeared << i + 1 if num > 0
   end
-  
+
   # 配列を元に戻す
   nums.map! { |num| num.abs }
-  
+
   disappeared
 end
 
 # 解法3: セットを使用（O(n)空間）
 def find_disappeared_numbers_set(nums)
   present = Set.new(nums)
-  
+
   (1..nums.length).reject { |num| present.include?(num) }
 end
 
@@ -481,28 +485,29 @@ p find_disappeared_numbers([1, 2, 3])                 # => []
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_05_first_missing_positive.rb#first_missing_positive -->
 ```ruby
 # 解法1: Negative Marking
 def first_missing_positive(nums)
   n = nums.length
-  
+
   # 範囲外の値を n + 1 に置き換え
-  nums.map! { |num| (num <= 0 || num > n) ? n + 1 : num }
-  
+  nums.map! { |num| num <= 0 || num > n ? n + 1 : num }
+
   # Negative Markingでマーク
   nums.each do |num|
     val = num.abs
-    
+
     if val <= n
       nums[val - 1] = -nums[val - 1].abs
     end
   end
-  
+
   # 最初の正の値を見つける
   nums.each_with_index do |num, i|
     return i + 1 if num > 0
   end
-  
+
   n + 1
 end
 
@@ -510,41 +515,41 @@ end
 def first_missing_positive_sort(nums)
   n = nums.length
   i = 0
-  
+
   while i < n
     # nums[i]は位置 nums[i]-1 にあるべき
     correct_pos = nums[i] - 1
-    
+
     if nums[i] > 0 && nums[i] <= n && nums[i] != nums[correct_pos]
       nums[i], nums[correct_pos] = nums[correct_pos], nums[i]
     else
       i += 1
     end
   end
-  
+
   # 最初の不一致を見つける
   nums.each_with_index do |num, i|
     return i + 1 if num != i + 1
   end
-  
+
   n + 1
 end
 
 # 解法3: セットを使用（O(n)空間）
 def first_missing_positive_set(nums)
   present = Set.new(nums)
-  
+
   i = 1
   i += 1 while present.include?(i)
-  
+
   i
 end
 
 # テストケース
 p first_missing_positive([1, 2, 0])       # => 3
 p first_missing_positive([3, 4, -1, 1])   # => 2
-p first_missing_positive([7, 8, 9, 11, 12])  # => 1
-p first_missing_positive([1])             # => 2
+p first_missing_positive([7, 8, 9, 11, 12]) # => 1
+p first_missing_positive([1]) # => 2
 ```
 
 ---
@@ -593,14 +598,15 @@ p first_missing_positive([1])             # => 2
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_06_arrange_numbers.rb#arrange_numbers -->
 ```ruby
 # 解法1: In-place交換
 def arrange_numbers(nums)
   i = 0
-  
+
   while i < nums.length
     correct_pos = nums[i]
-    
+
     if nums[i] != i && nums[i] != nums[correct_pos]
       # 交換
       nums[i], nums[correct_pos] = nums[correct_pos], nums[i]
@@ -608,7 +614,7 @@ def arrange_numbers(nums)
       i += 1
     end
   end
-  
+
   nums
 end
 
@@ -620,18 +626,18 @@ def arrange_numbers_one_pass(nums)
       nums[i], nums[correct_pos] = nums[correct_pos], nums[i]
     end
   end
-  
+
   nums
 end
 
 # 解法3: 新しい配列を作成
 def arrange_numbers_new_array(nums)
   result = Array.new(nums.length)
-  
+
   nums.each_with_index do |num, i|
     result[num] = num
   end
-  
+
   result
 end
 
@@ -694,22 +700,23 @@ Negative Markingを使用します。既に負の値なら重複、最後に正�
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_07_find_error_nums.rb#find_error_nums -->
 ```ruby
 # 解法1: Negative Marking
 def find_error_nums(nums)
   duplicate = 0
-  
+
   # Negative Markingで重複を見つける
   nums.each do |num|
     idx = num.abs - 1
-    
+
     if nums[idx] < 0
       duplicate = num.abs
     else
       nums[idx] = -nums[idx]
     end
   end
-  
+
   # 正の値のインデックスが消えた数字
   missing = 0
   nums.each_with_index do |num, i|
@@ -718,30 +725,30 @@ def find_error_nums(nums)
       break
     end
   end
-  
+
   [duplicate, missing]
 end
 
 # 解法2: 合計とXORを使用
 def find_error_nums_math(nums)
   n = nums.length
-  
+
   # 実際の合計と期待される合計
   actual_sum = nums.sum
   expected_sum = n * (n + 1) / 2
-  
+
   # 重複を見つける
   duplicate = 0
   seen = Set.new
-  
+
   nums.each do |num|
     duplicate = num if seen.include?(num)
     seen << num
   end
-  
+
   # 消えた数字を計算
   missing = expected_sum - (actual_sum - duplicate)
-  
+
   [duplicate, missing]
 end
 
@@ -749,10 +756,10 @@ end
 def find_error_nums_hash(nums)
   count = Hash.new(0)
   nums.each { |num| count[num] += 1 }
-  
+
   duplicate = count.find { |_, v| v == 2 }[0]
   missing = (1..nums.length).find { |num| !count.key?(num) }
-  
+
   [duplicate, missing]
 end
 
@@ -810,46 +817,47 @@ Negative Markingまたはin-place交換を使用します。正しい位置に�
 
 ### 解答
 
+<!-- source: solutions/02i_array_string_inplace_counting/problem_08_find_corrupt_value.rb#find_corrupt_value -->
 ```ruby
 # 解法1: Negative Marking
 def find_corrupt_value(nums)
   # 0 は負にできずマークが残らないため、値を1ずらしてからマークする
   nums.map! { |num| num + 1 }
-  
+
   nums.each do |num|
     idx = num.abs - 1
-    
+
     if idx < nums.length
       nums[idx] = -nums[idx].abs
     end
   end
-  
+
   nums.each_with_index do |num, i|
     return i if num.positive?
   end
-  
+
   nums.length
 end
 
 # 解法2: In-place交換
 def find_corrupt_value_swap(nums)
   i = 0
-  
+
   while i < nums.length
     correct_pos = nums[i]
-    
+
     if correct_pos < nums.length && nums[i] != nums[correct_pos]
       nums[i], nums[correct_pos] = nums[correct_pos], nums[i]
     else
       i += 1
     end
   end
-  
+
   # 正しくない位置を見つける
   nums.each_with_index do |num, i|
     return i if num != i
   end
-  
+
   nums.length
 end
 
@@ -858,7 +866,7 @@ p find_corrupt_value([0, 1, 3, 3])  # => 2
 p find_corrupt_value([1, 0, 2, 3])  # => 4
 p find_corrupt_value([0, 2, 2, 3])  # => 1
 p find_corrupt_value([0, 1, 0, 3])  # => 2
-p find_corrupt_value_swap([0, 1, 3, 3])  # => 2
+p find_corrupt_value_swap([0, 1, 3, 3]) # => 2
 ```
 
 ---

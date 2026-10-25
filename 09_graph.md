@@ -51,17 +51,18 @@ graph = [
 
 ### 基本的なBFS
 
+<!-- source: solutions/09_graph/graph_traversal.rb#bfs -->
 ```ruby
 def bfs(graph, start)
   visited = Set.new
   queue = [start]
   visited.add(start)
   result = []
-  
-  while !queue.empty?
+
+  until queue.empty?
     node = queue.shift
     result << node
-    
+
     graph[node].each do |neighbor|
       unless visited.include?(neighbor)
         visited.add(neighbor)
@@ -69,7 +70,7 @@ def bfs(graph, start)
       end
     end
   end
-  
+
   result
 end
 
@@ -82,32 +83,33 @@ graph = {
   4 => [1]
 }
 
-p bfs(graph, 0)  # => [0, 1, 2, 3, 4]
+p bfs(graph, 0) # => [0, 1, 2, 3, 4]
 ```
 
 ### 問題1: 最短経路の長さ
 
+<!-- source: solutions/09_graph/graph_traversal.rb#shortest_path_length -->
 ```ruby
 def shortest_path_length(graph, start, end_node)
   return 0 if start == end_node
-  
+
   visited = Set.new([start])
-  queue = [[start, 0]]  # [ノード, 距離]
-  
-  while !queue.empty?
+  queue = [[start, 0]] # [ノード, 距離]
+
+  until queue.empty?
     node, dist = queue.shift
-    
+
     graph[node].each do |neighbor|
       return dist + 1 if neighbor == end_node
-      
+
       unless visited.include?(neighbor)
         visited.add(neighbor)
         queue << [neighbor, dist + 1]
       end
     end
   end
-  
-  -1  # 到達不可能
+
+  -1 # 到達不可能
 end
 ```
 
@@ -115,67 +117,70 @@ end
 
 ### 基本的なDFS（再帰版）
 
+<!-- source: solutions/09_graph/graph_traversal.rb#dfs_recursive -->
 ```ruby
 def dfs_recursive(graph, start, visited = Set.new, result = [])
   visited.add(start)
   result << start
-  
+
   graph[start].each do |neighbor|
     unless visited.include?(neighbor)
       dfs_recursive(graph, neighbor, visited, result)
     end
   end
-  
+
   result
 end
 ```
 
 ### 基本的なDFS（反復版）
 
+<!-- source: solutions/09_graph/graph_traversal.rb#dfs_iterative -->
 ```ruby
 def dfs_iterative(graph, start)
   visited = Set.new
   stack = [start]
   result = []
-  
-  while !stack.empty?
+
+  until stack.empty?
     node = stack.pop
-    
-    unless visited.include?(node)
-      visited.add(node)
-      result << node
-      
-      graph[node].each do |neighbor|
-        stack << neighbor unless visited.include?(neighbor)
-      end
+
+    next if visited.include?(node)
+
+    visited.add(node)
+    result << node
+
+    graph[node].each do |neighbor|
+      stack << neighbor unless visited.include?(neighbor)
     end
   end
-  
+
   result
 end
 ```
 
 ### 問題2: パスの存在確認
 
+<!-- source: solutions/09_graph/graph_traversal.rb#has_path -->
 ```ruby
 def has_path(graph, start, end_node)
   return true if start == end_node
-  
+
   visited = Set.new
-  
+
   def dfs(graph, node, end_node, visited)
     return true if node == end_node
     return false if visited.include?(node)
-    
+
     visited.add(node)
-    
+
     graph[node].each do |neighbor|
       return true if dfs(graph, neighbor, end_node, visited)
     end
-    
+
     false
   end
-  
+
   dfs(graph, start, end_node, visited)
 end
 ```
@@ -184,29 +189,30 @@ end
 
 ### 問題3: 島の数（Number of Islands）
 
+<!-- source: solutions/09_graph/graph_traversal.rb#num_islands -->
 ```ruby
 def num_islands(grid)
   return 0 if grid.empty?
-  
+
   rows = grid.length
   cols = grid[0].length
   count = 0
-  
+
   def dfs(grid, i, j)
     return if i < 0 || i >= grid.length ||
               j < 0 || j >= grid[0].length ||
               grid[i][j] == '0'
-    
+
     # 訪問済みとしてマーク
     grid[i][j] = '0'
-    
+
     # 上下左右を探索
     dfs(grid, i + 1, j)
     dfs(grid, i - 1, j)
     dfs(grid, i, j + 1)
     dfs(grid, i, j - 1)
   end
-  
+
   (0...rows).each do |i|
     (0...cols).each do |j|
       if grid[i][j] == '1'
@@ -215,19 +221,19 @@ def num_islands(grid)
       end
     end
   end
-  
+
   count
 end
 
 # テストケース
 grid = [
-  ['1','1','0','0','0'],
-  ['1','1','0','0','0'],
-  ['0','0','1','0','0'],
-  ['0','0','0','1','1']
+  ['1', '1', '0', '0', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '1', '0', '0'],
+  ['0', '0', '0', '1', '1']
 ]
 
-puts num_islands(grid)  # => 3
+puts num_islands(grid) # => 3
 ```
 
 ## ダイクストラ法（最短経路アルゴリズム）
@@ -341,26 +347,27 @@ end
 
 ## Union-Find（素集合データ構造）
 
+<!-- source: solutions/09_graph/graph_traversal.rb#UnionFind -->
 ```ruby
 class UnionFind
   def initialize(n)
     @parent = (0...n).to_a
     @rank = Array.new(n, 0)
   end
-  
+
   def find(x)
     if @parent[x] != x
-      @parent[x] = find(@parent[x])  # 経路圧縮
+      @parent[x] = find(@parent[x]) # 経路圧縮
     end
     @parent[x]
   end
-  
+
   def union(x, y)
     root_x = find(x)
     root_y = find(y)
-    
+
     return if root_x == root_y
-    
+
     # ランクによる結合
     if @rank[root_x] < @rank[root_y]
       @parent[root_x] = root_y
@@ -371,7 +378,7 @@ class UnionFind
       @rank[root_x] += 1
     end
   end
-  
+
   def connected?(x, y)
     find(x) == find(y)
   end

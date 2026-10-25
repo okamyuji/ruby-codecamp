@@ -17,6 +17,7 @@
 # 空間計算量: O(1) - カウンター変数のみ
 # ============================================================================
 
+# docs:begin count_element
 # 解法1: countメソッドを使用（推奨）
 def count_element(arr, target)
   # countメソッドに引数を渡すと、その値の出現回数を返す
@@ -45,6 +46,14 @@ end
 def count_element_select(arr, target)
   arr.select { |elem| elem == target }.size
 end
+
+# テストケース
+puts count_element([1, 2, 2, 3, 2, 4, 2], 2)  # => 4
+puts count_element([1, 1, 1, 1, 1], 1)        # => 5
+puts count_element([1, 2, 3], 5)              # => 0
+puts count_element([], 1)                     # => 0
+puts count_element(['a', 'b', 'a'], 'a')      # => 2
+# docs:end
 
 # ============================================================================
 # テストケース

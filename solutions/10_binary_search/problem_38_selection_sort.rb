@@ -1,28 +1,34 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin selection_sort
+# 解法1: 基本的な選択ソート
 def selection_sort(arr)
   arr = arr.dup
   n = arr.length
 
   (0...(n - 1)).each do |i|
+    # 未ソート部分の最小要素のインデックスを見つける
     min_index = i
 
     ((i + 1)...n).each do |j|
       min_index = j if arr[j] < arr[min_index]
     end
 
+    # 最小要素を未ソート部分の先頭と交換
     arr[i], arr[min_index] = arr[min_index], arr[i] if min_index != i
   end
 
   arr
 end
 
+# 解法2: min_byを使用
 def selection_sort_min_by(arr)
   arr = arr.dup
   n = arr.length
 
   (0...(n - 1)).each do |i|
+    # 未ソート部分から最小要素のインデックスを見つける
     min_index = (i...n).min_by { |j| arr[j] }
     arr[i], arr[min_index] = arr[min_index], arr[i]
   end
@@ -30,6 +36,7 @@ def selection_sort_min_by(arr)
   arr
 end
 
+# 解法3: 降順の選択ソート
 def selection_sort_desc(arr)
   arr = arr.dup
   n = arr.length
@@ -46,6 +53,14 @@ def selection_sort_desc(arr)
 
   arr
 end
+
+# テストケース
+p selection_sort([64, 25, 12, 22, 11])  # => [11, 12, 22, 25, 64]
+p selection_sort([5, 3, 8, 4, 2])       # => [2, 3, 4, 5, 8]
+p selection_sort([1])                   # => [1]
+p selection_sort([])                    # => []
+p selection_sort([3, 3, 3])             # => [3, 3, 3]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 選択ソート テスト ==='

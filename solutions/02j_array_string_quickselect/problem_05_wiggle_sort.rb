@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin wiggle_sort
+# 解法1: Quickselect + 3-way partition
 def wiggle_sort(nums)
   n = nums.length
 
+  # 中央値を見つける
   median = find_median(nums.dup)
 
+  # 3-way partition
   smaller = []
   equal = []
   larger = []
@@ -20,14 +24,20 @@ def wiggle_sort(nums)
     end
   end
 
+  # ウィグル順序に配置
+  # 奇数インデックス（1, 3, 5...）に大きい値
+  # 偶数インデックス（0, 2, 4...）に小さい値
+
   result = Array.new(n)
 
+  # 大きい値を奇数インデックスに配置（降順）
   pos = 1
   larger.reverse_each do |num|
     result[pos] = num
     pos += 2
   end
 
+  # 中央値を奇数インデックスに配置（残りがあれば）
   equal.reverse_each do |num|
     if pos < n
       result[pos] = num
@@ -37,8 +47,10 @@ def wiggle_sort(nums)
     end
   end
 
+  # 小さい値を偶数インデックスに配置（降順）
   pos = 0
 
+  # 残りの中央値を偶数インデックスに
   equal.reverse_each do |num|
     if result[1].nil? || num != result[1]
       result[pos] = num
@@ -92,6 +104,7 @@ def partition_asc(nums, left, right)
   i
 end
 
+# 解法2: ソートしてから配置
 def wiggle_sort_simple(nums)
   sorted = nums.sort
   n = nums.length
@@ -109,6 +122,16 @@ def wiggle_sort_simple(nums)
 
   nums.replace(result)
 end
+
+# テストケース
+nums1 = [1, 5, 1, 1, 6, 4]
+wiggle_sort(nums1)
+p nums1  # => [1, 6, 1, 5, 1, 4] または類似
+
+nums2 = [1, 3, 2, 2, 3, 1]
+wiggle_sort(nums2)
+p nums2  # => [2, 3, 1, 3, 1, 2] または類似
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== ウィグルソート テスト ==='

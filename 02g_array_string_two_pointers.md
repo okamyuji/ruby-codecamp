@@ -53,24 +53,25 @@ numbers = [2, 7, 11, 15], target = 9
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_01_two_sum.rb#two_sum -->
 ```ruby
 # 解法1: Two Pointers
 def two_sum(numbers, target)
   left = 0
   right = numbers.length - 1
-  
+
   while left < right
     sum = numbers[left] + numbers[right]
-    
+
     return [left + 1, right + 1] if sum == target
-    
+
     if sum < target
       left += 1
     else
       right -= 1
     end
   end
-  
+
   []
 end
 
@@ -79,10 +80,10 @@ def find_all_two_sum(numbers, target)
   result = []
   left = 0
   right = numbers.length - 1
-  
+
   while left < right
     sum = numbers[left] + numbers[right]
-    
+
     if sum == target
       result << [left + 1, right + 1]
       left += 1
@@ -93,22 +94,22 @@ def find_all_two_sum(numbers, target)
       right -= 1
     end
   end
-  
+
   result
 end
 
 # 解法3: ハッシュを使用（ソート不要）
 def two_sum_hash(numbers, target)
   seen = {}
-  
+
   numbers.each_with_index do |num, i|
     complement = target - num
-    
+
     return [seen[complement] + 1, i + 1] if seen.key?(complement)
-    
+
     seen[num] = i
   end
-  
+
   []
 end
 
@@ -175,24 +176,25 @@ true
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_02_is_palindrome.rb#is_palindrome -->
 ```ruby
 # 解法1: Two Pointers
 def is_palindrome(s)
   left = 0
   right = s.length - 1
-  
+
   while left < right
     # 英数字でない文字をスキップ
     left += 1 while left < right && !alphanumeric?(s[left])
     right -= 1 while left < right && !alphanumeric?(s[right])
-    
+
     # 大文字小文字を無視して比較
     return false if s[left].downcase != s[right].downcase
-    
+
     left += 1
     right -= 1
   end
-  
+
   true
 end
 
@@ -208,15 +210,15 @@ end
 
 # 解法3: each_charとreduceを使用
 def is_palindrome_functional(s)
-  chars = s.downcase.chars.select { |c| c =~ /[a-z0-9]/ }
+  chars = s.downcase.chars.grep(/[a-z0-9]/)
   chars == chars.reverse
 end
 
 # テストケース
-p is_palindrome("A man, a plan, a canal: Panama")  # => true
-p is_palindrome("race a car")                      # => false
-p is_palindrome(" ")                               # => true
-p is_palindrome("0P")                              # => false
+p is_palindrome('A man, a plan, a canal: Panama')  # => true
+p is_palindrome('race a car')                      # => false
+p is_palindrome(' ')                               # => true
+p is_palindrome('0P')                              # => false
 ```
 
 ---
@@ -271,19 +273,20 @@ p is_palindrome("0P")                              # => false
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_03_max_area.rb#max_area -->
 ```ruby
 # 解法1: Two Pointers
 def max_area(height)
   max_area = 0
   left = 0
   right = height.length - 1
-  
+
   while left < right
     width = right - left
     h = [height[left], height[right]].min
     area = width * h
     max_area = [max_area, area].max
-    
+
     # 低い方を移動
     if height[left] < height[right]
       left += 1
@@ -291,7 +294,7 @@ def max_area(height)
       right -= 1
     end
   end
-  
+
   max_area
 end
 
@@ -302,41 +305,41 @@ def max_area_with_indices(height)
   best_right = 0
   left = 0
   right = height.length - 1
-  
+
   while left < right
     width = right - left
     h = [height[left], height[right]].min
     area = width * h
-    
+
     if area > max_area
       max_area = area
       best_left = left
       best_right = right
     end
-    
+
     if height[left] < height[right]
       left += 1
     else
       right -= 1
     end
   end
-  
+
   { area: max_area, left: best_left, right: best_right }
 end
 
 # 解法3: ブルートフォース（比較用）
 def max_area_brute(height)
   max_area = 0
-  
+
   height.length.times do |i|
-    (i + 1...height.length).each do |j|
+    ((i + 1)...height.length).each do |j|
       width = j - i
       h = [height[i], height[j]].min
       area = width * h
       max_area = [max_area, area].max
     end
   end
-  
+
   max_area
 end
 
@@ -411,28 +414,29 @@ p max_area_with_indices([1, 8, 6, 2, 5, 4, 8, 3, 7])
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_04_three_sum.rb#three_sum -->
 ```ruby
 # 解法1: ソート + Two Pointers
 def three_sum(nums)
   nums.sort!
   result = []
-  
+
   (nums.length - 2).times do |i|
     # 重複をスキップ
     next if i > 0 && nums[i] == nums[i - 1]
-    
+
     left = i + 1
     right = nums.length - 1
-    
+
     while left < right
       sum = nums[i] + nums[left] + nums[right]
-      
+
       if sum.zero?
         result << [nums[i], nums[left], nums[right]]
-        
+
         left += 1
         right -= 1
-        
+
         # 重複をスキップ
         left += 1 while left < right && nums[left] == nums[left - 1]
         right -= 1 while left < right && nums[right] == nums[right + 1]
@@ -443,29 +447,29 @@ def three_sum(nums)
       end
     end
   end
-  
+
   result
 end
 
 # 解法2: ハッシュを使用
 def three_sum_hash(nums)
   result = Set.new
-  
+
   nums.length.times do |i|
     seen = Set.new
-    
-    (i + 1...nums.length).each do |j|
+
+    ((i + 1)...nums.length).each do |j|
       complement = -(nums[i] + nums[j])
-      
+
       if seen.include?(complement)
         triplet = [nums[i], nums[j], complement].sort
         result << triplet
       end
-      
+
       seen << nums[j]
     end
   end
-  
+
   result.to_a
 end
 
@@ -526,36 +530,37 @@ p three_sum([])
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_05_remove_duplicates.rb#remove_duplicates -->
 ```ruby
 # 解法1: Two Pointers
 def remove_duplicates(nums)
   return 0 if nums.empty?
-  
+
   write_pos = 1
-  
+
   (1...nums.length).each do |i|
     if nums[i] != nums[i - 1]
       nums[write_pos] = nums[i]
       write_pos += 1
     end
   end
-  
+
   write_pos
 end
 
 # 解法2: 各要素が最大2回まで出現を許可
 def remove_duplicates_allow_twice(nums)
   return nums.length if nums.length <= 2
-  
+
   write_pos = 2
-  
+
   (2...nums.length).each do |i|
     if nums[i] != nums[write_pos - 2]
       nums[write_pos] = nums[i]
       write_pos += 1
     end
   end
-  
+
   write_pos
 end
 
@@ -632,27 +637,28 @@ nums = [3, 5, 2, 1, 6, 4], pivot = 3
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_06_partition.rb#partition -->
 ```ruby
 # 解法1: Two Pointers
 def partition(nums, pivot)
   left = 0
   right = nums.length - 1
-  
+
   while left <= right
     # 左から pivot 以上の要素を探す
-    left += 1 while left < right && nums[left] < pivot
-    
+    left += 1 while left <= right && nums[left] < pivot
+
     # 右から pivot より小さい要素を探す
-    right -= 1 while left < right && nums[right] >= pivot
-    
+    right -= 1 while left <= right && nums[right] >= pivot
+
     # 交換
-    if left < right
-      nums[left], nums[right] = nums[right], nums[left]
-      left += 1
-      right -= 1
-    end
+    next unless left < right
+
+    nums[left], nums[right] = nums[right], nums[left]
+    left += 1
+    right -= 1
   end
-  
+
   nums
 end
 
@@ -661,7 +667,7 @@ def three_way_partition(nums, pivot)
   less = 0
   equal = 0
   greater = nums.length - 1
-  
+
   while equal <= greater
     if nums[equal] < pivot
       nums[less], nums[equal] = nums[equal], nums[less]
@@ -674,7 +680,7 @@ def three_way_partition(nums, pivot)
       greater -= 1
     end
   end
-  
+
   nums
 end
 
@@ -683,7 +689,7 @@ def partition_new_array(nums, pivot)
   less = nums.select { |x| x < pivot }
   equal = nums.select { |x| x == pivot }
   greater = nums.select { |x| x > pivot }
-  
+
   less + equal + greater
 end
 
@@ -748,46 +754,47 @@ Sliding Window + Two Pointersを使用します。右ポインタを拡張し、
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_07_num_subarray_product_less_than_k.rb#num_subarray_product_less_than_k -->
 ```ruby
 # 解法1: Sliding Window
 def num_subarray_product_less_than_k(nums, k)
   return 0 if k <= 1
-  
+
   count = 0
   product = 1
   left = 0
-  
+
   nums.each_with_index do |num, right|
     product *= num
-    
+
     while product >= k
       product /= nums[left]
       left += 1
     end
-    
+
     # [left, right] の範囲で right を終端とする部分配列の数
     count += right - left + 1
   end
-  
+
   count
 end
 
 # 解法2: すべての部分配列を列挙
 def find_all_subarray_product_less_than_k(nums, k)
   result = []
-  
+
   nums.length.times do |i|
     product = 1
-    
+
     (i...nums.length).each do |j|
       product *= nums[j]
-      
+
       break if product >= k
-      
+
       result << nums[i..j]
     end
   end
-  
+
   result
 end
 
@@ -851,13 +858,14 @@ nums2 = [2, 5, 6], n = 3
 
 ### 解答
 
+<!-- source: solutions/02g_array_string_two_pointers/problem_08_merge.rb#merge -->
 ```ruby
 # 解法1: 後ろから埋める
 def merge(nums1, m, nums2, n)
   p1 = m - 1
   p2 = n - 1
   write_pos = m + n - 1
-  
+
   while p2 >= 0
     if p1 >= 0 && nums1[p1] > nums2[p2]
       nums1[write_pos] = nums1[p1]
@@ -866,10 +874,10 @@ def merge(nums1, m, nums2, n)
       nums1[write_pos] = nums2[p2]
       p2 -= 1
     end
-    
+
     write_pos -= 1
   end
-  
+
   nums1
 end
 
@@ -879,7 +887,7 @@ def merge_forward(nums1, m, nums2, n)
   p1 = 0
   p2 = 0
   write_pos = 0
-  
+
   while p1 < m && p2 < n
     if nums1_copy[p1] <= nums2[p2]
       nums1[write_pos] = nums1_copy[p1]
@@ -888,14 +896,14 @@ def merge_forward(nums1, m, nums2, n)
       nums1[write_pos] = nums2[p2]
       p2 += 1
     end
-    
+
     write_pos += 1
   end
-  
+
   # 残りをコピー
   nums1[write_pos...(write_pos + m - p1)] = nums1_copy[p1...m] if p1 < m
   nums1[write_pos...(write_pos + n - p2)] = nums2[p2...n] if p2 < n
-  
+
   nums1
 end
 

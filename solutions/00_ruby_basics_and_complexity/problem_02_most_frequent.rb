@@ -21,13 +21,19 @@
 # ハッシュを使用して各要素の出現回数をカウント
 # Hash.new(0)でデフォルト値を0に設定し、カウントを簡潔に記述
 # max_byメソッドで最大の出現回数を持つ要素を取得
+# docs:begin most_frequent
 def most_frequent(nums)
   freq = Hash.new(0)
 
   nums.each { |num| freq[num] += 1 }
 
-  freq.max_by { |_k, v| v }[0]
+  freq.max_by { |k, v| v }[0]
 end
+
+# テストケース
+puts most_frequent([1, 2, 2, 3, 3, 3])  # => 3
+puts most_frequent([1, 1, 2, 2])        # => 1 or 2
+# docs:end
 
 # ============================================================================
 # テストケース

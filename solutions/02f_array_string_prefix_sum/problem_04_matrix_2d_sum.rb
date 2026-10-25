@@ -22,6 +22,7 @@
 # 空間計算量: O(m × n)
 # ============================================================================
 
+# docs:begin Matrix2DSum
 # 解法1: 2D累積和配列
 class Matrix2DSum
   def initialize(matrix)
@@ -79,6 +80,20 @@ def query_2d_sum(prefix, row1, col1, row2, col2)
     prefix[row2 + 1][col1] +
     prefix[row1][col1]
 end
+
+# テストケース
+matrix = [[3, 0, 1, 4, 2],
+          [5, 6, 3, 2, 1],
+          [1, 2, 0, 1, 5],
+          [4, 1, 0, 1, 7],
+          [1, 0, 3, 0, 5]]
+
+m2d = Matrix2DSum.new(matrix)
+
+p m2d.sum_region(1, 1, 2, 2)  # => 11
+p m2d.sum_region(0, 0, 4, 4)  # => 58（全体の合計）
+p m2d.sum_region(2, 1, 4, 3)  # => 8
+# docs:end
 
 # ============================================================================
 # テストケース

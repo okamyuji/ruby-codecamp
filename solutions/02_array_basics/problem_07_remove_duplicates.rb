@@ -16,6 +16,7 @@
 # 空間計算量: O(n) - 見た要素を追跡するためのセット
 # ============================================================================
 
+# docs:begin remove_duplicates
 # 解法1: uniqメソッドを使用（推奨）
 def remove_duplicates(arr)
   # uniqは重複を除去した新しい配列を返す
@@ -59,6 +60,14 @@ def remove_duplicates_each_with_object(arr)
     result << elem unless result.include?(elem)
   end
 end
+
+# テストケース
+p remove_duplicates([1, 2, 2, 3, 4, 4, 5])       # => [1, 2, 3, 4, 5]
+p remove_duplicates([1, 1, 1, 1])                # => [1]
+p remove_duplicates(['a', 'b', 'a', 'c', 'b'])   # => ["a", "b", "c"]
+p remove_duplicates([])                          # => []
+p remove_duplicates([1, 2, 3])                   # => [1, 2, 3]
+# docs:end
 
 # ============================================================================
 # テストケース

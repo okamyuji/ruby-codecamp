@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin longest_common_subsequence
+# 解法1: 二次元DP
 def longest_common_subsequence(text1, text2)
   m = text1.length
   n = text2.length
@@ -19,7 +21,9 @@ def longest_common_subsequence(text1, text2)
   dp[m][n]
 end
 
+# 解法2: 一次元DP（空間最適化）
 def longest_common_subsequence_1d(text1, text2)
+  # 短い方を列にする
   text1, text2 = text2, text1 if text1.length > text2.length
 
   m = text1.length
@@ -44,11 +48,13 @@ def longest_common_subsequence_1d(text1, text2)
   prev[n]
 end
 
+# 解法3: LCS文字列を復元
 def longest_common_subsequence_with_string(text1, text2)
   m = text1.length
   n = text2.length
   dp = Array.new(m + 1) { Array.new(n + 1, 0) }
 
+  # DP計算
   (1..m).each do |i|
     (1..n).each do |j|
       if text1[i - 1] == text2[j - 1]
@@ -59,6 +65,7 @@ def longest_common_subsequence_with_string(text1, text2)
     end
   end
 
+  # バックトラック
   lcs = []
   i = m
   j = n
@@ -77,6 +84,13 @@ def longest_common_subsequence_with_string(text1, text2)
 
   [dp[m][n], lcs.join]
 end
+
+# テストケース
+p longest_common_subsequence('abcde', 'ace') # => 3
+p longest_common_subsequence('abc', 'abc')  # => 3
+p longest_common_subsequence('abc', 'def')  # => 0
+p longest_common_subsequence_with_string('abcde', 'ace') # => [3, "ace"]
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 最長共通部分列（LCS） テスト ==='

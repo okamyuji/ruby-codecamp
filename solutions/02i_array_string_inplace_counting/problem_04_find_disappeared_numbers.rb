@@ -1,12 +1,16 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin find_disappeared_numbers
+# 解法1: Negative Marking
 def find_disappeared_numbers(nums)
+  # 各数字に対応する位置をマーク
   nums.each do |num|
     idx = num.abs - 1
     nums[idx] = -nums[idx].abs
   end
 
+  # 正の値のインデックスが消えた数字
   disappeared = []
 
   nums.each_with_index do |num, i|
@@ -16,6 +20,7 @@ def find_disappeared_numbers(nums)
   disappeared
 end
 
+# 解法2: 元の配列を復元する版
 def find_disappeared_numbers_restore(nums)
   nums.each do |num|
     idx = num.abs - 1
@@ -28,16 +33,24 @@ def find_disappeared_numbers_restore(nums)
     disappeared << i + 1 if num > 0
   end
 
+  # 配列を元に戻す
   nums.map! { |num| num.abs }
 
   disappeared
 end
 
+# 解法3: セットを使用（O(n)空間）
 def find_disappeared_numbers_set(nums)
   present = Set.new(nums)
 
   (1..nums.length).reject { |num| present.include?(num) }
 end
+
+# テストケース
+p find_disappeared_numbers([4, 3, 2, 7, 8, 2, 3, 1])  # => [5, 6]
+p find_disappeared_numbers([1, 1])                    # => [2]
+p find_disappeared_numbers([1, 2, 3])                 # => []
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== 消えたすべての数字を見つける テスト ==='

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# docs:begin smallest_distance_pair
+# 解法1: Binary Search on Answer
 def smallest_distance_pair(nums, k)
   nums.sort!
 
@@ -10,6 +12,7 @@ def smallest_distance_pair(nums, k)
   while left < right
     mid = (left + right) / 2
 
+    # mid以下の距離を持つペアの数を数える
     count = count_pairs_with_distance_le(nums, mid)
 
     if count >= k
@@ -27,6 +30,7 @@ def count_pairs_with_distance_le(nums, distance)
   left = 0
 
   nums.each_with_index do |num, right|
+    # 距離が distance を超えたら left を移動
     left += 1 while nums[right] - nums[left] > distance
 
     count += right - left
@@ -35,6 +39,7 @@ def count_pairs_with_distance_le(nums, distance)
   count
 end
 
+# 解法2: すべてのペアを列挙してQuickselect（小さい配列用）
 def smallest_distance_pair_quickselect(nums, k)
   distances = []
 
@@ -81,6 +86,12 @@ def partition_simple(arr, left, right)
   arr[i], arr[right] = arr[right], arr[i]
   i
 end
+
+# テストケース
+p smallest_distance_pair([1, 3, 1], 1)  # => 0
+p smallest_distance_pair([1, 1, 1], 2)  # => 0
+p smallest_distance_pair([1, 6, 1], 3)  # => 5
+# docs:end
 
 if __FILE__ == $PROGRAM_NAME
   puts '=== k番目に小さいペアの距離 テスト ==='
