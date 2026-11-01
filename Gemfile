@@ -8,7 +8,7 @@ ruby '~> 4.0'
 gem 'prime'
 
 group :development do
-  gem 'rubocop', '~> 1.60', require: false
+  gem 'rubocop', '~> 1.92', require: false
   gem 'rubocop-performance', require: false
 end
 
